@@ -1,0 +1,76 @@
+{
+  "Name": "mhw",
+  "Formats": [
+    ".zip",
+    ".rar",
+    ".7z"
+  ],
+  "Engine": {
+    "Paths": [
+      {
+        "Path": "nativePC",
+        "IsDir": true,
+        "Requires": [],
+        "Unsupported": false
+      },
+      {
+        "Path": "NativePC",
+        "IsDir": true,
+        "Requires": [],
+        "Unsupported": false
+      },
+      {
+        "Path": "Nativepc",
+        "IsDir": true,
+        "Requires": [],
+        "Unsupported": false
+      },
+      {
+        "Path": "NativePc",
+        "IsDir": true,
+        "Requires": [],
+        "Unsupported": false
+      },
+      {
+        "Path": "nativepc",
+        "IsDir": true,
+        "Requires": [],
+        "Unsupported": false
+      },
+      {
+        "Path": "vfx",
+        "IsDir": true,
+        "Requires": [
+          "nativePC",
+          "vfx"
+        ],
+        "Unsupported": false
+      },
+      {
+        "Path": "pl",
+        "IsDir": true,
+        "Requires": [
+          "nativePC",
+          "pl"
+        ],
+        "Unsupported": false
+      }
+    ],
+    "Hooks": [
+      {
+        "Name": "dinput8.dll",
+        "Dll": "dinput8.dll",
+        "Arch": "x64",
+        "Requires": [],
+        "Include": []
+      },
+      {
+        "Name": "loader.dll",
+        "Dll": "loader.dll",
+        "Arch": "x64",
+        "Requires": [],
+        "Include": []
+      }
+    ]
+  }
+}

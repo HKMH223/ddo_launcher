@@ -1,0 +1,97 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Run XamlStyler",
+            "type": "shell",
+            "command": "dotnet",
+            "args": [
+                "xstyler",
+                "-f",
+                "${file}"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/project"
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Run CSharpier",
+            "type": "shell",
+            "command": "dotnet",
+            "args": [
+                "csharpier",
+                "${workspaceFolder}/project",
+                "${workspaceFolder}/extern"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/project"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Run Roslynator",
+            "type": "shell",
+            "command": "dotnet",
+            "args": [
+                "roslynator",
+                "analyze",
+                "../extern/CodeAnalyzers/CodeAnalyzers.csproj",
+                "../extern/MiniCommon/MiniCommon.csproj",
+                "DDO.Launcher.Base/DDO.Launcher.Base.csproj",
+                "DDO.Launcher/DDO.Launcher.csproj",
+                "-a",
+                "../.nupkg/roslynator/analyzers/dotnet/roslyn4.7/cs/"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/project"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "problemMatcher": [],
+            "dependsOn": "Run CSharpier"
+        },
+        {
+            "label": "Run Cake Build",
+            "type": "shell",
+            "command": "dotnet-cake",
+            "args": [
+                "build.cake"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/project/"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "problemMatcher": [],
+            "dependsOn": [
+                "Run CSharpier",
+                "Run Roslynator"
+            ]
+        }
+    ]
+}

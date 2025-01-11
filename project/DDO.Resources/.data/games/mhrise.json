@@ -1,0 +1,80 @@
+{
+  "Name": "mhrise",
+  "Formats": [
+    ".zip",
+    ".rar",
+    ".7z"
+  ],
+  "Engine": {
+    "Paths": [
+      {
+        "Path": "natives",
+        "IsDir": true,
+        "Requires": [],
+        "Unsupported": false
+      },
+      {
+        "Path": "reframework",
+        "IsDir": true,
+        "Requires": [],
+        "Unsupported": false
+      },
+      {
+        "Path": "autorun",
+        "IsDir": true,
+        "Requires": [
+          "reframework",
+          "autorun"
+        ],
+        "Unsupported": false
+      },
+      {
+        "Path": ".lua",
+        "IsDir": false,
+        "Requires": [
+          "reframework",
+          "autorun"
+        ],
+        "Unsupported": false
+      },
+      {
+        "Path": ".dll",
+        "IsDir": false,
+        "Requires": [
+          "reframework",
+          "plugins"
+        ],
+        "Unsupported": false
+      },
+      {
+        "Path": ".pak",
+        "IsDir": false,
+        "Requires": [],
+        "Unsupported": true
+      }
+    ],
+    "Hooks": [
+      {
+        "Name": "dinput8.dll",
+        "Dll": "dinput8.dll",
+        "Arch": "x64",
+        "Requires": [],
+        "Include": []
+      },
+      {
+        "Name": "SpecialK64.dll",
+        "Dll": "dxgi.dll",
+        "Arch": "x64",
+        "Requires": [],
+        "Include": []
+      },
+      {
+        "Name": "SpecialK32.dll",
+        "Dll": "dxgi.dll",
+        "Arch": "x86",
+        "Requires": [],
+        "Include": []
+      }
+    ]
+  }
+}
