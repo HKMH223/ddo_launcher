@@ -65,19 +65,11 @@ public static class DDOVerifier
     /// <summary>
     /// Verify file hashes from a hash file.
     /// </summary>
-    public static void Verify()
-    {
-        string filePath = VFS.FromCwd(
-            AssemblyConstants.DataDirectory,
-            $"{AssemblyConstants.AssemblyName}.{HashTypeResolver.ToString(HashType.MD5)}"
+    public static void Verify() =>
+        HashVerifier.Verify(
+            VFS.FromCwd(
+                AssemblyConstants.DataDirectory,
+                $"{AssemblyConstants.AssemblyName}.{HashTypeResolver.ToString(HashType.MD5)}"
+            )
         );
-
-        if (!VFS.Exists(filePath))
-        {
-            NotificationProvider.Warn("error.hash.nohash", filePath);
-            return;
-        }
-
-        HashVerifier.Verify(filePath);
-    }
 }

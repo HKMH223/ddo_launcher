@@ -73,7 +73,10 @@ public static class HashVerifier
     {
         List<HashVerifiedFile> hashVerifiedFiles = [];
         if (!VFS.Exists(filePath))
+        {
+            NotificationProvider.Warn("error.hash.nohash", filePath);
             return hashVerifiedFiles;
+        }
 
         string[] lines = VFS.ReadAllLines(filePath);
         HashType hashType = EnumResolver.Parse(lines.FirstOrDefault() ?? "md5", HashType.MD5);
