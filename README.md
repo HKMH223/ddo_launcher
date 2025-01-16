@@ -15,7 +15,7 @@ git config --local user.email "USERNAME@SOMETHING.com"
 
 ## Requirements
 - .NET 8 SDK or higher.
-- Visual Studio Code or alternatives.
+- Visual Studio Code (recommended) or alternatives.
 - [NetCoreDbg](https://github.com/Samsung/netcoredbg) or alternatives.
 - [NativeAOT prerequisites](https://aka.ms/nativeaot-prerequisites)
 

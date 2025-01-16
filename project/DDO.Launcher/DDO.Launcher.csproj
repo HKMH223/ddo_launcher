@@ -14,6 +14,7 @@
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)' == 'Release'">
         <!--<PublishAot>true</PublishAot>-->
+        <!--<PublishReadyToRun>true</PublishReadyToRun>-->
         <PublishSingleFile>true</PublishSingleFile>
         <BuiltInComInteropSupport>false</BuiltInComInteropSupport>
         <TrimMode>link</TrimMode>
