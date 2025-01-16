@@ -40,7 +40,7 @@ public static class SettingsProvider
             NotificationProvider.Info("launcher.settings.setup", _settingsFilePath);
             Settings settings = new()
             {
-                Executable = "ddo.exe",
+                Executable = "cwd:ddo.exe",
                 AccountAPI = "/api/account",
                 DownloadIP = "127.0.0.1",
                 DownloadPort = "52099",

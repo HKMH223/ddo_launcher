@@ -54,10 +54,20 @@ public static class DDOLauncher
         );
 
         ProcessHelper.RunProcess(
-            VFS.Combine(workingDirectory, settings.Executable!),
+            ExecutablePath(settings.Executable!, workingDirectory),
             MLaunchOptions.DefaultArguments(settings!, token!)?.Arguments()?.Build() ?? Validate.For.EmptyString(),
             workingDirectory,
             false
         );
+    }
+
+    /// <summary>
+    /// Parse the executable path based on whether the "cwd:" prefix is used.
+    /// </summary>
+    private static string ExecutablePath(string executable, string workingDirectory)
+    {
+        if (executable.StartsWith("cwd:"))
+            return VFS.Combine(workingDirectory, executable.Replace("cwd:", string.Empty));
+        return executable;
     }
 }
