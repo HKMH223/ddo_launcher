@@ -116,7 +116,7 @@ public class ValidatedFileSystem : BaseFileSystem
     {
         if (Validate.For.IsNullOrWhiteSpace(paths, NativeLogLevel.Fatal))
             return string.Empty;
-        return base.Combine(paths.Prepend(Cwd).ToArray());
+        return base.Combine([.. paths.Prepend(Cwd)]);
     }
 
     /// <inheritdoc />

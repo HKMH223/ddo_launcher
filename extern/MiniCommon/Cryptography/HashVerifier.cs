@@ -34,8 +34,17 @@ public static class HashVerifier
     /// <summary>
     /// Write a hash verification file to the specified file path.
     /// </summary>
-    public static void Write(HashType hashType, string toVerify, string filePath) =>
-        Write(hashType, VFS.GetFiles(toVerify, "*", SearchOption.AllDirectories), filePath);
+    public static void Write(
+        HashType hashType,
+        string toVerify,
+        string filePath,
+        string searchPattern = "*"
+    ) =>
+        Write(
+            hashType,
+            VFS.GetFiles(toVerify, searchPattern, SearchOption.AllDirectories),
+            filePath
+        );
 
     /// <summary>
     /// Write a hash verification file to the specified file path.

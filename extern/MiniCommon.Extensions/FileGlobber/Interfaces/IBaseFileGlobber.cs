@@ -16,18 +16,25 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-using System.Linq;
-using MiniCommon.Models;
+using System.Collections.Generic;
+using Microsoft.Extensions.FileSystemGlobbing;
 
-namespace MiniCommon.Extensions;
+namespace MiniCommon.Extensions.FileGlobber.Interfaces;
 
-public static class MArgumentExt
+public interface IBaseFileGlobber
 {
     /// <summary>
-    /// Convert an array of MArgument into Arguments object.
+    /// Glob files from a specific search directory.
     /// </summary>
-    public static MArguments? Arguments(this MOption[] arguments)
-    {
-        return new MArguments { Arguments = [.. arguments.Where(a => a.Condition)] };
-    }
+    public abstract PatternMatchingResult? Match(string filepath);
+
+    /// <summary>
+    /// Add include patterns to the file matcher.
+    /// </summary>
+    public abstract void AddIncludePatterns(List<string> patterns);
+
+    /// <summary>
+    /// Add exclude patterns to the file matcher.
+    /// </summary>
+    public abstract void AddExcludePatterns(List<string> patterns);
 }

@@ -96,7 +96,7 @@ public class VFS : IFileSystem
     /// <inheritdoc />
     public static string FromCwd(params string[] paths)
     {
-        return FileSystem.Combine(paths.Prepend(FileSystem.Cwd).ToArray());
+        return FileSystem.Combine([.. paths.Prepend(FileSystem.Cwd)]);
     }
 
     /// <inheritdoc />

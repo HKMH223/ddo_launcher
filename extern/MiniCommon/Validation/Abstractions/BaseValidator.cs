@@ -44,7 +44,7 @@ public class BaseValidator<T>
     /// </summary>
     public bool Validate(T obj, out List<string> errors)
     {
-        errors = _rules.Where(rule => !rule.Rule(obj)).Select(rule => rule.ErrorMessage).ToList();
+        errors = [.. _rules.Where(rule => !rule.Rule(obj)).Select(rule => rule.ErrorMessage)];
         return errors.Count == 0;
     }
 
@@ -53,10 +53,10 @@ public class BaseValidator<T>
     /// </summary>
     public bool Validate(T obj, Action<List<string>> action)
     {
-        List<string> _errors = _rules
-            .Where(rule => !rule.Rule(obj))
-            .Select(rule => rule.ErrorMessage)
-            .ToList();
+        List<string> _errors =
+        [
+            .. _rules.Where(rule => !rule.Rule(obj)).Select(rule => rule.ErrorMessage),
+        ];
         action(_errors);
         return _errors.Count == 0;
     }
@@ -66,10 +66,10 @@ public class BaseValidator<T>
     /// </summary>
     public bool Validate(T? obj, NativeLogLevel level)
     {
-        List<string> _errors = _rules
-            .Where(rule => !rule.Rule(obj))
-            .Select(rule => rule.ErrorMessage)
-            .ToList();
+        List<string> _errors =
+        [
+            .. _rules.Where(rule => !rule.Rule(obj)).Select(rule => rule.ErrorMessage),
+        ];
         if (level == NativeLogLevel.Fatal && _errors.Count > 0)
         {
             throw new ObjectValidationException(string.Join(", ", _errors));

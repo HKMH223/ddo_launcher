@@ -151,7 +151,7 @@ public abstract partial class BaseFileSystem : IBaseFileSystem
     /// <inheritdoc />
     public virtual string FromCwd(params string[] paths)
     {
-        return Combine(paths.Prepend(Cwd).ToArray());
+        return Combine([.. paths.Prepend(Cwd)]);
     }
 
     /// <inheritdoc />
