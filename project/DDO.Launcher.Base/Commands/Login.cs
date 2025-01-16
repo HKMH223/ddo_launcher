@@ -47,10 +47,10 @@ public class Login : IBaseCommand<Settings>
                 Parameters =
                 [
                     new() { Name = "api", Optional = true },
-                    new() { Name = "dip", Optional = true },
-                    new() { Name = "dport", Optional = true },
-                    new() { Name = "lip", Optional = true },
-                    new() { Name = "lport", Optional = true },
+                    new() { Name = "download-ip", Optional = true },
+                    new() { Name = "download-port", Optional = true },
+                    new() { Name = "lobby-ip", Optional = true },
+                    new() { Name = "lobby-port", Optional = true },
                     new() { Name = "account", Optional = true },
                     new() { Name = "password", Optional = true },
                     new() { Name = "email", Optional = true },
