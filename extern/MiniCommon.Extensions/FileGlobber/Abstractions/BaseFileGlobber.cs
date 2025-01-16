@@ -41,8 +41,12 @@ public class BaseFileGlobber(StringComparison comparisonType = StringComparison.
     }
 
     /// <inheritdoc/>
-    public virtual PatternMatchingResult? Match(string filepath) =>
+    public virtual PatternMatchingResult? MatchWithResult(string filepath) =>
         _matcher.Execute(new DirectoryInfoWrapper(new DirectoryInfo(filepath)));
+
+    /// <inheritdoc/>
+    public virtual List<string> Match(string filepath) =>
+        [.. _matcher.GetResultsInFullPath(filepath)];
 
     /// <inheritdoc/>
     public virtual void AddIncludePatterns(List<string> patterns)

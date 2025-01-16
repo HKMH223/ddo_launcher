@@ -25,6 +25,7 @@ using MiniCommon.Cryptography.Helpers;
 using MiniCommon.Cryptography.Models;
 using MiniCommon.Extensions;
 using MiniCommon.IO;
+using MiniCommon.Providers;
 using MiniCommon.Resolvers;
 
 namespace MiniCommon.Cryptography;
@@ -54,7 +55,11 @@ public static class HashVerifier
         List<string> fileData = [];
         fileData.Add(hashType.ToString());
         foreach (string file in files)
-            fileData.Add($"{file}={ComputeHash(hashType, file)}");
+        {
+            string hash = ComputeHash(hashType, file);
+            NotificationProvider.Info("hash.writing", file, hash);
+            fileData.Add($"{file}={hash}");
+        }
 
         if (!VFS.Exists(VFS.GetDirectoryName(filePath)))
             VFS.CreateDirectory(VFS.GetDirectoryName(filePath));
@@ -81,6 +86,7 @@ public static class HashVerifier
         {
             if (!VFS.Exists(key))
             {
+                NotificationProvider.Warn("error.hash.missing", key, value);
                 hashVerifiedFiles.Add(
                     new()
                     {
@@ -95,6 +101,7 @@ public static class HashVerifier
             string currentHash = ComputeHash(hashType, key);
             if (value != currentHash)
             {
+                NotificationProvider.Warn("error.hash.invalid", key, currentHash, value);
                 hashVerifiedFiles.Add(
                     new()
                     {
@@ -108,6 +115,7 @@ public static class HashVerifier
 
             if (value == currentHash)
             {
+                NotificationProvider.Info("hash.success", key, currentHash, value);
                 hashVerifiedFiles.Add(
                     new()
                     {

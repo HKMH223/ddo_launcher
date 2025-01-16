@@ -26,7 +26,12 @@ public interface IBaseFileGlobber
     /// <summary>
     /// Glob files from a specific search directory.
     /// </summary>
-    public abstract PatternMatchingResult? Match(string filepath);
+    public abstract PatternMatchingResult? MatchWithResult(string filepath);
+
+    /// <summary>
+    /// Glob files from a specific search directory.
+    /// </summary>
+    public abstract List<string> Match(string filepath);
 
     /// <summary>
     /// Add include patterns to the file matcher.

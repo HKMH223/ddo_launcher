@@ -17,7 +17,10 @@
  */
 
 using System.ComponentModel;
+using System.Threading.Tasks;
 using Avalonia.Controls;
+using Avalonia.Threading;
+using DDO.Launcher.Base.Helpers;
 using DDO.Launcher.Base.Managers;
 using DDO.Launcher.Base.Models;
 using DDO.Launcher.Base.Providers;
@@ -174,8 +177,50 @@ public partial class SettingsDialogWindow : Window, INotifyPropertyChanged
         DataContext = this;
     }
 
+    private void HashWrite_Click(object sender, RoutedEventArgs e)
+    {
+        IsHitTestVisible = false;
+        Topmost = false;
+        Task.Run(DDOVerifier.Write)
+            .ContinueWith(_ =>
+            {
+                Dispatcher.UIThread.Invoke(() =>
+                {
+                    IsHitTestVisible = true;
+                    Topmost = true;
+                });
+            });
+    }
+
+    private void HashVerify_Click(object sender, RoutedEventArgs e)
+    {
+        IsHitTestVisible = false;
+        Topmost = false;
+        Task.Run(DDOVerifier.Verify)
+            .ContinueWith(_ =>
+            {
+                Dispatcher.UIThread.Invoke(() =>
+                {
+                    IsHitTestVisible = true;
+                    Topmost = true;
+                });
+            });
+    }
+
     private void SaveButton_Click(object sender, RoutedEventArgs e)
     {
-        SettingsProvider.Save(_settings);
+        IsHitTestVisible = false;
+        Topmost = false;
+        Task.Run(SaveTask)
+            .ContinueWith(_ =>
+            {
+                Dispatcher.UIThread.Invoke(() =>
+                {
+                    IsHitTestVisible = true;
+                    Topmost = true;
+                });
+            });
     }
+
+    private void SaveTask() => SettingsProvider.Save(_settings);
 }

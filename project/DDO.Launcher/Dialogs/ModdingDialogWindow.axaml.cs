@@ -19,6 +19,7 @@
 using System.ComponentModel;
 using System.Threading.Tasks;
 using Avalonia.Controls;
+using Avalonia.Threading;
 using DDO.Launcher.Base.Managers;
 using DDO.Launcher.Base.NativePC.Helpers;
 using DDO.Launcher.Base.NativePC.Models;
@@ -65,12 +66,15 @@ public partial class ModdingDialogWindow : Window, INotifyPropertyChanged
     {
         IsHitTestVisible = false;
         Topmost = false;
-        Task task = Task.Run(DeployTask);
-        if (task.IsCompleted)
-        {
-            IsHitTestVisible = true;
-            Topmost = true;
-        }
+        Task.Run(DeployTask)
+            .ContinueWith(_ =>
+            {
+                Dispatcher.UIThread.Invoke(() =>
+                {
+                    IsHitTestVisible = true;
+                    Topmost = true;
+                });
+            });
     }
 
     private Task DeployTask()

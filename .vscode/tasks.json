@@ -92,6 +92,22 @@
                 "Run CSharpier",
                 "Run Roslynator"
             ]
+        },
+        {
+            "label": "Run Program",
+            "type": "shell",
+            "command": "start",
+            "args": [
+                "DDO.Launcher.exe"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/project/Build"
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "problemMatcher": [],
         }
     ]
 }

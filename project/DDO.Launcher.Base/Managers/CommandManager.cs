@@ -40,6 +40,8 @@ public static class CommandManager
         {
             List<IBaseCommand<Settings>> commands = [];
 
+            commands.Add(new Verifier());
+            commands.Add(new Patcher());
             commands.Add(new Deploy());
             commands.Add(new Register());
             commands.Add(new Login());

@@ -30,10 +30,18 @@ public class FileGlobber(StringComparison comparisonType = StringComparison.Ordi
     : BaseFileGlobber(comparisonType)
 {
     /// <inheritdoc/>
-    public override PatternMatchingResult? Match(string filepath)
+    public override PatternMatchingResult? MatchWithResult(string filepath)
     {
         if (Validate.For.IsNullOrWhiteSpace([filepath], NativeLogLevel.Fatal))
             return null;
+        return base.MatchWithResult(filepath);
+    }
+
+    /// <inheritdoc/>
+    public override List<string> Match(string filepath)
+    {
+        if (Validate.For.IsNullOrWhiteSpace([filepath], NativeLogLevel.Fatal))
+            return [];
         return base.Match(filepath);
     }
 

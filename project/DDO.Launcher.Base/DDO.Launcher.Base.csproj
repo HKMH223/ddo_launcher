@@ -12,6 +12,7 @@
     </PropertyGroup>
     <ItemGroup>
         <ProjectReference Include="../../extern/MiniCommon/MiniCommon.csproj" />
+        <ProjectReference Include="../../extern/MiniCommon.Extensions/MiniCommon.Extensions.csproj" />
     </ItemGroup>
 
 </Project>

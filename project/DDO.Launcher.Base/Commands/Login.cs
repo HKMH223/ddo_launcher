@@ -54,7 +54,7 @@ public class Login : IBaseCommand<Settings>
                     new() { Name = "account", Optional = true },
                     new() { Name = "password", Optional = true },
                     new() { Name = "email", Optional = true },
-                    new() { Name = "launch", Optional = true },
+                    new() { Name = "launch", Optional = false },
                 ],
                 Description = LocalizationProvider.Translate("command.login"),
             },
