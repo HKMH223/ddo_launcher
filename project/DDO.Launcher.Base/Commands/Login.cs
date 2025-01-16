@@ -64,10 +64,10 @@ public class Login : IBaseCommand<Settings>
                     return;
 
                 settings!.AccountAPI = options.GetValueOrDefault("api", "/api/account");
-                settings!.DownloadIP = options.GetValueOrDefault("dip", "127.0.0.1");
-                settings!.DownloadPort = options.GetValueOrDefault("dport", "52099");
-                settings!.LobbyIP = options.GetValueOrDefault("lip", "127.0.0.1");
-                settings!.LobbyPort = options.GetValueOrDefault("lport", "52100");
+                settings!.DownloadIP = options.GetValueOrDefault("download-ip", "127.0.0.1");
+                settings!.DownloadPort = options.GetValueOrDefault("download-port", "52099");
+                settings!.LobbyIP = options.GetValueOrDefault("lobby-ip", "127.0.0.1");
+                settings!.LobbyPort = options.GetValueOrDefault("lobby-port", "52100");
                 settings!.Account = options.GetValueOrDefault("account", settings!.Account!);
                 settings!.Password = options.GetValueOrDefault("password", settings!.Password!);
                 settings!.Email = options.GetValueOrDefault("email", settings!.Email!);
