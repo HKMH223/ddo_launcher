@@ -32,6 +32,12 @@ public class VFS : IFileSystem
     public static ValidatedFileSystem FileSystem { get; } = new();
 
     /// <inheritdoc />
+    public static string GetRedactedPath(string filepath)
+    {
+        return FileSystem.GetRedactedPath(filepath);
+    }
+
+    /// <inheritdoc />
     public static (bool IsProblem, PathCheck Check) CheckPathForProblemLocations(string filepath)
     {
         return FileSystem.CheckPathForProblemLocations(filepath);

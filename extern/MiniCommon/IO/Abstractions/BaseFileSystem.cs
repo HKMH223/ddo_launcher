@@ -38,6 +38,18 @@ public abstract partial class BaseFileSystem : IBaseFileSystem
     [GeneratedRegex(@"^\w:(\\|\/)$", RegexOptions.IgnoreCase)]
     private static partial Regex PathRegex();
 
+    [GeneratedRegex(@".:\\[uU]sers\\(?<NAME>[^\\]+)")]
+    private static partial Regex HostNameRegex();
+
+    /// <inheritdoc />
+    public virtual string GetRedactedPath(string filepath)
+    {
+        Match hostname = HostNameRegex().Match(filepath);
+        if (hostname.Success)
+            return filepath.Replace(hostname.Groups["NAME"].Value, "-REDACTED-");
+        return filepath;
+    }
+
     /// <inheritdoc />
     public virtual (bool IsProblem, PathCheck Check) CheckPathForProblemLocations(string filepath)
     {

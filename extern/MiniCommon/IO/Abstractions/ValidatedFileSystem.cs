@@ -30,6 +30,14 @@ namespace MiniCommon.IO.Abstractions;
 public class ValidatedFileSystem : BaseFileSystem
 {
     /// <inheritdoc />
+    public override string GetRedactedPath(string filepath)
+    {
+        if (Validate.For.IsNullOrWhiteSpace([filepath], NativeLogLevel.Fatal))
+            return string.Empty;
+        return base.GetRedactedPath(filepath);
+    }
+
+    /// <inheritdoc />
     public override (bool, PathCheck) CheckPathForProblemLocations(string filepath)
     {
         if (Validate.For.IsNullOrWhiteSpace([filepath], NativeLogLevel.Fatal))

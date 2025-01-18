@@ -30,6 +30,11 @@ public interface IBaseFileSystem
     public abstract string Cwd { get; set; }
 
     /// <summary>
+    /// Redact the hostname from a given filepath.
+    /// </summary>
+    public abstract string GetRedactedPath(string filepath);
+
+    /// <summary>
     /// Check if a path is problematic.
     /// </summary>
     public abstract (bool IsProblem, PathCheck Check) CheckPathForProblemLocations(string filepath);

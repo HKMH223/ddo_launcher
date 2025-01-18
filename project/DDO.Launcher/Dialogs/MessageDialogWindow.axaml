@@ -51,7 +51,7 @@
                 Name="ContentTextBlock"
                 Grid.Row="1"
                 Grid.Column="1"
-                FontSize="18"
+                FontSize="14"
                 FontWeight="Light"
                 Text="CONTENT_PLACEHOLDER" />
         </Grid>

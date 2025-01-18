@@ -19,6 +19,7 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+using MiniCommon.IO;
 using MiniCommon.Logger.Enums;
 using MiniCommon.Providers;
 using MiniCommon.Validation;
@@ -48,6 +49,7 @@ public partial class NativeLogger : ILogger
     private const uint ENABLE_EXTENDED_FLAGS = 0x0080;
 
     private readonly NativeLogLevel _minLevel = NativeLogLevel.Debug;
+    private readonly CensorLevel _censorLevel = CensorLevel.NONE;
 
     /// <summary>
     /// Create a new NativeLogger and allocate a console for it.
@@ -62,10 +64,11 @@ public partial class NativeLogger : ILogger
     /// <summary>
     /// Create a new NativeLogger with a minimum log level and allocate a console for it.
     /// </summary>
-    public NativeLogger(NativeLogLevel minLevel)
+    public NativeLogger(NativeLogLevel minLevel, CensorLevel censorLevel = CensorLevel.NONE)
     {
         _ = AllocConsole();
         _minLevel = minLevel;
+        _censorLevel = censorLevel;
         DisableQuickEditMode();
         AppDomain.CurrentDomain.UnhandledException += UnhandledException;
     }
@@ -156,7 +159,16 @@ public partial class NativeLogger : ILogger
         Console.ForegroundColor = (ConsoleColor)level;
         Console.Write($"[{level.ToString().ToUpper()}] ");
         Console.ForegroundColor = ConsoleColor.Gray;
-        Console.WriteLine(message);
+
+        switch (_censorLevel)
+        {
+            case CensorLevel.REDACT:
+                Console.WriteLine(VFS.GetRedactedPath(message));
+                break;
+            default:
+                Console.WriteLine(message);
+                break;
+        }
 
         return Task.FromResult(true);
     }

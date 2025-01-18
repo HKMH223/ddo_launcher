@@ -38,6 +38,7 @@ public class FileStreamLogger : ILogger, IDisposable
     private readonly bool _flush = true;
     private bool _disposed = false;
     private readonly NativeLogLevel _minLevel = NativeLogLevel.Debug;
+    private readonly CensorLevel _censorLevel = CensorLevel.NONE;
 
     /// <summary>
     /// Create a new FileStreamLogger toward the specified log path.
@@ -54,12 +55,17 @@ public class FileStreamLogger : ILogger, IDisposable
     /// <summary>
     /// Create a new FileStreamLogger with a minimum log level toward the specified log path.
     /// </summary>
-    public FileStreamLogger(string filePath, NativeLogLevel minLevel)
+    public FileStreamLogger(
+        string filePath,
+        NativeLogLevel minLevel,
+        CensorLevel censorLevel = CensorLevel.NONE
+    )
     {
         _queue = new();
         VFS.CreateDirectory(VFS.GetDirectoryName(filePath));
         _stream = new(filePath, append: true);
         _minLevel = minLevel;
+        _censorLevel = censorLevel;
         AppDomain.CurrentDomain.UnhandledException += UnhandledException;
         Task.Run(Flush);
     }
@@ -169,8 +175,10 @@ public class FileStreamLogger : ILogger, IDisposable
         {
             foreach (FileStreamLog message in messages)
             {
+                string line =
+                    $"[{DateTime.Now.ToLongTimeString()}][{message.Level}] {message.Message}";
                 await _stream.WriteLineAsync(
-                    $"[{DateTime.Now.ToLongTimeString()}][{message.Level}] {message.Message}\n"
+                    _censorLevel == CensorLevel.REDACT ? VFS.GetRedactedPath(line) : line
                 );
             }
             await _stream.FlushAsync();
