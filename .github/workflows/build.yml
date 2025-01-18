@@ -1,0 +1,40 @@
+name: Build
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'main'
+      - 'master'
+    tags:
+      - 'v*'
+  pull_request:
+
+jobs:
+  build:
+    name: Build
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-latest, ubuntu-latest]
+    steps:
+      - name: Get the sources
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: 'true'
+
+      - name: Install .NET SDK 8.0.x - 9.0.x
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            8.0.x
+            9.0.x
+
+      - name: Run Cake script
+        uses: cake-build/cake-action@v2
+        with:
+          script-path: project/build.cake
+          target: ExecuteBuild
+          cake-version: 5.0.0
