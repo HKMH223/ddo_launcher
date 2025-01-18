@@ -47,7 +47,7 @@ internal static class Program
             (Notification notification) => Log.Base(notification.LogLevel, notification.Message)
         );
         NotificationProvider.Info("log.initialized");
-        Watermark.Draw(AssemblyConstants.WatermarkText);
+        Watermark.Draw(AssemblyConstants.WatermarkText());
 
         if (args.Length == 0)
             return;

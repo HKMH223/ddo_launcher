@@ -33,19 +33,25 @@ public static class MLaunchOptions
     {
         if (Validate.For.IsNull(settings))
             return null;
+        if (Validate.For.IsNull(settings!.ServerInfo))
+            return null;
 
         return
         [
-            new MOption { Arg = "addr={0}", ArgParams = [settings.LobbyIP ?? Validate.For.EmptyString()] },
-            new MOption { Arg = "port={0}", ArgParams = [settings.LobbyPort ?? Validate.For.EmptyString()] },
+            new MOption { Arg = "addr={0}", ArgParams = [settings.ServerInfo!.LobbyIP ?? Validate.For.EmptyString()] },
+            new MOption
+            {
+                Arg = "port={0}",
+                ArgParams = [settings.ServerInfo!.LobbyPort ?? Validate.For.EmptyString()],
+            },
             new MOption { Arg = "token={0}", ArgParams = [token ?? Validate.For.EmptyString()] },
             new MOption
             {
                 Arg = "DL=http://{0}:{1}/win/",
                 ArgParams =
                 [
-                    settings.DownloadIP ?? Validate.For.EmptyString(),
-                    settings.DownloadPort ?? Validate.For.EmptyString(),
+                    settings.ServerInfo!.DownloadIP ?? Validate.For.EmptyString(),
+                    settings.ServerInfo!.DownloadPort ?? Validate.For.EmptyString(),
                 ],
             },
             new MOption { Arg = "LVer={0}", ArgParams = ["03.04.003.20181115.0"] },

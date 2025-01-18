@@ -38,14 +38,20 @@ public static class SettingsProvider
         {
             NotificationProvider.Warn("launcher.settings.missing", SettingsFileName, AssemblyConstants.DataDirectory);
             NotificationProvider.Info("launcher.settings.setup", _settingsFilePath);
-            Settings settings = new()
+            ServerInfo serverInfo = new()
             {
-                Executable = "cwd:ddo.exe",
+                ServerName = "Default",
                 AccountAPI = "/api/account",
                 DownloadIP = "127.0.0.1",
                 DownloadPort = "52099",
                 LobbyIP = "127.0.0.1",
                 LobbyPort = "52100",
+            };
+            Settings settings = new()
+            {
+                Executable = "cwd:ddo.exe",
+                ServerInfo = serverInfo,
+                ServerInfos = [serverInfo],
                 Account = "",
                 Password = "",
                 Email = "",

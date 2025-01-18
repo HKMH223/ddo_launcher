@@ -81,9 +81,9 @@ public static class LocalizationProvider
                 ? Localization.Default().Concat(Localization!.Entries)
                 : Localization.Entries.Concat(Localization.Default())
         )
-            .GroupBy(a => a)
+            .GroupBy(a => a.Key)
             .Select(a => a.Last())
-            .ToDictionary();
+            .ToDictionary(a => a.Key, a => a.Value);
 
         if (Localization!.Entries is not null)
         {

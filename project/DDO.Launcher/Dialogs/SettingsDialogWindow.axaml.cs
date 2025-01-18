@@ -16,7 +16,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Threading;
@@ -27,6 +31,7 @@ using DDO.Launcher.Base.Providers;
 using MiniCommon.Providers;
 using MiniCommon.Validation;
 using MiniCommon.Validation.Operators;
+using MiniCommon.Validation.Validators;
 using RoutedEventArgs = Avalonia.Interactivity.RoutedEventArgs;
 
 namespace DDO.Launcher.Dialogs;
@@ -34,13 +39,17 @@ namespace DDO.Launcher.Dialogs;
 public partial class SettingsDialogWindow : Window, INotifyPropertyChanged
 {
     private string _executable = string.Empty;
+    private string _serverName = string.Empty;
     private string _accountAPI = string.Empty;
     private string _downloadIP = string.Empty;
     private string _downloadPort = string.Empty;
     private string _lobbyIP = string.Empty;
     private string _lobbyPort = string.Empty;
-    private bool _requireAdmin = true;
+    private bool _requireAdmin = false;
     private bool _localMode = false;
+
+    private ObservableCollection<ServerInfo>? _serverInfoList;
+    private ServerInfo? _selectedServerInfo;
 
     private readonly Settings _settings;
 
@@ -60,6 +69,20 @@ public partial class SettingsDialogWindow : Window, INotifyPropertyChanged
         }
     }
 
+    public string ServerName
+    {
+        get => _serverName;
+        set
+        {
+            if (_serverName != value)
+            {
+                _serverName = value;
+                _settings.ServerInfo!.ServerName = _serverName;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ServerName)));
+            }
+        }
+    }
+
     public string AccountAPI
     {
         get => _accountAPI;
@@ -68,7 +91,7 @@ public partial class SettingsDialogWindow : Window, INotifyPropertyChanged
             if (_accountAPI != value)
             {
                 _accountAPI = value;
-                _settings.AccountAPI = _accountAPI;
+                _settings.ServerInfo!.AccountAPI = _accountAPI;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AccountAPI)));
             }
         }
@@ -82,7 +105,7 @@ public partial class SettingsDialogWindow : Window, INotifyPropertyChanged
             if (_downloadIP != value)
             {
                 _downloadIP = value;
-                _settings.DownloadIP = _downloadIP;
+                _settings.ServerInfo!.DownloadIP = _downloadIP;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DownloadIP)));
             }
         }
@@ -96,7 +119,7 @@ public partial class SettingsDialogWindow : Window, INotifyPropertyChanged
             if (_downloadPort != value)
             {
                 _downloadPort = value;
-                _settings.DownloadPort = _downloadPort;
+                _settings.ServerInfo!.DownloadPort = _downloadPort;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DownloadPort)));
             }
         }
@@ -110,7 +133,7 @@ public partial class SettingsDialogWindow : Window, INotifyPropertyChanged
             if (_lobbyIP != value)
             {
                 _lobbyIP = value;
-                _settings.LobbyIP = _lobbyIP;
+                _settings.ServerInfo!.LobbyIP = _lobbyIP;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(LobbyIP)));
             }
         }
@@ -124,7 +147,7 @@ public partial class SettingsDialogWindow : Window, INotifyPropertyChanged
             if (_lobbyPort != value)
             {
                 _lobbyPort = value;
-                _settings.LobbyPort = _lobbyPort;
+                _settings.ServerInfo!.LobbyPort = _lobbyPort;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(LobbyPort)));
             }
         }
@@ -158,6 +181,38 @@ public partial class SettingsDialogWindow : Window, INotifyPropertyChanged
         }
     }
 
+    public ObservableCollection<ServerInfo> ServerInfoList
+    {
+        get => _serverInfoList!;
+        set
+        {
+            if (_serverInfoList != value)
+            {
+                _serverInfoList = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ServerInfoList)));
+            }
+        }
+    }
+
+    public ServerInfo SelectedServerInfo
+    {
+        get => _selectedServerInfo ?? _settings.ServerInfos![0];
+        set
+        {
+            if (_selectedServerInfo != value)
+            {
+                _selectedServerInfo = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedServerInfo)));
+            }
+
+            if (value != null)
+            {
+                _settings.ServerInfo = value;
+                UpdateComponents();
+            }
+        }
+    }
+
     public SettingsDialogWindow()
     {
         if (ServiceManager.Settings is null)
@@ -165,16 +220,32 @@ public partial class SettingsDialogWindow : Window, INotifyPropertyChanged
 
         _settings = ServiceManager.Settings ?? new Settings();
         _executable = _settings.Executable ?? Validate.For.EmptyString();
-        _accountAPI = _settings.AccountAPI ?? Validate.For.EmptyString();
-        _downloadIP = _settings.DownloadIP ?? Validate.For.EmptyString();
-        _downloadPort = _settings.DownloadPort ?? Validate.For.EmptyString();
-        _lobbyIP = _settings.LobbyIP ?? Validate.For.EmptyString();
-        _lobbyPort = _settings.LobbyPort ?? Validate.For.EmptyString();
-        _requireAdmin = _settings.RequireAdmin ?? true;
+        _serverName = _settings.ServerInfo!.ServerName ?? Validate.For.EmptyString();
+        _accountAPI = _settings.ServerInfo!.AccountAPI ?? Validate.For.EmptyString();
+        _downloadIP = _settings.ServerInfo!.DownloadIP ?? Validate.For.EmptyString();
+        _downloadPort = _settings.ServerInfo!.DownloadPort ?? Validate.For.EmptyString();
+        _lobbyIP = _settings.ServerInfo!.LobbyIP ?? Validate.For.EmptyString();
+        _lobbyPort = _settings.ServerInfo!.LobbyPort ?? Validate.For.EmptyString();
+        _requireAdmin = _settings.RequireAdmin ?? false;
         _localMode = _settings.LocalMode ?? false;
 
         InitializeComponent();
+        _serverInfoList = [.. _settings.ServerInfos!];
+        ServerInfoList.CollectionChanged += (sender, args) => _settings.ServerInfos = [.. ServerInfoList];
         DataContext = this;
+    }
+
+    private void UpdateComponents()
+    {
+        Executable = _settings.Executable ?? Validate.For.EmptyString();
+        ServerName = _settings.ServerInfo!.ServerName ?? Validate.For.EmptyString();
+        AccountAPI = _settings.ServerInfo!.AccountAPI ?? Validate.For.EmptyString();
+        DownloadIP = _settings.ServerInfo!.DownloadIP ?? Validate.For.EmptyString();
+        DownloadPort = _settings.ServerInfo!.DownloadPort ?? Validate.For.EmptyString();
+        LobbyIP = _settings.ServerInfo!.LobbyIP ?? Validate.For.EmptyString();
+        LobbyPort = _settings.ServerInfo!.LobbyPort ?? Validate.For.EmptyString();
+        RequireAdmin = _settings.RequireAdmin ?? false;
+        LocalMode = _settings.LocalMode ?? false;
     }
 
     private void HashWrite_Click(object sender, RoutedEventArgs e)
@@ -223,4 +294,72 @@ public partial class SettingsDialogWindow : Window, INotifyPropertyChanged
     }
 
     private void SaveTask() => SettingsProvider.Save(_settings);
+
+    private void AddToServerList_Click(object sender, RoutedEventArgs e)
+    {
+        IsHitTestVisible = false;
+        Topmost = false;
+        Task.Run(AddToServerListTask)
+            .ContinueWith(_ =>
+            {
+                Dispatcher.UIThread.Invoke(() =>
+                {
+                    IsHitTestVisible = true;
+                    Topmost = true;
+                });
+            });
+    }
+
+    private void AddToServerListTask()
+    {
+        if (Validate.For.IsNull(_settings.ServerInfos))
+            return;
+        if (
+            Validate.For.IsNullOrWhiteSpace(
+                [_serverName, _accountAPI, _downloadIP, _downloadPort, _lobbyIP, _lobbyPort]
+            )
+        )
+        {
+            return;
+        }
+        _settings.ServerInfos!.Add(
+            new()
+            {
+                ServerName = _serverName,
+                AccountAPI = _accountAPI,
+                DownloadIP = _downloadIP,
+                DownloadPort = _downloadPort,
+                LobbyIP = _lobbyIP,
+                LobbyPort = _lobbyPort,
+            }
+        );
+        ServerInfoList = [.. _settings.ServerInfos];
+        SettingsProvider.Save(_settings);
+    }
+
+    private void RemoveFromServerList_Click(object sender, RoutedEventArgs e)
+    {
+        IsHitTestVisible = false;
+        Topmost = false;
+        Task.Run(RemoveFromServerListTask)
+            .ContinueWith(_ =>
+            {
+                Dispatcher.UIThread.Invoke(() =>
+                {
+                    IsHitTestVisible = true;
+                    Topmost = true;
+                });
+            });
+    }
+
+    private void RemoveFromServerListTask()
+    {
+        if (Validate.For.IsNull(_settings.ServerInfos))
+            return;
+        if (Validate.For.IsNullOrWhiteSpace([_serverName]))
+            return;
+        _settings.ServerInfos!.RemoveAll(a => a.ServerName == _serverName);
+        ServerInfoList = [.. _settings.ServerInfos];
+        SettingsProvider.Save(_settings);
+    }
 }

@@ -62,12 +62,14 @@ public class Login : IBaseCommand<Settings>
             {
                 if (Validate.For.IsNull(settings))
                     return;
+                if (Validate.For.IsNull(settings!.ServerInfo))
+                    return;
 
-                settings!.AccountAPI = options.GetValueOrDefault("api", "/api/account");
-                settings!.DownloadIP = options.GetValueOrDefault("download-ip", "127.0.0.1");
-                settings!.DownloadPort = options.GetValueOrDefault("download-port", "52099");
-                settings!.LobbyIP = options.GetValueOrDefault("lobby-ip", "127.0.0.1");
-                settings!.LobbyPort = options.GetValueOrDefault("lobby-port", "52100");
+                settings!.ServerInfo!.AccountAPI = options.GetValueOrDefault("api", "/api/account");
+                settings!.ServerInfo!.DownloadIP = options.GetValueOrDefault("download-ip", "127.0.0.1");
+                settings!.ServerInfo!.DownloadPort = options.GetValueOrDefault("download-port", "52099");
+                settings!.ServerInfo!.LobbyIP = options.GetValueOrDefault("lobby-ip", "127.0.0.1");
+                settings!.ServerInfo!.LobbyPort = options.GetValueOrDefault("lobby-port", "52100");
                 settings!.Account = options.GetValueOrDefault("account", settings!.Account!);
                 settings!.Password = options.GetValueOrDefault("password", settings!.Password!);
                 settings!.Email = options.GetValueOrDefault("email", settings!.Email!);

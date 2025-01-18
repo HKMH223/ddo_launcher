@@ -60,7 +60,7 @@ public static class ServiceManager
             Tcp.TcpClient.ReceiveTimeout = 5000;
             Tcp.TcpClient.SendTimeout = 5000;
             Tcp.TcpClient.Encoding = new UTF8Encoding(false);
-            Watermark.Draw(AssemblyConstants.WatermarkText);
+            Watermark.Draw(AssemblyConstants.WatermarkText());
             return Task.FromResult(true);
         }
         catch (Exception ex)

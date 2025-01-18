@@ -37,10 +37,7 @@ public static class AssemblyConstants
         DataDirectory,
         LocalizationDirectory
     );
-    public static readonly List<string> WatermarkText =
-    [
-        AssemblyName,
-        "This work is free of charge",
-        "If you paid money, you were scammed",
-    ];
+
+    public static List<string> WatermarkText() =>
+        [AssemblyName, "This work is free of charge", "If you paid money, you were scammed"];
 }

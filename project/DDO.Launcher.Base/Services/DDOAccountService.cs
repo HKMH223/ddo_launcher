@@ -48,10 +48,18 @@ public class DDOAccountService
     {
         if (Validate.For.IsNull(_settings))
             return false;
-        if (Validate.For.IsNullOrWhiteSpace([_settings!.Account, _settings!.Password]))
+        if (Validate.For.IsNull(_settings!.ServerInfo))
             return false;
-        if (Validate.For.IsNullOrWhiteSpace([_settings!.DownloadIP, _settings!.DownloadPort]))
+        if (Validate.For.IsNullOrWhiteSpace([_settings!.Account, _settings.Password]))
             return false;
+        if (
+            Validate.For.IsNullOrWhiteSpace(
+                [_settings!.ServerInfo!.AccountAPI, _settings.ServerInfo.DownloadIP, _settings.ServerInfo.DownloadPort]
+            )
+        )
+        {
+            return false;
+        }
         return AccountRequest(ActionType.LOGIN);
     }
 
@@ -62,10 +70,18 @@ public class DDOAccountService
     {
         if (Validate.For.IsNull(_settings))
             return false;
-        if (Validate.For.IsNullOrWhiteSpace([_settings!.Account, _settings!.Password]))
+        if (Validate.For.IsNull(_settings!.ServerInfo))
             return false;
-        if (Validate.For.IsNullOrWhiteSpace([_settings!.DownloadIP, _settings!.DownloadPort]))
+        if (Validate.For.IsNullOrWhiteSpace([_settings!.Account, _settings.Password]))
             return false;
+        if (
+            Validate.For.IsNullOrWhiteSpace(
+                [_settings!.ServerInfo!.AccountAPI, _settings.ServerInfo.DownloadIP, _settings.ServerInfo.DownloadPort]
+            )
+        )
+        {
+            return false;
+        }
         return AccountRequest(ActionType.CREATE);
     }
 
@@ -77,19 +93,19 @@ public class DDOAccountService
         if (_settings!.LocalMode == true)
         {
             NotificationProvider.Info("ddo.login.local");
-            Token = LoginToken.Generate(_settings!.Account!, _settings!.Password!);
+            Token = LoginToken.Generate(_settings!.Account!, _settings.Password!);
             return true;
         }
 
-        if (Tcp.EnsureConnection(_settings!.DownloadIP!, _settings.DownloadPort!))
+        if (Tcp.EnsureConnection(_settings!.ServerInfo!.DownloadIP!, _settings.ServerInfo.DownloadPort!))
         {
             HttpRequest request = new()
             {
                 Method = "POST",
                 Version = "1.1",
-                Path = _settings.AccountAPI,
-                Address = _settings.DownloadIP,
-                Port = _settings.DownloadPort,
+                Path = _settings.ServerInfo.AccountAPI,
+                Address = _settings.ServerInfo.DownloadIP,
+                Port = _settings.ServerInfo.DownloadPort,
                 ContentType = "application/json",
                 Content = Json.Serialize(
                     new DDORequest()

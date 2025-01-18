@@ -16,28 +16,22 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace DDO.Launcher.Base.Models;
 
-public class Settings
+public class ServerInfo
 {
-    public string? Executable { get; set; }
+    public string? ServerName { get; set; }
+    public string? AccountAPI { get; set; }
+    public string? DownloadIP { get; set; }
+    public string? DownloadPort { get; set; }
+    public string? LobbyIP { get; set; }
+    public string? LobbyPort { get; set; }
 
-    public ServerInfo? ServerInfo { get; set; }
-    public List<ServerInfo>? ServerInfos { get; set; }
-
-    public string? Account { get; set; }
-    public string? Password { get; set; }
-    public string? Email { get; set; }
-
-    public bool? RequireAdmin { get; set; }
-    public bool? LocalMode { get; set; }
-
-    public Settings() { }
+    public ServerInfo() { }
 }
 
 [JsonSourceGenerationOptions(WriteIndented = true)]
-[JsonSerializable(typeof(Settings))]
-internal partial class SettingsContext : JsonSerializerContext;
+[JsonSerializable(typeof(ServerInfo))]
+internal partial class ServerInfoContext : JsonSerializerContext;
