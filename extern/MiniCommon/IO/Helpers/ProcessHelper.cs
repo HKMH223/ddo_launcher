@@ -36,6 +36,7 @@ public static class ProcessHelper
         string arguments,
         string workingDirectory,
         bool useShellExecute = true,
+        string verb = "",
         Dictionary<string, string>? environmentalVariables = null
     )
     {
@@ -47,6 +48,7 @@ public static class ProcessHelper
             UseShellExecute = useShellExecute,
             RedirectStandardOutput = !useShellExecute,
             RedirectStandardError = !useShellExecute,
+            Verb = verb,
         };
 
         if (environmentalVariables?.Count > 0)

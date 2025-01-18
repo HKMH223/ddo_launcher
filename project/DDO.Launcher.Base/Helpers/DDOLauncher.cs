@@ -17,9 +17,11 @@
  */
 
 using DDO.Launcher.Base.Models;
+using MiniCommon.Enums;
 using MiniCommon.Extensions;
 using MiniCommon.IO.Helpers;
 using MiniCommon.Providers;
+using MiniCommon.Resolvers;
 using MiniCommon.Validation;
 using MiniCommon.Validation.Operators;
 using MiniCommon.Validation.Validators;
@@ -56,7 +58,10 @@ public static class DDOLauncher
             PathHelper.MaybeCwd(settings.Executable!, workingDirectory),
             MLaunchOptions.DefaultArguments(settings!, token!)?.Arguments()?.Build() ?? Validate.For.EmptyString(),
             workingDirectory,
-            false
+            true,
+            settings.RequireAdmin == true
+                ? ProcessActionResolver.ToString(ProcessAction.OPEN)
+                : ProcessActionResolver.ToString(ProcessAction.RUNAS)
         );
     }
 }

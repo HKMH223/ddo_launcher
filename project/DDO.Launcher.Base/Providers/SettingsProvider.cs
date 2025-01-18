@@ -49,7 +49,7 @@ public static class SettingsProvider
                 Account = "",
                 Password = "",
                 Email = "",
-                RequireAdmin = true,
+                RequireAdmin = false,
                 LocalMode = false,
             };
 
