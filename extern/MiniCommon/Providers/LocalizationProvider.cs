@@ -35,6 +35,7 @@ public static class LocalizationProvider
     public static void Init(
         string filepath,
         Language language,
+        LocalizationDefaultOrder localizationDefaultOrder = LocalizationDefaultOrder.PREPEND,
         bool alwaysSaveNewTranslation = false
     )
     {
@@ -75,9 +76,11 @@ public static class LocalizationProvider
             .Select(a => a.Last())
             .ToDictionary();
 
-        Localization!.Entries = Localization
-            .Default()
-            .Concat(Localization!.Entries)
+        Localization!.Entries = (
+            localizationDefaultOrder == LocalizationDefaultOrder.PREPEND
+                ? Localization.Default().Concat(Localization!.Entries)
+                : Localization.Entries.Concat(Localization.Default())
+        )
             .GroupBy(a => a)
             .Select(a => a.Last())
             .ToDictionary();

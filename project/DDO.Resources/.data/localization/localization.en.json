@@ -10,7 +10,7 @@
         "patch.success": "({0}/{1}) Patch applied: {2} -> {3} at 0x{4}",
         "tcp.connect": "TCP Connection: {0}",
         "tcp.request": "TCP Request: {0}",
-        "tcp.error.response": "Error in TCP response: {0}",
+        "tcp.error.response": "TCP Response Error: {0}",
         "request.get.start": "Sending GET request to: {0}",
         "request.get.exists": "File already exists: {0}",
         "request.get.success": "Successfully received response from: {0} in {1}.",
