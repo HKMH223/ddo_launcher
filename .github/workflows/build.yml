@@ -40,7 +40,7 @@ jobs:
           cake-version: 5.0.0
 
       - name: Upload a Build Artifact
-      - uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4
         with:
           path: project/Build
           name: ${{ github.run_number }}
