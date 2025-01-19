@@ -237,15 +237,12 @@ public partial class SettingsDialogWindow : Window, INotifyPropertyChanged
 
     private void UpdateComponents()
     {
-        Executable = _settings.Executable ?? Validate.For.EmptyString();
         ServerName = _settings.ServerInfo!.ServerName ?? Validate.For.EmptyString();
         AccountAPI = _settings.ServerInfo!.AccountAPI ?? Validate.For.EmptyString();
         DownloadIP = _settings.ServerInfo!.DownloadIP ?? Validate.For.EmptyString();
         DownloadPort = _settings.ServerInfo!.DownloadPort ?? Validate.For.EmptyString();
         LobbyIP = _settings.ServerInfo!.LobbyIP ?? Validate.For.EmptyString();
         LobbyPort = _settings.ServerInfo!.LobbyPort ?? Validate.For.EmptyString();
-        RequireAdmin = _settings.RequireAdmin ?? false;
-        LocalMode = _settings.LocalMode ?? false;
     }
 
     private void HashWrite_Click(object sender, RoutedEventArgs e)
