@@ -463,7 +463,7 @@ public abstract partial class BaseFileSystem : IBaseFileSystem
                     directory.Attributes &= ~FileAttributes.ReadOnly;
 
                 if (!directory.Attributes.HasFlag(FileAttributes.ReadOnly) || includeReadOnly)
-                    DeleteDirectory(directory.FullName);
+                    DeleteDirectory(directory.FullName, false, includeReadOnly);
             }
 
             di.Delete(recursive);
