@@ -435,7 +435,11 @@ public abstract partial class BaseFileSystem : IBaseFileSystem
     }
 
     /// <inheritdoc />
-    public virtual void DeleteDirectory(string filepath, bool recursive = false)
+    public virtual void DeleteDirectory(
+        string filepath,
+        bool recursive = false,
+        bool includeReadOnly = false
+    )
     {
         lock (_mutex)
         {
@@ -446,13 +450,20 @@ public abstract partial class BaseFileSystem : IBaseFileSystem
 
             foreach (FileInfo file in di.GetFiles())
             {
-                file.IsReadOnly = false;
-                file.Delete();
+                if (file.IsReadOnly && includeReadOnly)
+                    file.IsReadOnly = false;
+
+                if (!file.IsReadOnly || includeReadOnly)
+                    file.Delete();
             }
 
             foreach (DirectoryInfo directory in di.GetDirectories())
             {
-                DeleteDirectory(directory.FullName);
+                if (directory.Attributes.HasFlag(FileAttributes.ReadOnly) && includeReadOnly)
+                    directory.Attributes &= ~FileAttributes.ReadOnly;
+
+                if (!directory.Attributes.HasFlag(FileAttributes.ReadOnly) || includeReadOnly)
+                    DeleteDirectory(directory.FullName);
             }
 
             di.Delete(recursive);

@@ -38,6 +38,7 @@ public class SevenZipSettings
         [
             new MOption { Arg = "x \"{0}\"", ArgParams = [source] },
             new MOption { Arg = "-o\"{0}\"/*", ArgParams = [destination] },
+            new MOption { Arg = "-y" },
         ];
     }
 

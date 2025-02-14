@@ -183,6 +183,6 @@ public static class NtPcProvider
     {
         if (Validate.For.IsNullOrWhiteSpace([path]))
             return;
-        VFS.DeleteDirectory(VFS.GetFullPath(VFS.FromCwd(path)), true);
+        VFS.DeleteDirectory(VFS.GetFullPath(VFS.FromCwd(path)), true, true);
     }
 }

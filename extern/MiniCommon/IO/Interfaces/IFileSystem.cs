@@ -210,7 +210,11 @@ public interface IFileSystem
     /// <summary>
     /// Deletes a directory.
     /// </summary>
-    public static abstract void DeleteDirectory(string filepath, bool recursive = false);
+    public static abstract void DeleteDirectory(
+        string filepath,
+        bool recursive = false,
+        bool includeReadOnly = false
+    );
 
     /// <summary>
     /// Deletes a file.

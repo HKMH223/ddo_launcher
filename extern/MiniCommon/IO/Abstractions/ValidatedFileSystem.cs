@@ -337,11 +337,15 @@ public class ValidatedFileSystem : BaseFileSystem
     }
 
     /// <inheritdoc />
-    public override void DeleteDirectory(string filepath, bool recursive = false)
+    public override void DeleteDirectory(
+        string filepath,
+        bool recursive = false,
+        bool includeReadOnly = false
+    )
     {
         if (Validate.For.IsNullOrWhiteSpace([filepath], NativeLogLevel.Fatal))
             return;
-        base.DeleteDirectory(filepath, recursive);
+        base.DeleteDirectory(filepath, recursive, includeReadOnly);
     }
 
     /// <inheritdoc />

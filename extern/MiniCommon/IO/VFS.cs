@@ -263,9 +263,13 @@ public class VFS : IFileSystem
     }
 
     /// <inheritdoc />
-    public static void DeleteDirectory(string filepath, bool recursive = false)
+    public static void DeleteDirectory(
+        string filepath,
+        bool recursive = false,
+        bool includeReadOnly = false
+    )
     {
-        FileSystem.DeleteDirectory(filepath, recursive);
+        FileSystem.DeleteDirectory(filepath, recursive, includeReadOnly);
     }
 
     /// <inheritdoc />

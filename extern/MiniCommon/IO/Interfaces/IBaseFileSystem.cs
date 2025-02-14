@@ -226,7 +226,11 @@ public interface IBaseFileSystem
     /// <summary>
     /// Deletes a directory.
     /// </summary>
-    public abstract void DeleteDirectory(string filepath, bool recursive = false);
+    public abstract void DeleteDirectory(
+        string filepath,
+        bool recursive = false,
+        bool includeReadOnly = false
+    );
 
     /// <summary>
     /// Deletes a file.
