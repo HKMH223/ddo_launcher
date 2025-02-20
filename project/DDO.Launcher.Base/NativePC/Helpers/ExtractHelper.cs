@@ -17,6 +17,7 @@
  */
 
 using System.IO;
+using System.Linq;
 using DDO.Launcher.Base.NativePC.Models;
 using MiniCommon.FileExtractors.Services;
 using MiniCommon.IO;
@@ -38,11 +39,17 @@ public static class ExtractHelper
         if (Validate.For.IsNull(game.Formats))
             return;
 
+        if (Validate.For.IsNullOrEmpty(game.IgnorePrefixes))
+            return;
+
         FileInfo[] files = VFS.GetFileInfos(basePath, "*", SearchOption.AllDirectories);
         SevenZipService sevenZip = new(new());
 
         foreach (FileInfo file in files)
         {
+            if (game.IgnorePrefixes!.Any(file.Name.StartsWith))
+                continue;
+
             if (game.Formats!.Contains(file.Extension))
             {
                 sevenZip.Extract(file.FullName, outputPath);

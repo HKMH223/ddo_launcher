@@ -32,6 +32,9 @@ public class NtPcGame
     [JsonPropertyName("Formats")]
     public List<string>? Formats { get; set; }
 
+    [JsonPropertyName("IgnorePrefixes")]
+    public List<string>? IgnorePrefixes { get; set; }
+
     [JsonPropertyName("Engine")]
     public NtPcEngine? Engine { get; set; }
 

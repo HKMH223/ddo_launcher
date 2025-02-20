@@ -19,6 +19,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using DDO.Launcher.Base.NativePC.Models;
 using MiniCommon.Extensions;
 using MiniCommon.IO;
@@ -132,7 +133,8 @@ public static class CopyHelper
                     VFS.GetFullPath(VFS.FromCwd(fullDestination)),
                     VFS.GetFullPath(VFS.FromCwd(source)),
                     (src) => SkipCopyFiles(src, exclusions),
-                    (dest) => RenameDestination(source, dest, rules)
+                    (dest) => RenameDestination(source, dest, rules),
+                    [.. rules.IgnorePrefixes ?? Validate.For.EmptyList<string>()]
                 );
             }
         }
@@ -158,7 +160,8 @@ public static class CopyHelper
             VFS.GetFullPath(VFS.FromCwd(FixDestination(destination, path))),
             VFS.GetFullPath(VFS.FromCwd(searchDirectory)),
             (src) => SkipCopyFiles(src, exclusions),
-            (dest) => RenameDestination(source, dest, rules)
+            (dest) => RenameDestination(source, dest, rules),
+            [.. rules.IgnorePrefixes ?? Validate.For.EmptyList<string>()]
         );
     }
 
@@ -186,7 +189,8 @@ public static class CopyHelper
                     absoluteDestination,
                     absoluteSource,
                     (src) => SkipCopyAddons(src, addon.Skip ?? Validate.For.EmptyList<string>()),
-                    (dest) => RenameDestination(absoluteSource, dest, rules)
+                    (dest) => RenameDestination(absoluteSource, dest, rules),
+                    [.. rules.IgnorePrefixes ?? Validate.For.EmptyList<string>()]
                 );
             }
         }
@@ -215,7 +219,8 @@ public static class CopyHelper
                 absoluteDestination,
                 VFS.GetFullPath(VFS.FromCwd(source)),
                 (src) => SkipCopyAddons(src, addon.Skip ?? Validate.For.EmptyList<string>()),
-                (dest) => RenameDestination(source, dest, rules)
+                (dest) => RenameDestination(source, dest, rules),
+                [.. rules.IgnorePrefixes ?? Validate.For.EmptyList<string>()]
             );
         }
     }
@@ -228,7 +233,8 @@ public static class CopyHelper
         string destination,
         string searchDirectory,
         Func<string, bool> skip,
-        Func<string, string> rename
+        Func<string, string> rename,
+        string[] ignorePrefixes
     )
     {
         bool? fileType = VFS.IsDirFile(source);
@@ -236,9 +242,13 @@ public static class CopyHelper
         switch (fileType)
         {
             case true: // Directory
+                if (ignorePrefixes.Any(VFS.GetDirectoryName(source).StartsWith))
+                    break;
                 CopyDirectory(source, destination, searchDirectory, skip, rename);
                 break;
             case false:
+                if (ignorePrefixes.Any(VFS.GetFileName(source).StartsWith))
+                    break;
                 CopyFile(source, destination, skip, rename);
                 break;
             default:

@@ -41,6 +41,9 @@ public class NtPcRules
     [JsonPropertyName("Renames")]
     public List<NtPcRename>? Renames { get; set; }
 
+    [JsonPropertyName("IgnorePrefixes")]
+    public List<string>? IgnorePrefixes { get; set; }
+
     public NtPcRules() { }
 
     /// <summary>
