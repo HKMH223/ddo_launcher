@@ -20,6 +20,7 @@ using System.ComponentModel;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Threading;
+using DDO.Launcher.Base.Helpers;
 using DDO.Launcher.Base.Managers;
 using DDO.Launcher.Base.NativePC.Helpers;
 using DDO.Launcher.Base.NativePC.Models;
@@ -27,6 +28,7 @@ using DDO.Launcher.Base.NativePC.Providers;
 using MiniCommon.BuildInfo;
 using MiniCommon.Extensions;
 using MiniCommon.IO;
+using MiniCommon.Logger.Enums;
 using MiniCommon.Providers;
 using MiniCommon.Validation;
 using MiniCommon.Validation.Validators;
@@ -82,9 +84,6 @@ public partial class ModdingDialogWindow : Window, INotifyPropertyChanged
         if (Validate.For.IsNullOrWhiteSpace([_game]))
             return Task.CompletedTask;
 
-        string modPath = VFS.GetRelativePath(VFS.FileSystem.Cwd, VFS.Combine("mods", _game)).NormalizePath();
-        string tempPath = VFS.GetRelativePath(VFS.FileSystem.Cwd, VFS.Combine("temp", _game)).NormalizePath();
-        string outputPath = VFS.GetRelativePath(VFS.FileSystem.Cwd, VFS.Combine("output", _game)).NormalizePath();
         string gamePath = VFS.GetRelativePath(
                 VFS.FileSystem.Cwd,
                 VFS.Combine(AssemblyConstants.DataDirectory, "games", _game + ".json")
@@ -95,12 +94,6 @@ public partial class ModdingDialogWindow : Window, INotifyPropertyChanged
                 VFS.Combine(AssemblyConstants.DataDirectory, "user", _game + ".json")
             )
             .NormalizePath();
-
-        if (!VFS.Exists(modPath))
-        {
-            NotificationProvider.Error("error.readfile", gamePath);
-            return Task.CompletedTask;
-        }
 
         if (!VFS.Exists(gamePath))
         {
@@ -116,6 +109,30 @@ public partial class ModdingDialogWindow : Window, INotifyPropertyChanged
 
         NtPcGame game = NtPcGame.Read(gamePath);
         NtPcRules rules = NtPcRules.Read(rulePath);
+
+        if (Validate.For.IsNull(game.Deploy, NativeLogLevel.Fatal))
+            return Task.CompletedTask;
+
+        if (
+            Validate.For.IsNullOrWhiteSpace(
+                [game.Deploy!.Mods, game.Deploy.Temp, game.Deploy.Output],
+                NativeLogLevel.Fatal
+            )
+        )
+        {
+            return Task.CompletedTask;
+        }
+
+        string modPath = PathHelper.MaybeCwd(game.Deploy.Mods!, VFS.FileSystem.Cwd).NormalizePath();
+        string tempPath = PathHelper.MaybeCwd(game.Deploy.Temp!, VFS.FileSystem.Cwd).NormalizePath();
+        string outputPath = PathHelper.MaybeCwd(game.Deploy.Output!, VFS.FileSystem.Cwd).NormalizePath();
+
+        if (!VFS.Exists(modPath))
+        {
+            NotificationProvider.Error("error.readfile", modPath);
+            return Task.CompletedTask;
+        }
+
         ExtractHelper.Extract(modPath, tempPath, game);
         NtPcProvider.DeleteDirectory(outputPath);
         NtPcProvider.Deploy(tempPath, outputPath, game, rules);

@@ -46,6 +46,7 @@
         "analyzer.error.localization": "'{0}', '{1}' is not a valid localization key.",
         "analyzer.output": "[{0}] Done: '{1}', Fail: '{2}', Total: '{3}'",
         "analyzer.line.output": "[{0}] Total: '{1}', Average (Per File): '{2}'",
+        "command.deploy": "Deploy mod files to an output path.",
         "command.verify": "Validate file hashes.",
         "command.patch": "Patch a file.",
         "command.register": "Register a DDON account.",

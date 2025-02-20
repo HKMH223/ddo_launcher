@@ -28,7 +28,7 @@ public static class StringExt
     /// </summary>
     public static string NormalizePath(this string String)
     {
-        // "\\", "/
+        // "\\", "/"
         return String.Replace(Path.DirectorySeparatorChar, '/');
     }
 }

@@ -16,30 +16,38 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+using System;
 using System.Threading.Tasks;
-using MiniCommon.CommandParser.Converters;
+using DDO.Launcher.Base.Managers;
+using MiniCommon.BuildInfo;
 using MiniCommon.CommandParser.Helpers;
-using MiniCommon.Interfaces;
+using MiniCommon.IO;
+using MiniCommon.Logger;
+using MiniCommon.Logger.Enums;
 using MiniCommon.Models;
 using MiniCommon.Providers;
 
-namespace MiniCommon.CommandParser.Commands;
+namespace DDO.Launcher.Cli;
 
-public class Help<T> : IBaseCommand<T>
+static class Program
 {
-    public Task Init(string[] args, T? settings)
+    public static async Task Main(string[] args)
     {
-        CommandLine.ProcessArgument(
-            args,
-            new() { Name = "help" },
-            ArgumentConverter.ToString,
-            _ =>
-            {
-                foreach (Command command in CommandHelper.Commands)
-                    NotificationProvider.InfoLog(command.Usage());
-            }
-        );
+        AssemblyConstants.AssemblyName = "DDO.Launcher.Cli";
 
-        return Task.CompletedTask;
+        VFS.FileSystem.Cwd = AppDomain.CurrentDomain.BaseDirectory;
+
+        Log.Add(new NativeLogger(NativeLogLevel.Info, CensorLevel.REDACT));
+        Log.Add(new FileStreamLogger(AssemblyConstants.LogFilePath, NativeLogLevel.Info, CensorLevel.REDACT));
+        await ServiceManager.Init();
+        await CommandManager.Init(args);
+
+        if (args.Length == 0)
+        {
+            foreach (Command command in CommandHelper.Commands)
+                NotificationProvider.InfoLog(command.Usage());
+        }
+
+        return;
     }
 }

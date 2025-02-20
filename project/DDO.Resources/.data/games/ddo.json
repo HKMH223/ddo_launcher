@@ -1,5 +1,10 @@
 {
-  "Name": "mhw",
+  "Name": "ddo",
+  "Deploy": {
+    "Mods": "cwd:mods/ddo",
+    "Temp": "cwd:temp/ddo",
+    "Output": "cwd:output/ddo"
+  },
   "Formats": [
     ".zip",
     ".rar",

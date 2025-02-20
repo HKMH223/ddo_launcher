@@ -1,5 +1,10 @@
 {
   "Name": "mhw",
+  "Deploy": {
+    "Mods": "cwd:mods/mhw",
+    "Temp": "cwd:temp/mhw",
+    "Output": "cwd:output/mhw"
+  },
   "Formats": [
     ".zip",
     ".rar",

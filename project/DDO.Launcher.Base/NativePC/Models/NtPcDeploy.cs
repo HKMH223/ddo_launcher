@@ -16,19 +16,24 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-using MiniCommon.IO;
+using System.Text.Json.Serialization;
 
-namespace DDO.Launcher.Base.Helpers;
+namespace DDO.Launcher.Base.NativePC.Models;
 
-public static class PathHelper
+public class NtPcDeploy
 {
-    /// <summary>
-    /// Parse the path based on whether the "cwd:" prefix is used.
-    /// </summary>
-    public static string MaybeCwd(string path, string workingDirectory)
-    {
-        if (path.StartsWith("cwd:"))
-            return VFS.Combine(workingDirectory, path.Replace("cwd:", string.Empty));
-        return path;
-    }
+    [JsonPropertyName("Mods")]
+    public string? Mods { get; set; }
+
+    [JsonPropertyName("Temp")]
+    public string? Temp { get; set; }
+
+    [JsonPropertyName("Output")]
+    public string? Output { get; set; }
+
+    public NtPcDeploy() { }
 }
+
+[JsonSourceGenerationOptions(WriteIndented = true)]
+[JsonSerializable(typeof(NtPcDeploy))]
+internal partial class NtPcDeployContext : JsonSerializerContext;

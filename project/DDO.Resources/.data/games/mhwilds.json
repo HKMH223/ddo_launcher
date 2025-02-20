@@ -1,5 +1,10 @@
 {
-  "Name": "mhrise",
+  "Name": "mhwilds",
+  "Deploy": {
+    "Mods": "cwd:mods/mhwilds",
+    "Temp": "cwd:temp/mhwilds",
+    "Output": "cwd:output/mhwilds"
+  },
   "Formats": [
     ".zip",
     ".rar",

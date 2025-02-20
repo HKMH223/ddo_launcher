@@ -29,6 +29,9 @@ public class NtPcGame
     [JsonPropertyName("Name")]
     public string? Name { get; set; }
 
+    [JsonPropertyName("Deploy")]
+    public NtPcDeploy? Deploy { get; set; }
+
     [JsonPropertyName("Formats")]
     public List<string>? Formats { get; set; }
 

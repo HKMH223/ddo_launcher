@@ -61,11 +61,20 @@ public class Register : IBaseCommand<Settings>
                 if (Validate.For.IsNull(settings!.ServerInfo))
                     return;
 
-                settings!.ServerInfo!.AccountAPI = options.GetValueOrDefault("api", "/api/account");
-                settings!.ServerInfo!.DownloadIP = options.GetValueOrDefault("download-ip", "127.0.0.1");
-                settings!.ServerInfo!.DownloadPort = options.GetValueOrDefault("download-port", "52099");
-                settings!.ServerInfo!.LobbyIP = options.GetValueOrDefault("lobby-ip", "127.0.0.1");
-                settings!.ServerInfo!.LobbyPort = options.GetValueOrDefault("lobby-port", "52100");
+                settings!.ServerInfo!.AccountAPI = options.GetValueOrDefault("api", settings!.ServerInfo!.AccountAPI!);
+                settings!.ServerInfo!.DownloadIP = options.GetValueOrDefault(
+                    "download-ip",
+                    settings!.ServerInfo!.DownloadIP!
+                );
+                settings!.ServerInfo!.DownloadPort = options.GetValueOrDefault(
+                    "download-port",
+                    settings!.ServerInfo!.DownloadPort!
+                );
+                settings!.ServerInfo!.LobbyIP = options.GetValueOrDefault("lobby-ip", settings!.ServerInfo!.LobbyIP!);
+                settings!.ServerInfo!.LobbyPort = options.GetValueOrDefault(
+                    "lobby-port",
+                    settings!.ServerInfo!.LobbyPort!
+                );
                 settings!.Account = options.GetValueOrDefault("account", settings!.Account!);
                 settings!.Password = options.GetValueOrDefault("password", settings!.Password!);
                 settings!.Email = options.GetValueOrDefault("email", settings!.Email!);
