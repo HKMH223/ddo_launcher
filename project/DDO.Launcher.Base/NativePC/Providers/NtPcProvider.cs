@@ -19,6 +19,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using DDO.Launcher.Base.NativePC.Helpers;
 using DDO.Launcher.Base.NativePC.Models;
 using MiniCommon.Extensions;
@@ -127,10 +128,9 @@ public static class NtPcProvider
             if (skippable)
                 continue;
 
-            List<string> hookNames = [];
-            foreach (NtPcHook hook in game.Engine.Hooks ?? Validate.For.EmptyList<NtPcHook>())
-                hookNames.Add(hook.Name ?? string.Empty);
-
+            List<string> hookNames = (game.Engine.Hooks ?? Validate.For.EmptyList<NtPcHook>()).ConvertAll(hook =>
+                hook.Name ?? string.Empty
+            );
             CopyHelper.CopyFiles(directoryName, search, destination, path, rules, exclusions, hookNames);
             CopyHelper.CopyAddons(source, directoryName, destination, rules, []);
         }
