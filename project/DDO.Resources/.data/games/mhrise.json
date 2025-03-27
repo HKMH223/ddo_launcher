@@ -1,5 +1,6 @@
 {
   "Name": "mhrise",
+  "Arch": "x64",
   "Deploy": {
     "Mods": "cwd:mods/mhrise",
     "Temp": "cwd:temp/mhrise",

@@ -103,6 +103,9 @@ public static class CopyHelper
         if (Validate.For.IsNull(game))
             return;
 
+        if (Validate.For.IsNullOrWhiteSpace([game.Arch]))
+            return;
+
         if (Validate.For.IsNull(game.Engine))
             return;
 
@@ -113,7 +116,10 @@ public static class CopyHelper
         {
             string fullSource = VFS.Combine(source, VFS.GetFileName(fileName));
 
-            if (VFS.GetFileName(fullSource) == hook.Name && hook.Arch == "x64")
+            if (
+                VFS.GetFileName(fullSource) == hook.Name
+                && (hook.Arch == game.Arch || game.Arch!.Equals("any", StringComparison.CurrentCultureIgnoreCase))
+            )
             {
                 string fullDestination = string.Empty;
                 if (hook?.Requires?.Count != 0)

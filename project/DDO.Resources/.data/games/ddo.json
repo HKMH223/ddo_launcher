@@ -1,5 +1,6 @@
 {
   "Name": "ddo",
+  "Arch": "x64",
   "Deploy": {
     "Mods": "cwd:mods/ddo",
     "Temp": "cwd:temp/ddo",

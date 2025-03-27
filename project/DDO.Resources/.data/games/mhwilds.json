@@ -1,5 +1,6 @@
 {
   "Name": "mhwilds",
+  "Arch": "x64",
   "Deploy": {
     "Mods": "cwd:mods/mhwilds",
     "Temp": "cwd:temp/mhwilds",
@@ -80,6 +81,20 @@
         "Name": "SpecialK32.dll",
         "Dll": "dxgi.dll",
         "Arch": "x86",
+        "Requires": [],
+        "Include": []
+      },
+      {
+        "Name": "dstorage.dll",
+        "Dll": "dstorage.dll",
+        "Arch": "x64",
+        "Requires": [],
+        "Include": []
+      },
+      {
+        "Name": "dstoragecore.dll",
+        "Dll": "dstoragecore.dll",
+        "Arch": "x64",
         "Requires": [],
         "Include": []
       }

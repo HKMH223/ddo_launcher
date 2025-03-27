@@ -1,5 +1,6 @@
 {
   "Name": "mhw",
+  "Arch": "x64",
   "Deploy": {
     "Mods": "cwd:mods/mhw",
     "Temp": "cwd:temp/mhw",
