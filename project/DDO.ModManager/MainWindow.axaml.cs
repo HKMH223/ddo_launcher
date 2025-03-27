@@ -58,9 +58,6 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
     public MainWindow()
     {
-        if (ServiceManager.Settings is null)
-            NotificationProvider.Warn("log.unhandled.exception", "Settings is null");
-
         InitializeComponent();
         DataContext = this;
     }
