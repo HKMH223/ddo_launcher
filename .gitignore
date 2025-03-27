@@ -358,6 +358,7 @@ MigrationBackup/
 .idea/
 
 # DDO
+packages
 project/user/launcher
 project/DDO.Resources.Local/*
 !project/DDO.Resources.Local/.gitkeep
