@@ -96,7 +96,8 @@ public static class CopyHelper
         string destination,
         NtPcGame game,
         NtPcRules rules,
-        List<string> exclusions
+        List<string> exclusions,
+        List<string> hookNames
     )
     {
         if (Validate.For.IsNull(game))
@@ -134,7 +135,8 @@ public static class CopyHelper
                     VFS.GetFullPath(VFS.FromCwd(source)),
                     (src) => SkipCopyFiles(src, exclusions),
                     (dest) => RenameDestination(source, dest, rules),
-                    [.. rules.IgnorePrefixes ?? Validate.For.EmptyList<string>()]
+                    [.. rules.IgnorePrefixes ?? Validate.For.EmptyList<string>()],
+                    hookNames
                 );
             }
         }
@@ -149,7 +151,8 @@ public static class CopyHelper
         string destination,
         NtPcPath path,
         NtPcRules rules,
-        List<string> exclusions
+        List<string> exclusions,
+        List<string> hookNames
     )
     {
         int indexOfSource = fileName.IndexOf(source);
@@ -161,14 +164,21 @@ public static class CopyHelper
             VFS.GetFullPath(VFS.FromCwd(searchDirectory)),
             (src) => SkipCopyFiles(src, exclusions),
             (dest) => RenameDestination(source, dest, rules),
-            [.. rules.IgnorePrefixes ?? Validate.For.EmptyList<string>()]
+            [.. rules.IgnorePrefixes ?? Validate.For.EmptyList<string>()],
+            hookNames
         );
     }
 
     /// <summary>
     /// Copy addons according to a list of NtPcAddon objects.
     /// </summary>
-    public static void CopyAddons(string source, string fileName, string destination, NtPcRules rules)
+    public static void CopyAddons(
+        string source,
+        string fileName,
+        string destination,
+        NtPcRules rules,
+        List<string> hookNames
+    )
     {
         foreach (NtPcAddon addon in rules.Addons ?? Validate.For.EmptyList<NtPcAddon>())
         {
@@ -190,7 +200,8 @@ public static class CopyHelper
                     absoluteSource,
                     (src) => SkipCopyAddons(src, addon.Skip ?? Validate.For.EmptyList<string>()),
                     (dest) => RenameDestination(absoluteSource, dest, rules),
-                    [.. rules.IgnorePrefixes ?? Validate.For.EmptyList<string>()]
+                    [.. rules.IgnorePrefixes ?? Validate.For.EmptyList<string>()],
+                    hookNames
                 );
             }
         }
@@ -199,7 +210,7 @@ public static class CopyHelper
     /// <summary>
     /// Copy addons after all other addons, according to a list of NtPcAddon objects.
     /// </summary>
-    public static void CopyPostAddons(string source, string destination, NtPcRules rules)
+    public static void CopyPostAddons(string source, string destination, NtPcRules rules, List<string> hookNames)
     {
         foreach (NtPcAddon addon in rules.Addons ?? Validate.For.EmptyList<NtPcAddon>())
         {
@@ -220,7 +231,8 @@ public static class CopyHelper
                 VFS.GetFullPath(VFS.FromCwd(source)),
                 (src) => SkipCopyAddons(src, addon.Skip ?? Validate.For.EmptyList<string>()),
                 (dest) => RenameDestination(source, dest, rules),
-                [.. rules.IgnorePrefixes ?? Validate.For.EmptyList<string>()]
+                [.. rules.IgnorePrefixes ?? Validate.For.EmptyList<string>()],
+                hookNames
             );
         }
     }
@@ -234,7 +246,8 @@ public static class CopyHelper
         string searchDirectory,
         Func<string, bool> skip,
         Func<string, string> rename,
-        string[] ignorePrefixes
+        string[] ignorePrefixes,
+        List<string> hookNames
     )
     {
         bool? fileType = VFS.IsDirFile(source);
@@ -244,12 +257,12 @@ public static class CopyHelper
             case true: // Directory
                 if (ignorePrefixes.Any(VFS.GetDirectoryName(source).StartsWith))
                     break;
-                CopyDirectory(source, destination, searchDirectory, skip, rename);
+                CopyDirectory(source, destination, searchDirectory, skip, rename, hookNames);
                 break;
             case false:
                 if (ignorePrefixes.Any(VFS.GetFileName(source).StartsWith))
                     break;
-                CopyFile(source, destination, skip, rename);
+                CopyFile(source, destination, skip, rename, hookNames);
                 break;
             default:
                 NotificationProvider.Warn("ntpc.missing", source);
@@ -265,7 +278,8 @@ public static class CopyHelper
         string destination,
         string searchDirectory,
         Func<string, bool> skip,
-        Func<string, string> rename
+        Func<string, string> rename,
+        List<string> hookNames
     )
     {
         FileInfo[] files = VFS.GetFileInfos(searchDirectory, "*", SearchOption.AllDirectories);
@@ -282,6 +296,8 @@ public static class CopyHelper
             string newDestination = rename(normalizedFilePath.Replace(normalizedSource, normalizedDestination));
             if (normalizedFilePath != newDestination)
             {
+                if (hookNames.Contains(VFS.GetFileName(normalizedFilePath)))
+                    continue;
                 NotificationProvider.Info("ntpc.copy", normalizedFilePath, newDestination);
                 VFS.CopyFile(normalizedFilePath, newDestination);
             }
@@ -295,7 +311,8 @@ public static class CopyHelper
         string source,
         string destination,
         Func<string, bool> skip,
-        Func<string, string> rename
+        Func<string, string> rename,
+        List<string> hookNames
     )
     {
         string normalizedSource = source.NormalizePath();
@@ -307,6 +324,8 @@ public static class CopyHelper
         string newDestination = rename(normalizedDestination);
         if (normalizedSource != newDestination)
         {
+            if (hookNames.Contains(VFS.GetFileName(normalizedSource)))
+                return;
             NotificationProvider.Info("ntpc.copy", normalizedSource, newDestination);
             VFS.CopyFile(normalizedSource, newDestination);
         }

@@ -18,42 +18,45 @@
 
 using System;
 using System.Threading.Tasks;
+using Avalonia;
 using DDO.Launcher.Base.Commands;
 using DDO.Launcher.Base.Managers;
 using DDO.Launcher.Base.Models;
 using MiniCommon.BuildInfo;
 using MiniCommon.CommandParser.Commands;
-using MiniCommon.CommandParser.Helpers;
 using MiniCommon.IO;
 using MiniCommon.Logger;
 using MiniCommon.Logger.Enums;
-using MiniCommon.Models;
-using MiniCommon.Providers;
 
-namespace DDO.Launcher.Cli;
+namespace DDO.ModManager;
 
 static class Program
 {
+    // Initialization code. Don't use any Avalonia, third-party APIs or any
+    // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
+    // yet and stuff might break.
+    [STAThread]
     public static async Task Main(string[] args)
     {
-        AssemblyConstants.AssemblyName = "DDO.Launcher.Cli";
+        // Call necessary functions before starting the Avalonia application.
+        AssemblyConstants.AssemblyName = "DDO.ModManager";
 
         VFS.FileSystem.Cwd = AppDomain.CurrentDomain.BaseDirectory;
 
         Log.Add(new NativeLogger(NativeLogLevel.Info, CensorLevel.REDACT));
         Log.Add(new FileStreamLogger(AssemblyConstants.LogFilePath, NativeLogLevel.Info, CensorLevel.REDACT));
-        await ServiceManager.Init();
-        await CommandManager.Init(
-            args,
-            [new Verifier(), new Patcher(), new Deploy(), new Register(), new Login(), new Help<Settings>()]
-        );
+        await ServiceManager.Init(false);
 
-        if (args.Length == 0)
+        if (args.Length != 0)
         {
-            foreach (Command command in CommandHelper.Commands)
-                NotificationProvider.InfoLog(command.Usage());
+            await CommandManager.Init(args, [new Deploy(), new Help<Settings>()]);
+            return;
         }
 
-        return;
+        BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
     }
+
+    // Avalonia configuration, don't remove; also used by visual designer.
+    public static AppBuilder BuildAvaloniaApp() =>
+        AppBuilder.Configure<App>().UsePlatformDetect().WithInterFont().LogToTrace();
 }

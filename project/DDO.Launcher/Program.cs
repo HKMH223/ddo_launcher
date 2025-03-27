@@ -19,8 +19,11 @@
 using System;
 using System.Threading.Tasks;
 using Avalonia;
+using DDO.Launcher.Base.Commands;
 using DDO.Launcher.Base.Managers;
+using DDO.Launcher.Base.Models;
 using MiniCommon.BuildInfo;
+using MiniCommon.CommandParser.Commands;
 using MiniCommon.IO;
 using MiniCommon.Logger;
 using MiniCommon.Logger.Enums;
@@ -46,7 +49,10 @@ static class Program
 
         if (args.Length != 0)
         {
-            await CommandManager.Init(args);
+            await CommandManager.Init(
+                args,
+                [new Verifier(), new Patcher(), new Deploy(), new Register(), new Login(), new Help<Settings>()]
+            );
             return;
         }
 

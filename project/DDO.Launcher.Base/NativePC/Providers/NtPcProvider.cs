@@ -117,7 +117,7 @@ public static class NtPcProvider
                     && VFS.GetFileExtension(VFS.GetFileName(file.FullName)) == ".dll"
                 )
                 {
-                    CopyHelper.CopyHooks(source, file.FullName, destination, game, rules, exclusions);
+                    CopyHelper.CopyHooks(source, file.FullName, destination, game, rules, exclusions, []);
                     continue;
                 }
 
@@ -127,11 +127,15 @@ public static class NtPcProvider
             if (skippable)
                 continue;
 
-            CopyHelper.CopyFiles(directoryName, search, destination, path, rules, exclusions);
-            CopyHelper.CopyAddons(source, directoryName, destination, rules);
+            List<string> hookNames = [];
+            foreach (NtPcHook hook in game.Engine.Hooks ?? Validate.For.EmptyList<NtPcHook>())
+                hookNames.Add(hook.Name ?? string.Empty);
+
+            CopyHelper.CopyFiles(directoryName, search, destination, path, rules, exclusions, hookNames);
+            CopyHelper.CopyAddons(source, directoryName, destination, rules, []);
         }
 
-        CopyHelper.CopyPostAddons(source, destination, rules);
+        CopyHelper.CopyPostAddons(source, destination, rules, []);
     }
 
     /// <summary>

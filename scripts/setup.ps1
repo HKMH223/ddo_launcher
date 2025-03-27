@@ -1,4 +1,4 @@
-$RoslynatorVersion = "4.13.0"
+$RoslynatorVersion = "4.13.1"
 $ScriptDirectory = Split-Path -Parent $MyInvocation.MyCommand.Path
 
 $RoslynatorNupkg = "https://globalcdn.nuget.org/packages/roslynator.analyzers.$RoslynatorVersion.nupkg"

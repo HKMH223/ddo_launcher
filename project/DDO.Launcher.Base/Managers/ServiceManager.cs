@@ -39,7 +39,7 @@ public static class ServiceManager
     /// <summary>
     /// Initialize required services and providers with necessary values.
     /// </summary>
-    public static Task<bool> Init()
+    public static Task<bool> Init(bool requireSettings = true)
     {
         try
         {
@@ -48,10 +48,13 @@ public static class ServiceManager
                 (Notification notification) => Log.Base(notification.LogLevel, notification.Message)
             );
             NotificationProvider.Info("log.initialized");
-            SettingsProvider.FirstRun();
-            Settings = SettingsProvider.Load();
-            if (Validate.For.IsNull(Settings))
-                return Task.FromResult(false);
+            if (requireSettings)
+            {
+                SettingsProvider.FirstRun();
+                Settings = SettingsProvider.Load();
+                if (Validate.For.IsNull(Settings))
+                    return Task.FromResult(false);
+            }
             RequestDataProvider.OnRequestCompleted(
                 (RequestData requestData) =>
                     NotificationProvider.Info("request.get.success", requestData.URL, requestData.Elapsed.ToString("c"))

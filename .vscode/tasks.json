@@ -52,6 +52,7 @@
                 "../extern/MiniCommon/MiniCommon.csproj",
                 "DDO.Launcher.Base/DDO.Launcher.Base.csproj",
                 "DDO.Launcher/DDO.Launcher.csproj",
+                "DDO.ModManager/DDO.ModManager.csproj",
                 "DDO.Launcher.Cli/DDO.Launcher.Cli.csproj",
                 "-a",
                 "../.nupkg/roslynator/analyzers/dotnet/roslyn4.7/cs/"

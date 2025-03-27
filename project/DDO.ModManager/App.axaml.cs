@@ -16,33 +16,26 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using DDO.Launcher.Base.Models;
-using MiniCommon.Interfaces;
-using MiniCommon.Logger;
+using Avalonia;
+using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Markup.Xaml;
 
-namespace DDO.Launcher.Base.Managers;
+namespace DDO.ModManager;
 
-public static class CommandManager
+public partial class App : Application
 {
-    public static Settings? Settings { get; }
-
-    /// <summary>
-    /// Register a list of commands to be callable by the program.
-    /// </summary>
-    public static async Task Init(string[] args, List<IBaseCommand<Settings>> commands)
+    public override void Initialize()
     {
-        try
+        AvaloniaXamlLoader.Load(this);
+    }
+
+    public override void OnFrameworkInitializationCompleted()
+    {
+        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            foreach (IBaseCommand<Settings> command in commands)
-                await command.Init(args, ServiceManager.Settings);
+            desktop.MainWindow = new MainWindow();
         }
-        catch (Exception ex)
-        {
-            Log.Fatal(ex.ToString());
-            return;
-        }
+
+        base.OnFrameworkInitializationCompleted();
     }
 }
