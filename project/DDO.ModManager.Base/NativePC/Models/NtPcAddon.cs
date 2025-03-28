@@ -19,19 +19,25 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace DDO.Launcher.Base.NativePC.Models;
+namespace DDO.ModManager.Base.NativePC.Models;
 
-public class NtPcEngine
+public class NtPcAddon
 {
-    [JsonPropertyName("Paths")]
-    public List<NtPcPath>? Paths { get; set; }
+    [JsonPropertyName("Name")]
+    public string? Name { get; set; }
 
-    [JsonPropertyName("Hooks")]
-    public List<NtPcHook>? Hooks { get; set; }
+    [JsonPropertyName("Source")]
+    public string? Source { get; set; }
 
-    public NtPcEngine() { }
+    [JsonPropertyName("Destination")]
+    public string? Destination { get; set; }
+
+    [JsonPropertyName("Skip")]
+    public List<string>? Skip { get; set; }
+
+    public NtPcAddon() { }
 }
 
 [JsonSourceGenerationOptions(WriteIndented = true)]
-[JsonSerializable(typeof(NtPcEngine))]
-internal partial class NtPcEngineContext : JsonSerializerContext;
+[JsonSerializable(typeof(NtPcAddon))]
+internal partial class NtPcAddonContext : JsonSerializerContext;

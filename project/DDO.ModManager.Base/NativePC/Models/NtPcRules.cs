@@ -25,7 +25,7 @@ using MiniCommon.Validation;
 using MiniCommon.Validation.Operators;
 using MiniCommon.Validation.Validators;
 
-namespace DDO.Launcher.Base.NativePC.Models;
+namespace DDO.ModManager.Base.NativePC.Models;
 
 public class NtPcRules
 {

@@ -21,6 +21,7 @@ using System.Threading.Tasks;
 using DDO.Launcher.Base.Commands;
 using DDO.Launcher.Base.Managers;
 using DDO.Launcher.Base.Models;
+using DDO.ModManager.Base.Commands;
 using MiniCommon.BuildInfo;
 using MiniCommon.CommandParser.Commands;
 using MiniCommon.CommandParser.Helpers;

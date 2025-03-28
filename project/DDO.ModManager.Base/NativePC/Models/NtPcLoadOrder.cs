@@ -18,7 +18,7 @@
 
 using System.Text.Json.Serialization;
 
-namespace DDO.Launcher.Base.NativePC.Models;
+namespace DDO.ModManager.Base.NativePC.Models;
 
 public class NtPcLoadOrder
 {

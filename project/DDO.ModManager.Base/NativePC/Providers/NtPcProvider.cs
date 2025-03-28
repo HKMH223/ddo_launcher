@@ -19,9 +19,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using DDO.Launcher.Base.NativePC.Helpers;
-using DDO.Launcher.Base.NativePC.Models;
+using DDO.ModManager.Base.NativePC.Helpers;
+using DDO.ModManager.Base.NativePC.Models;
 using MiniCommon.Extensions;
 using MiniCommon.IO;
 using MiniCommon.IO.Enums;
@@ -31,7 +30,7 @@ using MiniCommon.Validation;
 using MiniCommon.Validation.Operators;
 using MiniCommon.Validation.Validators;
 
-namespace DDO.Launcher.Base.NativePC.Providers;
+namespace DDO.ModManager.Base.NativePC.Providers;
 
 public static class NtPcProvider
 {

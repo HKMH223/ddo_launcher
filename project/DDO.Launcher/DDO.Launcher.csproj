@@ -35,6 +35,7 @@
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="../DDO.Launcher.Base/DDO.Launcher.Base.csproj" />
+        <ProjectReference Include="../DDO.ModManager.Base/DDO.ModManager.Base.csproj" />
         <ProjectReference Include="../../extern/MiniCommon.Avalonia/MiniCommon.Avalonia.csproj" />
     </ItemGroup>
     <ItemGroup>

@@ -17,25 +17,17 @@
  */
 
 using System;
-using System.Text;
 using System.Threading.Tasks;
-using DDO.Launcher.Base.Models;
-using DDO.Launcher.Base.Providers;
 using MiniCommon.BuildInfo;
 using MiniCommon.Enums;
 using MiniCommon.Logger;
 using MiniCommon.Models;
 using MiniCommon.Providers;
-using MiniCommon.Validation;
-using MiniCommon.Validation.Validators;
-using MiniCommon.Web;
 
-namespace DDO.Launcher.Base.Managers;
+namespace DDO.ModManager.Base.Managers;
 
 public static class ServiceManager
 {
-    public static Settings? Settings { get; private set; }
-
     /// <summary>
     /// Initialize required services and providers with necessary values.
     /// </summary>
@@ -48,18 +40,6 @@ public static class ServiceManager
                 (Notification notification) => Log.Base(notification.LogLevel, notification.Message)
             );
             NotificationProvider.Info("log.initialized");
-            SettingsProvider.FirstRun();
-            Settings = SettingsProvider.Load();
-            if (Validate.For.IsNull(Settings))
-                return Task.FromResult(false);
-            RequestDataProvider.OnRequestCompleted(
-                (RequestData requestData) =>
-                    NotificationProvider.Info("request.get.success", requestData.URL, requestData.Elapsed.ToString("c"))
-            );
-            Request.HttpRequest.HttpClientTimeOut = TimeSpan.FromMinutes(1);
-            Tcp.TcpClient.ReceiveTimeout = 5000;
-            Tcp.TcpClient.SendTimeout = 5000;
-            Tcp.TcpClient.Encoding = new UTF8Encoding(false);
             Watermark.Draw(AssemblyConstants.WatermarkText());
             return Task.FromResult(true);
         }

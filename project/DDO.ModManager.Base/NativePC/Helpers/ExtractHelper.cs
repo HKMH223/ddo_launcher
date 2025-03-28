@@ -18,13 +18,13 @@
 
 using System.IO;
 using System.Linq;
-using DDO.Launcher.Base.NativePC.Models;
+using DDO.ModManager.Base.NativePC.Models;
 using MiniCommon.FileExtractors.Services;
 using MiniCommon.IO;
 using MiniCommon.Validation;
 using MiniCommon.Validation.Validators;
 
-namespace DDO.Launcher.Base.NativePC.Helpers;
+namespace DDO.ModManager.Base.NativePC.Helpers;
 
 public static class ExtractHelper
 {

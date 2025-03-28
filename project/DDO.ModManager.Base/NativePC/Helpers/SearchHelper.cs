@@ -19,14 +19,14 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using DDO.Launcher.Base.NativePC.Models;
+using DDO.ModManager.Base.NativePC.Models;
 using MiniCommon.Extensions;
 using MiniCommon.IO;
 using MiniCommon.Providers;
 using MiniCommon.Validation;
 using MiniCommon.Validation.Validators;
 
-namespace DDO.Launcher.Base.NativePC.Helpers;
+namespace DDO.ModManager.Base.NativePC.Helpers;
 
 public static class SearchHelper
 {

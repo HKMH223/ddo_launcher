@@ -18,47 +18,29 @@
 
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
-using MiniCommon.IO;
-using MiniCommon.Validation;
-using MiniCommon.Validation.Validators;
 
-namespace DDO.Launcher.Base.NativePC.Models;
+namespace DDO.ModManager.Base.NativePC.Models;
 
-public class NtPcGame
+public class NtPcHook
 {
     [JsonPropertyName("Name")]
     public string? Name { get; set; }
 
+    [JsonPropertyName("Dll")]
+    public string? Dll { get; set; }
+
     [JsonPropertyName("Arch")]
     public string? Arch { get; set; }
 
-    [JsonPropertyName("Deploy")]
-    public NtPcDeploy? Deploy { get; set; }
+    [JsonPropertyName("Requires")]
+    public List<string>? Requires { get; set; }
 
-    [JsonPropertyName("Formats")]
-    public List<string>? Formats { get; set; }
+    [JsonPropertyName("Include")]
+    public List<string>? Include { get; set; }
 
-    [JsonPropertyName("IgnorePrefixes")]
-    public List<string>? IgnorePrefixes { get; set; }
-
-    [JsonPropertyName("Engine")]
-    public NtPcEngine? Engine { get; set; }
-
-    public NtPcGame() { }
-
-    /// <summary>
-    /// Read and deserialize a file as an NtPcGame object.
-    /// </summary>
-    public static NtPcGame Read(string path)
-    {
-        NtPcGame? game = Json.Deserialize<NtPcGame>(VFS.ReadAllText(path), NtPcGameContext.Default);
-
-        if (Validate.For.IsNull(game))
-            return new();
-        return game!;
-    }
+    public NtPcHook() { }
 }
 
 [JsonSourceGenerationOptions(WriteIndented = true)]
-[JsonSerializable(typeof(NtPcGame))]
-internal partial class NtPcGameContext : JsonSerializerContext;
+[JsonSerializable(typeof(NtPcHook))]
+internal partial class NtPcHookContext : JsonSerializerContext;

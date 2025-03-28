@@ -18,22 +18,22 @@
 
 using System.Text.Json.Serialization;
 
-namespace DDO.Launcher.Base.NativePC.Models;
+namespace DDO.ModManager.Base.NativePC.Models;
 
-public class NtPcRename
+public class NtPcDeploy
 {
-    [JsonPropertyName("Name")]
-    public string? Name { get; set; }
+    [JsonPropertyName("Mods")]
+    public string? Mods { get; set; }
 
-    [JsonPropertyName("Old")]
-    public string? Old { get; set; }
+    [JsonPropertyName("Temp")]
+    public string? Temp { get; set; }
 
-    [JsonPropertyName("New")]
-    public string? New { get; set; }
+    [JsonPropertyName("Output")]
+    public string? Output { get; set; }
 
-    public NtPcRename() { }
+    public NtPcDeploy() { }
 }
 
 [JsonSourceGenerationOptions(WriteIndented = true)]
-[JsonSerializable(typeof(NtPcRename))]
-internal partial class NtPcRenameContext : JsonSerializerContext;
+[JsonSerializable(typeof(NtPcDeploy))]
+internal partial class NtPcDeployContext : JsonSerializerContext;

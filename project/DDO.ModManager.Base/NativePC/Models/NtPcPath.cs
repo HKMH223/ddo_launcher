@@ -16,21 +16,28 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace DDO.Launcher.Base.NativePC.Models;
+namespace DDO.ModManager.Base.NativePC.Models;
 
-public class NtPcExclusion
+public class NtPcPath
 {
-    [JsonPropertyName("Name")]
-    public string? Name { get; set; }
-
     [JsonPropertyName("Path")]
     public string? Path { get; set; }
 
-    public NtPcExclusion() { }
+    [JsonPropertyName("IsDir")]
+    public bool? IsDir { get; set; }
+
+    [JsonPropertyName("Requires")]
+    public List<string>? Requires { get; set; }
+
+    [JsonPropertyName("Unsupported")]
+    public bool? Unsupported { get; set; }
+
+    public NtPcPath() { }
 }
 
 [JsonSourceGenerationOptions(WriteIndented = true)]
-[JsonSerializable(typeof(NtPcExclusion))]
-internal partial class NtPcExclusionContext : JsonSerializerContext;
+[JsonSerializable(typeof(NtPcPath))]
+internal partial class NtPcPathContext : JsonSerializerContext;

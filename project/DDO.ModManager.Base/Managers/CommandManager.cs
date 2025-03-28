@@ -16,24 +16,30 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-using System.Text.Json.Serialization;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using MiniCommon.Interfaces;
+using MiniCommon.Logger;
 
-namespace DDO.Launcher.Base.NativePC.Models;
+namespace DDO.ModManager.Base.Managers;
 
-public class NtPcDeploy
+public static class CommandManager
 {
-    [JsonPropertyName("Mods")]
-    public string? Mods { get; set; }
-
-    [JsonPropertyName("Temp")]
-    public string? Temp { get; set; }
-
-    [JsonPropertyName("Output")]
-    public string? Output { get; set; }
-
-    public NtPcDeploy() { }
+    /// <summary>
+    /// Register a list of commands to be callable by the program.
+    /// </summary>
+    public static async Task Init(string[] args, List<IBaseCommand<object>> commands)
+    {
+        try
+        {
+            foreach (IBaseCommand<object> command in commands)
+                await command.Init(args, null);
+        }
+        catch (Exception ex)
+        {
+            Log.Fatal(ex.ToString());
+            return;
+        }
+    }
 }
-
-[JsonSourceGenerationOptions(WriteIndented = true)]
-[JsonSerializable(typeof(NtPcDeploy))]
-internal partial class NtPcDeployContext : JsonSerializerContext;

@@ -18,29 +18,28 @@
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using DDO.Launcher.Base.Helpers;
-using DDO.Launcher.Base.Models;
-using DDO.Launcher.Base.NativePC.Helpers;
-using DDO.Launcher.Base.NativePC.Models;
-using DDO.Launcher.Base.NativePC.Providers;
+using DDO.ModManager.Base.NativePC.Helpers;
+using DDO.ModManager.Base.NativePC.Models;
+using DDO.ModManager.Base.NativePC.Providers;
 using MiniCommon.CommandParser;
 using MiniCommon.Extensions;
 using MiniCommon.Interfaces;
 using MiniCommon.IO;
+using MiniCommon.IO.Helpers;
 using MiniCommon.Logger.Enums;
 using MiniCommon.Providers;
 using MiniCommon.Validation;
 using MiniCommon.Validation.Validators;
 
-namespace DDO.Launcher.Base.Commands;
+namespace DDO.ModManager.Base.Commands;
 
-public class Deploy : IBaseCommand<Settings>
+public class Deploy : IBaseCommand<object>
 {
     /// <summary>
     /// Deploy files to an output directory based on a user-specified game and rule JSON object.
     /// Additional parameters take the format of 'key=value' pairs.
     /// </summary>
-    public Task Init(string[] args, Settings? settings)
+    public Task Init(string[] args, object? settings)
     {
         CommandLine.ProcessArgument(
             args,

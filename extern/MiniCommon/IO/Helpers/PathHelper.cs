@@ -16,31 +16,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-using System.Collections.Generic;
-using System.Text.Json.Serialization;
+namespace MiniCommon.IO.Helpers;
 
-namespace DDO.Launcher.Base.NativePC.Models;
-
-public class NtPcHook
+public static class PathHelper
 {
-    [JsonPropertyName("Name")]
-    public string? Name { get; set; }
-
-    [JsonPropertyName("Dll")]
-    public string? Dll { get; set; }
-
-    [JsonPropertyName("Arch")]
-    public string? Arch { get; set; }
-
-    [JsonPropertyName("Requires")]
-    public List<string>? Requires { get; set; }
-
-    [JsonPropertyName("Include")]
-    public List<string>? Include { get; set; }
-
-    public NtPcHook() { }
+    /// <summary>
+    /// Parse the path based on whether the "cwd:" prefix is used.
+    /// </summary>
+    public static string MaybeCwd(string path, string workingDirectory)
+    {
+        if (path.StartsWith("cwd:"))
+            return VFS.Combine(workingDirectory, path.Replace("cwd:", string.Empty));
+        return path;
+    }
 }
-
-[JsonSourceGenerationOptions(WriteIndented = true)]
-[JsonSerializable(typeof(NtPcHook))]
-internal partial class NtPcHookContext : JsonSerializerContext;
