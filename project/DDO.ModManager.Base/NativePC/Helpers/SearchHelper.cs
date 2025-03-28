@@ -50,7 +50,7 @@ public static class SearchHelper
                 if (Validate.For.IsNull(path))
                     return (string.Empty, new());
 
-                if (path.IsDir == true && parts.Contains(path.Path))
+                if (path.IsDir == true && parts.Contains(path.Path) && VFS.IsDirFile(fws) == true)
                     return (directory.FullName, path!);
             }
         }
@@ -67,7 +67,7 @@ public static class SearchHelper
                 string fileName = VFS.Combine(basePath, VFS.GetFileName(file));
                 string extension = VFS.GetFileExtension(fileName);
 
-                if (path.IsDir == true || VFS.IsDirFile(file) != false)
+                if (path.IsDir == true || VFS.IsDirFile(file) == true)
                     continue;
                 if (extension != path.Path)
                     continue;

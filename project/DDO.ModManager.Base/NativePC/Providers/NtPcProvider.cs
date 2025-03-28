@@ -105,27 +105,14 @@ public static class NtPcProvider
                 continue;
 
             FileInfo[] additionalDirectories = VFS.GetFileInfos(pathEntry, "*", SearchOption.TopDirectoryOnly);
-            bool skippable = false;
-
             foreach (FileInfo file in additionalDirectories)
             {
-                if (VFS.IsDirFile(file.FullName) == true)
-                    skippable = false;
-
-                if (
-                    VFS.IsDirFile(file.FullName) == false
-                    && VFS.GetFileExtension(VFS.GetFileName(file.FullName)) == ".dll"
-                )
+                if (VFS.IsDirFile(file.FullName) == false && file.Extension == ".dll")
                 {
                     CopyHelper.CopyHooks(source, file.FullName, destination, game, rules, exclusions, []);
                     continue;
                 }
-
-                skippable = false;
             }
-
-            if (skippable)
-                continue;
 
             List<string> hookNames = (game.Engine.Hooks ?? Validate.For.EmptyList<NtPcHook>()).ConvertAll(hook =>
                 hook.Name ?? string.Empty
