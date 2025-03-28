@@ -96,11 +96,27 @@
             ]
         },
         {
-            "label": "Run Program",
+            "label": "Run DDO.Launcher",
             "type": "shell",
             "command": "start",
             "args": [
                 "DDO.Launcher.exe"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/project/Build"
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "problemMatcher": [],
+        },
+        {
+            "label": "Run DDO.ModManager",
+            "type": "shell",
+            "command": "start",
+            "args": [
+                "DDO.ModManager.exe"
             ],
             "options": {
                 "cwd": "${workspaceFolder}/project/Build"
