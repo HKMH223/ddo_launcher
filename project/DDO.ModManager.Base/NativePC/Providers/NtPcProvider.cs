@@ -21,6 +21,7 @@ using System.Collections.Generic;
 using System.IO;
 using DDO.ModManager.Base.NativePC.Helpers;
 using DDO.ModManager.Base.NativePC.Models;
+using MiniCommon.BuildInfo;
 using MiniCommon.Extensions;
 using MiniCommon.IO;
 using MiniCommon.IO.Enums;
@@ -34,6 +35,12 @@ namespace DDO.ModManager.Base.NativePC.Providers;
 
 public static class NtPcProvider
 {
+    public static readonly string DataLogFilePath = VFS.FromCwd(
+        AssemblyConstants.DataDirectory,
+        AssemblyConstants.LogsDirectory,
+        $"{DateTime.Now:yyyy-MM-dd-HH-mm-ss}-Map.json"
+    );
+
     /// <summary>
     /// Process a directory of files according to an NtPcGame and NtPcRules object.
     /// </summary>
@@ -89,6 +96,7 @@ public static class NtPcProvider
     /// </summary>
     private static void ProcessDirectory(string source, string destination, NtPcGame game, NtPcRules rules)
     {
+        List<NtPcFileMap> ntPcFileMaps = [];
         VFS.CreateDirectory(destination);
 
         string[] directories = [.. FixDirectories([.. VFS.GetDirectories(source)], rules)];
@@ -109,7 +117,26 @@ public static class NtPcProvider
             {
                 if (VFS.IsDirFile(file.FullName) == false && file.Extension == ".dll")
                 {
-                    CopyHelper.CopyHooks(source, file.FullName, destination, game, rules, exclusions, []);
+                    if (
+                        CopyHelper.CopyHooks(
+                            new()
+                            {
+                                Source = source,
+                                FileName = file.FullName,
+                                Destination = destination,
+                                NtPcGame = game,
+                                NtPcRules = rules,
+                                Exclusions = exclusions,
+                                HookNames = [],
+                                CreateCRC32s = game.CreateCRC32s,
+                            }
+                        ) is
+                        { } hookMap
+                    )
+                    {
+                        ntPcFileMaps.Add(hookMap);
+                    }
+
                     continue;
                 }
             }
@@ -117,11 +144,76 @@ public static class NtPcProvider
             List<string> hookNames = (game.Engine.Hooks ?? Validate.For.EmptyList<NtPcHook>()).ConvertAll(hook =>
                 hook.Name ?? string.Empty
             );
-            CopyHelper.CopyFiles(directoryName, search, destination, path, rules, exclusions, hookNames);
-            CopyHelper.CopyAddons(source, directoryName, destination, rules, []);
+
+            if (
+                CopyHelper.CopyFiles(
+                    new()
+                    {
+                        Source = directoryName,
+                        FileName = search,
+                        Destination = destination,
+                        NtPcPath = path,
+                        NtPcRules = rules,
+                        Exclusions = exclusions,
+                        HookNames = hookNames,
+                        CreateCRC32s = game.CreateCRC32s,
+                    }
+                ) is
+                { } fileMap
+            )
+            {
+                ntPcFileMaps.Add(fileMap);
+            }
+
+            if (
+                CopyHelper.CopyAddons(
+                    new()
+                    {
+                        Source = source,
+                        FileName = directoryName,
+                        Destination = destination,
+                        NtPcRules = rules,
+                        HookNames = hookNames,
+                        CreateCRC32s = game.CreateCRC32s,
+                    }
+                ) is
+                { } addonMap
+            )
+            {
+                ntPcFileMaps.Add(addonMap);
+            }
         }
 
-        CopyHelper.CopyPostAddons(source, destination, rules, []);
+        if (
+            CopyHelper.CopyPostAddons(
+                new()
+                {
+                    Source = source,
+                    Destination = destination,
+                    NtPcRules = rules,
+                    HookNames = [],
+                    CreateCRC32s = game.CreateCRC32s,
+                }
+            ) is
+            { } postAddonMap
+        )
+        {
+            ntPcFileMaps.Add(postAddonMap);
+        }
+
+        if (ntPcFileMaps is not null && ntPcFileMaps.Count > 0)
+        {
+            Json.Save(
+                DataLogFilePath,
+                new NtPcFileData()
+                {
+                    Source = source,
+                    Destination = destination,
+                    Files = ntPcFileMaps,
+                },
+                NtPcFileDataContext.Default
+            );
+        }
     }
 
     /// <summary>

@@ -22,6 +22,7 @@ using System.IO;
 using System.Linq;
 using DDO.ModManager.Base.NativePC.Models;
 using MiniCommon.Extensions;
+using MiniCommon.Extensions.Cryptography.Helpers;
 using MiniCommon.IO;
 using MiniCommon.Providers;
 using MiniCommon.Validation;
@@ -32,6 +33,16 @@ namespace DDO.ModManager.Base.NativePC.Helpers;
 
 public static class CopyHelper
 {
+    /// <summary>
+    /// Create CRC32 based on the "maybe" bool".
+    /// </summary>
+    public static string MaybeCreateCRC32(string fileName, bool formatting, bool maybe)
+    {
+        if (maybe)
+            return CryptographyHelperExt.CreateCRC32(fileName, formatting);
+        return string.Empty;
+    }
+
     /// <summary>
     /// Returns true if the fileName is in the exclusion list.
     /// </summary>
@@ -90,170 +101,186 @@ public static class CopyHelper
     /// <summary>
     /// Copy hooks according to specified rules.
     /// </summary>
-    public static void CopyHooks(
-        string source,
-        string fileName,
-        string destination,
-        NtPcGame game,
-        NtPcRules rules,
-        List<string> exclusions,
-        List<string> hookNames
-    )
+    public static NtPcFileMap? CopyHooks(CopyHelperOptions options)
     {
-        if (Validate.For.IsNull(game))
-            return;
+        if (Validate.For.IsNull(options.NtPcGame))
+            return default;
 
-        if (Validate.For.IsNullOrWhiteSpace([game.Arch]))
-            return;
+        if (Validate.For.IsNullOrWhiteSpace([options.NtPcGame!.Arch]))
+            return default;
 
-        if (Validate.For.IsNull(game.Engine))
-            return;
+        if (Validate.For.IsNull(options.NtPcGame.Engine))
+            return default;
 
-        if (Validate.For.IsNull(game.Engine!.Hooks))
-            return;
+        if (Validate.For.IsNull(options.NtPcGame.Engine!.Hooks))
+            return default;
 
-        foreach (NtPcHook hook in game.Engine!.Hooks!)
+        List<NtPcFile> ntPcFiles = [];
+        foreach (NtPcHook hook in options.NtPcGame.Engine!.Hooks!)
         {
-            string fullSource = VFS.Combine(source, VFS.GetFileName(fileName));
+            string fullSource = VFS.Combine(options.Source!, VFS.GetFileName(options.FileName!));
 
             if (
                 VFS.GetFileName(fullSource) == hook.Name
-                && (hook.Arch == game.Arch || game.Arch!.Equals("any", StringComparison.CurrentCultureIgnoreCase))
+                && (
+                    hook.Arch == options.NtPcGame.Arch
+                    || options.NtPcGame.Arch!.Equals("any", StringComparison.CurrentCultureIgnoreCase)
+                )
             )
             {
                 string fullDestination = string.Empty;
                 if (hook?.Requires?.Count != 0)
                 {
                     fullDestination = VFS.Combine(
-                        destination,
+                        options.Destination!,
                         VFS.Combine([.. hook?.Requires ?? Validate.For.EmptyList<string>()]),
                         hook?.Dll ?? Validate.For.EmptyString()
                     );
                 }
                 else
                 {
-                    fullDestination = VFS.Combine(destination, hook?.Dll ?? Validate.For.EmptyString());
+                    fullDestination = VFS.Combine(options.Destination!, hook?.Dll ?? Validate.For.EmptyString());
                 }
 
-                Copy(
-                    VFS.GetFullPath(VFS.FromCwd(fileName)),
-                    VFS.GetFullPath(VFS.FromCwd(fullDestination)),
-                    VFS.GetFullPath(VFS.FromCwd(source)),
-                    (src) => SkipCopyFiles(src, exclusions),
-                    (dest) => RenameDestination(source, dest, rules),
-                    [.. rules.IgnorePrefixes ?? Validate.For.EmptyList<string>()],
-                    hookNames
-                );
+                ntPcFiles =
+                [
+                    .. ntPcFiles,
+                    .. Copy(
+                        VFS.GetFullPath(VFS.FromCwd(options.FileName!)),
+                        VFS.GetFullPath(VFS.FromCwd(fullDestination)),
+                        VFS.GetFullPath(VFS.FromCwd(options.Source!)),
+                        (src) => SkipCopyFiles(src, options.Exclusions!),
+                        (dest) => RenameDestination(options.Source!, dest, options.NtPcRules!),
+                        [.. options.NtPcRules!.IgnorePrefixes ?? Validate.For.EmptyList<string>()],
+                        options.HookNames!,
+                        options.CreateCRC32s
+                    ),
+                ];
             }
         }
+
+        if (ntPcFiles.Count <= 0)
+            return default;
+        return new() { Source = options.Source, Files = ntPcFiles };
     }
 
     /// <summary>
     /// Copy files to the specified destination according to an NtPcPath.
     /// </summary>
-    public static void CopyFiles(
-        string source,
-        string fileName,
-        string destination,
-        NtPcPath path,
-        NtPcRules rules,
-        List<string> exclusions,
-        List<string> hookNames
-    )
+    public static NtPcFileMap? CopyFiles(CopyHelperOptions options)
     {
-        int indexOfSource = fileName.IndexOf(source);
-        string searchDirectory = indexOfSource >= 0 ? fileName[..indexOfSource] + source : fileName;
+        int indexOfSource = options.FileName!.IndexOf(options.Source!);
+        string searchDirectory =
+            indexOfSource >= 0 ? options.FileName![..indexOfSource] + options.Source : options.FileName;
 
-        Copy(
-            VFS.GetFullPath(VFS.FromCwd(fileName)),
-            VFS.GetFullPath(VFS.FromCwd(FixDestination(destination, path))),
+        List<NtPcFile> ntPcFiles = Copy(
+            VFS.GetFullPath(VFS.FromCwd(options.FileName!)),
+            VFS.GetFullPath(VFS.FromCwd(FixDestination(options.Destination!, options.NtPcPath!))),
             VFS.GetFullPath(VFS.FromCwd(searchDirectory)),
-            (src) => SkipCopyFiles(src, exclusions),
-            (dest) => RenameDestination(source, dest, rules),
-            [.. rules.IgnorePrefixes ?? Validate.For.EmptyList<string>()],
-            hookNames
+            (src) => SkipCopyFiles(src, options.Exclusions!),
+            (dest) => RenameDestination(options.Source!, dest, options.NtPcRules!),
+            [.. options.NtPcRules!.IgnorePrefixes ?? Validate.For.EmptyList<string>()],
+            options.HookNames!,
+            options.CreateCRC32s
         );
+
+        if (ntPcFiles.Count <= 0)
+            return default;
+        return new() { Source = options.Source, Files = ntPcFiles };
     }
 
     /// <summary>
     /// Copy addons according to a list of NtPcAddon objects.
     /// </summary>
-    public static void CopyAddons(
-        string source,
-        string fileName,
-        string destination,
-        NtPcRules rules,
-        List<string> hookNames
-    )
+    public static NtPcFileMap? CopyAddons(CopyHelperOptions options)
     {
-        foreach (NtPcAddon addon in rules.Addons ?? Validate.For.EmptyList<NtPcAddon>())
+        List<NtPcFile> ntPcFiles = [];
+        foreach (NtPcAddon addon in options.NtPcRules!.Addons ?? Validate.For.EmptyList<NtPcAddon>())
         {
             if (Validate.For.IsNull(addon))
-                return;
+                return default;
 
-            if (addon.Name == fileName)
+            if (addon.Name == options.FileName!)
             {
                 string absoluteSource = VFS.GetFullPath(
-                    VFS.FromCwd(source, fileName, addon.Source ?? Validate.For.EmptyString())
+                    VFS.FromCwd(options.Source!, options.FileName!, addon.Source ?? Validate.For.EmptyString())
                 );
                 string absoluteDestination = VFS.GetFullPath(
-                    VFS.FromCwd(destination, addon.Destination ?? Validate.For.EmptyString())
+                    VFS.FromCwd(options.Destination!, addon.Destination ?? Validate.For.EmptyString())
                 );
 
-                Copy(
-                    absoluteSource,
-                    absoluteDestination,
-                    absoluteSource,
-                    (src) => SkipCopyAddons(src, addon.Skip ?? Validate.For.EmptyList<string>()),
-                    (dest) => RenameDestination(absoluteSource, dest, rules),
-                    [.. rules.IgnorePrefixes ?? Validate.For.EmptyList<string>()],
-                    hookNames
-                );
+                ntPcFiles =
+                [
+                    .. ntPcFiles,
+                    .. Copy(
+                        absoluteSource,
+                        absoluteDestination,
+                        absoluteSource,
+                        (src) => SkipCopyAddons(src, addon.Skip ?? Validate.For.EmptyList<string>()),
+                        (dest) => RenameDestination(absoluteSource, dest, options.NtPcRules!),
+                        [.. options.NtPcRules!.IgnorePrefixes ?? Validate.For.EmptyList<string>()],
+                        options.HookNames!,
+                        options.CreateCRC32s
+                    ),
+                ];
             }
         }
+
+        if (ntPcFiles.Count <= 0)
+            return default;
+        return new() { Source = options.Source, Files = ntPcFiles };
     }
 
     /// <summary>
     /// Copy addons after all other addons, according to a list of NtPcAddon objects.
     /// </summary>
-    public static void CopyPostAddons(string source, string destination, NtPcRules rules, List<string> hookNames)
+    public static NtPcFileMap? CopyPostAddons(CopyHelperOptions options)
     {
-        foreach (NtPcAddon addon in rules.Addons ?? Validate.For.EmptyList<NtPcAddon>())
+        List<NtPcFile> ntPcFiles = [];
+        foreach (NtPcAddon addon in options.NtPcRules!.Addons ?? Validate.For.EmptyList<NtPcAddon>())
         {
             if (Validate.For.IsNull(addon))
-                return;
+                return default;
 
             if (addon.Name != "copy")
                 continue;
 
-            string absoluteSource = VFS.GetFullPath(VFS.FromCwd(source, addon.Source ?? Validate.For.EmptyString()));
+            string absoluteSource = VFS.GetFullPath(
+                VFS.FromCwd(options.Source!, addon.Source ?? Validate.For.EmptyString())
+            );
             string absoluteDestination = VFS.GetFullPath(
-                VFS.FromCwd(destination, addon.Destination ?? Validate.For.EmptyString())
+                VFS.FromCwd(options.Destination!, addon.Destination ?? Validate.For.EmptyString())
             );
 
             Copy(
                 absoluteSource,
                 absoluteDestination,
-                VFS.GetFullPath(VFS.FromCwd(source)),
+                VFS.GetFullPath(VFS.FromCwd(options.Source!)),
                 (src) => SkipCopyAddons(src, addon.Skip ?? Validate.For.EmptyList<string>()),
-                (dest) => RenameDestination(source, dest, rules),
-                [.. rules.IgnorePrefixes ?? Validate.For.EmptyList<string>()],
-                hookNames
+                (dest) => RenameDestination(options.Source!, dest, options.NtPcRules!),
+                [.. options.NtPcRules!.IgnorePrefixes ?? Validate.For.EmptyList<string>()],
+                options.HookNames!,
+                options.CreateCRC32s
             );
         }
+
+        if (ntPcFiles.Count <= 0)
+            return default;
+        return new() { Source = options.Source, Files = ntPcFiles };
     }
 
     /// <summary>
     /// Copies a file or directory based on the specified functions.
     /// </summary>
-    private static void Copy(
+    private static List<NtPcFile> Copy(
         string source,
         string destination,
         string searchDirectory,
         Func<string, bool> skip,
         Func<string, string> rename,
         string[] ignorePrefixes,
-        List<string> hookNames
+        List<string> hookNames,
+        bool createCRC32s
     )
     {
         bool? fileType = VFS.IsDirFile(source);
@@ -263,31 +290,33 @@ public static class CopyHelper
             case true: // Directory
                 if (ignorePrefixes.Any(VFS.GetDirectoryName(source).StartsWith))
                     break;
-                CopyDirectory(source, destination, searchDirectory, skip, rename, hookNames);
-                break;
+                return CopyDirectory(source, destination, searchDirectory, skip, rename, hookNames, createCRC32s);
             case false:
                 if (ignorePrefixes.Any(VFS.GetFileName(source).StartsWith))
                     break;
-                CopyFile(source, destination, skip, rename, hookNames);
-                break;
+                return CopyFile(source, destination, skip, rename, hookNames, createCRC32s);
             default:
                 NotificationProvider.Warn("ntpc.missing", source);
-                break;
+                return [];
         }
+
+        return [];
     }
 
     /// <summary>
     /// Walk through a directory and copy all files that follow the specified functions.
     /// </summary>
-    private static void CopyDirectory(
+    private static List<NtPcFile> CopyDirectory(
         string source,
         string destination,
         string searchDirectory,
         Func<string, bool> skip,
         Func<string, string> rename,
-        List<string> hookNames
+        List<string> hookNames,
+        bool createCRC32s
     )
     {
+        List<NtPcFile> ntPcFiles = [];
         FileInfo[] files = VFS.GetFileInfos(searchDirectory, "*", SearchOption.AllDirectories);
 
         foreach (FileInfo file in files)
@@ -306,35 +335,57 @@ public static class CopyHelper
                     continue;
                 NotificationProvider.Info("ntpc.copy", normalizedFilePath, newDestination);
                 VFS.CopyFile(normalizedFilePath, newDestination);
+                ntPcFiles.Add(
+                    new()
+                    {
+                        Source = normalizedFilePath,
+                        Destination = newDestination,
+                        Crc = MaybeCreateCRC32(normalizedFilePath, true, createCRC32s),
+                    }
+                );
             }
         }
+
+        return ntPcFiles;
     }
 
     /// <summary>
     /// Copy a file based on the specified functions.
     /// </summary>
-    private static void CopyFile(
+    private static List<NtPcFile> CopyFile(
         string source,
         string destination,
         Func<string, bool> skip,
         Func<string, string> rename,
-        List<string> hookNames
+        List<string> hookNames,
+        bool createCRC32s
     )
     {
+        List<NtPcFile> ntPcFiles = [];
         string normalizedSource = source.NormalizePath();
         string normalizedDestination = destination.NormalizePath();
 
         if (skip(normalizedSource))
-            return;
+            return [];
 
         string newDestination = rename(normalizedDestination);
         if (normalizedSource != newDestination)
         {
             if (hookNames.Contains(VFS.GetFileName(normalizedSource)))
-                return;
+                return [];
             NotificationProvider.Info("ntpc.copy", normalizedSource, newDestination);
             VFS.CopyFile(normalizedSource, newDestination);
+            ntPcFiles.Add(
+                new()
+                {
+                    Source = normalizedSource,
+                    Destination = newDestination,
+                    Crc = MaybeCreateCRC32(normalizedSource, true, createCRC32s),
+                }
+            );
         }
+
+        return ntPcFiles;
     }
 
     /// <summary>

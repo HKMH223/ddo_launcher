@@ -99,5 +99,6 @@
         "Include": []
       }
     ]
-  }
+  },
+  "CreateCRC32s": true
 }
