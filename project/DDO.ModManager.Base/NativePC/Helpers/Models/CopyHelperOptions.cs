@@ -18,8 +18,9 @@
 
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using DDO.ModManager.Base.NativePC.Models;
 
-namespace DDO.ModManager.Base.NativePC.Models;
+namespace DDO.ModManager.Base.NativePC.Helpers.Models;
 
 public class CopyHelperOptions
 {
