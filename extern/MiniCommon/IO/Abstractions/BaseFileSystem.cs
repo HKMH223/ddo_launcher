@@ -51,7 +51,7 @@ public abstract partial class BaseFileSystem : IBaseFileSystem
     }
 
     /// <inheritdoc />
-    public virtual (bool IsProblem, PathCheck Check) CheckPathForProblemLocations(string filepath)
+    public virtual (bool IsProblem, PathCheck? Check) CheckPathForProblemLocations(string filepath)
     {
         filepath = Path.TrimEndingDirectorySeparator(filepath);
         PathCheck failedCheck = new();

@@ -81,10 +81,15 @@ public class Deploy : IBaseCommand<object>
                     return;
                 }
 
-                NtPcGame game = NtPcGame.Read(gamePath);
-                NtPcRules rules = NtPcRules.Read(rulePath);
+                NtPcGame? game = NtPcGame.Read(gamePath);
+                if (Validate.For.IsNull(game))
+                    return;
 
-                if (Validate.For.IsNull(game.Deploy, NativeLogLevel.Fatal))
+                NtPcRules? rules = NtPcRules.Read(rulePath);
+                if (Validate.For.IsNull(game))
+                    return;
+
+                if (Validate.For.IsNull(game!.Deploy, NativeLogLevel.Fatal))
                     return;
 
                 if (
@@ -115,7 +120,7 @@ public class Deploy : IBaseCommand<object>
 
                 ExtractHelper.Extract(modPath, tempPath, game);
                 NtPcProvider.DeleteDirectory(outputPath);
-                NtPcProvider.Deploy(tempPath, outputPath, game, rules);
+                NtPcProvider.Deploy(tempPath, outputPath, game, rules!);
                 NtPcProvider.DeleteDirectory(tempPath);
             }
         );

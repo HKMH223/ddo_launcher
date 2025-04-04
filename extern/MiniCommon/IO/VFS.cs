@@ -38,7 +38,7 @@ public class VFS : IFileSystem
     }
 
     /// <inheritdoc />
-    public static (bool IsProblem, PathCheck Check) CheckPathForProblemLocations(string filepath)
+    public static (bool IsProblem, PathCheck? Check) CheckPathForProblemLocations(string filepath)
     {
         return FileSystem.CheckPathForProblemLocations(filepath);
     }

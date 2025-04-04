@@ -107,10 +107,15 @@ public partial class ModdingDialogWindow : Window, INotifyPropertyChanged
             return Task.CompletedTask;
         }
 
-        NtPcGame game = NtPcGame.Read(gamePath);
-        NtPcRules rules = NtPcRules.Read(rulePath);
+        NtPcGame? game = NtPcGame.Read(gamePath);
+        if (Validate.For.IsNull(game))
+            return Task.CompletedTask;
 
-        if (Validate.For.IsNull(game.Deploy, NativeLogLevel.Fatal))
+        NtPcRules? rules = NtPcRules.Read(rulePath);
+        if (Validate.For.IsNull(game))
+            return Task.CompletedTask;
+
+        if (Validate.For.IsNull(game!.Deploy, NativeLogLevel.Fatal))
             return Task.CompletedTask;
 
         if (
@@ -135,7 +140,7 @@ public partial class ModdingDialogWindow : Window, INotifyPropertyChanged
 
         ExtractHelper.Extract(modPath, tempPath, game);
         NtPcProvider.DeleteDirectory(outputPath);
-        NtPcProvider.Deploy(tempPath, outputPath, game, rules);
+        NtPcProvider.Deploy(tempPath, outputPath, game, rules!);
         NtPcProvider.DeleteDirectory(tempPath);
 
         return Task.CompletedTask;

@@ -53,12 +53,12 @@ public class Patch
     /// <summary>
     /// Read and deserialize a file as a Patch object.
     /// </summary>
-    public static Patch ReadPatchObject(string path)
+    public static Patch? ReadPatchObject(string path)
     {
         Patch? rules = Json.Deserialize<Patch>(VFS.ReadAllText(path), PatchContext.Default);
 
         if (Validate.For.IsNull(rules))
-            return new();
+            return default;
         return rules!;
     }
 

@@ -33,43 +33,64 @@ public static class SearchHelper
     /// <summary>
     /// Search for valid files based on a list of NtPcPath objects.
     /// </summary>
-    public static (string, NtPcPath) Search(string basePath, List<NtPcPath> paths)
+    public static (string, NtPcPath?) Search(string basePath, List<NtPcPath> paths)
     {
         if (Validate.For.IsNullOrWhiteSpace([basePath]))
-            return (string.Empty, new());
+            return (string.Empty, default);
+
+        if (Validate.For.IsNullOrEmpty(paths))
+            return (string.Empty, default);
 
         DirectoryInfo[] directories = VFS.GetDirectoryInfos(basePath, "*", SearchOption.AllDirectories);
 
         foreach (DirectoryInfo directory in directories)
         {
+            string normalizedDir = directory.FullName.NormalizePath();
+            string[] parts = normalizedDir.Split("/");
+            bool? isDir = VFS.IsDirFile(normalizedDir);
+
             foreach (NtPcPath path in paths)
             {
-                string fws = directory.FullName.NormalizePath();
-                string[] parts = fws.Split("/");
-
                 if (Validate.For.IsNull(path))
-                    return (string.Empty, new());
+                    return (string.Empty, default);
 
-                if (path.IsDir == true && parts.Contains(path.Path) && VFS.IsDirFile(fws) == true)
+                if (path.IsDir == false && !parts.Contains(path.Path) && isDir == true)
+                    return SearchFilesOnly(directory.FullName, paths, "*", SearchOption.AllDirectories);
+
+                if (path.IsDir == true && parts.Contains(path.Path) && isDir == true)
                     return (directory.FullName, path!);
             }
         }
 
-        string[] files = VFS.GetFiles(basePath);
+        return SearchFilesOnly(basePath, paths, "*", SearchOption.TopDirectoryOnly);
+    }
+
+    /// <summary>
+    /// Search for valid files based on a list of NtPcPath objects.
+    /// </summary>
+    public static (string, NtPcPath?) SearchFilesOnly(
+        string basePath,
+        List<NtPcPath> paths,
+        string searchPattern,
+        SearchOption searchOptions
+    )
+    {
+        string[] files = VFS.GetFiles(basePath, searchPattern, searchOptions);
 
         foreach (string file in files)
         {
+            string fileName = VFS.Combine(basePath, VFS.GetFileName(file));
+            string extension = VFS.GetFileExtension(fileName);
+
+            if (VFS.IsDirFile(file) == true)
+                continue;
+
             foreach (NtPcPath path in paths)
             {
                 if (Validate.For.IsNull(path))
-                    return (string.Empty, new());
+                    return (string.Empty, default);
 
-                string fileName = VFS.Combine(basePath, VFS.GetFileName(file));
-                string extension = VFS.GetFileExtension(fileName);
-
-                if (path.IsDir == true || VFS.IsDirFile(file) == true)
-                    continue;
-                if (extension != path.Path)
+                if (path.IsDir == true || extension != path.Path)
                     continue;
 
                 if (path.Unsupported == true)
@@ -78,6 +99,6 @@ public static class SearchHelper
             }
         }
 
-        return (string.Empty, new());
+        return (string.Empty, default);
     }
 }

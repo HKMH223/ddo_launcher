@@ -49,12 +49,12 @@ public class NtPcRules
     /// <summary>
     /// Read and deserialize a file as an NtPcRules object.
     /// </summary>
-    public static NtPcRules Read(string path)
+    public static NtPcRules? Read(string path)
     {
         NtPcRules? rules = Json.Deserialize<NtPcRules>(VFS.ReadAllText(path), NtPcRulesContext.Default);
 
         if (Validate.For.IsNull(rules))
-            return new();
+            return default;
         return rules!;
     }
 

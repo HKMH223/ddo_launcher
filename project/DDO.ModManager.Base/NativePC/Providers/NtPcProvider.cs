@@ -46,17 +46,17 @@ public static class NtPcProvider
     /// </summary>
     public static void Deploy(string source, string destination, NtPcGame game, NtPcRules rules)
     {
-        (bool sourcePathProblen, PathCheck sourcePathCheck) = VFS.CheckPathForProblemLocations(source);
-        if (sourcePathProblen)
+        (bool sourcePathProblem, PathCheck? sourcePathCheck) = VFS.CheckPathForProblemLocations(source);
+        if (sourcePathProblem == true)
         {
-            ProblemPath(source, sourcePathCheck);
+            ProblemPath(source, sourcePathCheck!);
             return;
         }
 
-        (bool destinationPathProblem, PathCheck destinationPathCheck) = VFS.CheckPathForProblemLocations(destination);
-        if (destinationPathProblem)
+        (bool destinationPathProblem, PathCheck? destinationPathCheck) = VFS.CheckPathForProblemLocations(destination);
+        if (destinationPathProblem == true)
         {
-            ProblemPath(source, destinationPathCheck);
+            ProblemPath(source, destinationPathCheck!);
             return;
         }
 
@@ -104,12 +104,15 @@ public static class NtPcProvider
         foreach (string directoryName in directories)
         {
             string pathEntry = VFS.Combine(source, directoryName);
-            (string search, NtPcPath path) = SearchHelper.Search(pathEntry, game.Engine!.Paths!);
+            (string search, NtPcPath? path) = SearchHelper.Search(pathEntry, game.Engine!.Paths!);
+            if (Validate.For.IsNull(path))
+                continue;
+
             List<string> exclusions = NtPcRules.Exclude(rules, directoryName, pathEntry);
             if (search.Length == 0)
                 continue;
 
-            if (path.Unsupported == true)
+            if (path!.Unsupported == true)
                 continue;
 
             FileInfo[] additionalDirectories = VFS.GetFileInfos(pathEntry, "*", SearchOption.TopDirectoryOnly);

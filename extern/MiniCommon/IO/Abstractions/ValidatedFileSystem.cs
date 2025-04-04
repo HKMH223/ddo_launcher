@@ -38,10 +38,10 @@ public class ValidatedFileSystem : BaseFileSystem
     }
 
     /// <inheritdoc />
-    public override (bool, PathCheck) CheckPathForProblemLocations(string filepath)
+    public override (bool, PathCheck?) CheckPathForProblemLocations(string filepath)
     {
         if (Validate.For.IsNullOrWhiteSpace([filepath], NativeLogLevel.Fatal))
-            return (true, new());
+            return (true, default);
         return base.CheckPathForProblemLocations(filepath);
     }
 

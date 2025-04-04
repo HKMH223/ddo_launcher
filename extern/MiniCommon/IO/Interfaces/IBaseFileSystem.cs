@@ -37,7 +37,9 @@ public interface IBaseFileSystem
     /// <summary>
     /// Check if a path is problematic.
     /// </summary>
-    public abstract (bool IsProblem, PathCheck Check) CheckPathForProblemLocations(string filepath);
+    public abstract (bool IsProblem, PathCheck? Check) CheckPathForProblemLocations(
+        string filepath
+    );
 
     /// <summary>
     /// Get the absolute path of the specified string.

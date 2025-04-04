@@ -52,12 +52,12 @@ public class NtPcGame
     /// <summary>
     /// Read and deserialize a file as an NtPcGame object.
     /// </summary>
-    public static NtPcGame Read(string path)
+    public static NtPcGame? Read(string path)
     {
         NtPcGame? game = Json.Deserialize<NtPcGame>(VFS.ReadAllText(path), NtPcGameContext.Default);
 
         if (Validate.For.IsNull(game))
-            return new();
+            return default;
         return game!;
     }
 }
