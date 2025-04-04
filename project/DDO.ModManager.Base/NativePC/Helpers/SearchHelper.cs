@@ -54,15 +54,12 @@ public static class SearchHelper
                 if (Validate.For.IsNull(path))
                     return (string.Empty, default);
 
-                if (path.IsDir == false && !parts.Contains(path.Path) && isDir == true)
-                    return SearchFilesOnly(directory.FullName, paths, "*", SearchOption.AllDirectories);
-
                 if (path.IsDir == true && parts.Contains(path.Path) && isDir == true)
                     return (directory.FullName, path!);
             }
         }
 
-        return SearchFilesOnly(basePath, paths, "*", SearchOption.TopDirectoryOnly);
+        return SearchFilesOnly(basePath, paths, "*", SearchOption.AllDirectories);
     }
 
     /// <summary>

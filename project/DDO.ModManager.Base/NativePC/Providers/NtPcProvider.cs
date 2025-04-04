@@ -26,6 +26,7 @@ using MiniCommon.Extensions;
 using MiniCommon.IO;
 using MiniCommon.IO.Enums;
 using MiniCommon.IO.Models;
+using MiniCommon.Logger.Enums;
 using MiniCommon.Providers;
 using MiniCommon.Validation;
 using MiniCommon.Validation.Operators;
@@ -105,7 +106,7 @@ public static class NtPcProvider
         {
             string pathEntry = VFS.Combine(source, directoryName);
             (string search, NtPcPath? path) = SearchHelper.Search(pathEntry, game.Engine!.Paths!);
-            if (Validate.For.IsNull(path))
+            if (Validate.For.IsNull(path, NativeLogLevel.Debug))
                 continue;
 
             List<string> exclusions = NtPcRules.Exclude(rules, directoryName, pathEntry);
