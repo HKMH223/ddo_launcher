@@ -177,6 +177,9 @@ public static class CopyHelper
         string searchDirectory =
             indexOfSource >= 0 ? options.FileName![..indexOfSource] + options.Source : options.FileName;
 
+        if (options.NtPcPath!.IsDir == false)
+            return default;
+
         List<NtPcFile> ntPcFiles = Copy(
             new()
             {
