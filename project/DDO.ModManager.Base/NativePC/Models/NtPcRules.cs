@@ -21,6 +21,7 @@ using System.IO;
 using System.Text.Json.Serialization;
 using MiniCommon.Extensions;
 using MiniCommon.IO;
+using MiniCommon.Providers;
 using MiniCommon.Validation;
 using MiniCommon.Validation.Operators;
 using MiniCommon.Validation.Validators;
@@ -80,6 +81,8 @@ public class NtPcRules
                 continue;
 
             string outputPath = VFS.Combine(basePath, exclusion.Path!);
+            if (exclusion.Path! == ".")
+                outputPath = VFS.Combine(basePath);
 
             if (!VFS.Exists(outputPath))
                 continue;
