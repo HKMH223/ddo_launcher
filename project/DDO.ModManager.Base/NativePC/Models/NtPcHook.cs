@@ -23,20 +23,11 @@ namespace DDO.ModManager.Base.NativePC.Models;
 
 public class NtPcHook
 {
-    [JsonPropertyName("Name")]
-    public string? Name { get; set; }
+    [JsonPropertyName("Formats")]
+    public List<string>? Formats { get; set; }
 
-    [JsonPropertyName("Dll")]
-    public string? Dll { get; set; }
-
-    [JsonPropertyName("Arch")]
-    public string? Arch { get; set; }
-
-    [JsonPropertyName("Requires")]
-    public List<string>? Requires { get; set; }
-
-    [JsonPropertyName("Include")]
-    public List<string>? Include { get; set; }
+    [JsonPropertyName("Data")]
+    public List<NtPcHookData>? Data { get; set; }
 
     public NtPcHook() { }
 }

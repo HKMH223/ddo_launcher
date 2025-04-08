@@ -119,7 +119,7 @@ public static class NtPcProvider
             FileInfo[] additionalDirectories = VFS.GetFileInfos(pathEntry, "*", SearchOption.TopDirectoryOnly);
             foreach (FileInfo file in additionalDirectories)
             {
-                if (VFS.IsDirFile(file.FullName) == false && file.Extension == ".dll")
+                if (VFS.IsDirFile(file.FullName) == false && game.Engine.Hooks!.Formats!.Contains(file.Extension))
                 {
                     if (
                         CopyHelper.CopyHooks(
@@ -145,8 +145,8 @@ public static class NtPcProvider
                 }
             }
 
-            List<string> hookNames = (game.Engine.Hooks ?? Validate.For.EmptyList<NtPcHook>()).ConvertAll(hook =>
-                hook.Name ?? string.Empty
+            List<string> hookNames = (game.Engine.Hooks!.Data ?? Validate.For.EmptyList<NtPcHookData>()).ConvertAll(
+                hook => hook.Name ?? string.Empty
             );
 
             if (

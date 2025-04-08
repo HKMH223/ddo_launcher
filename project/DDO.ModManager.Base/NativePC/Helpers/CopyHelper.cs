@@ -116,8 +116,11 @@ public static class CopyHelper
         if (Validate.For.IsNull(options.NtPcGame.Engine!.Hooks))
             return default;
 
+        if (Validate.For.IsNull(options.NtPcGame.Engine!.Hooks!.Data))
+            return default;
+
         List<NtPcFile> ntPcFiles = [];
-        foreach (NtPcHook hook in options.NtPcGame.Engine!.Hooks!)
+        foreach (NtPcHookData hook in options.NtPcGame.Engine!.Hooks!.Data!)
         {
             string fullSource = VFS.Combine(options.Source!, VFS.GetFileName(options.FileName!));
 

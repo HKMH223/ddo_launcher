@@ -65,22 +65,25 @@
         "Unsupported": false
       }
     ],
-    "Hooks": [
-      {
-        "Name": "dinput8.dll",
-        "Dll": "dinput8.dll",
-        "Arch": "x64",
-        "Requires": [],
-        "Include": []
-      },
-      {
-        "Name": "loader.dll",
-        "Dll": "loader.dll",
-        "Arch": "x64",
-        "Requires": [],
-        "Include": []
-      }
-    ]
+    "Hooks": {
+      "Formats": [".dll"],
+      "Data": [
+        {
+          "Name": "dinput8.dll",
+          "Dll": "dinput8.dll",
+          "Arch": "x64",
+          "Requires": [],
+          "Include": []
+        },
+        {
+          "Name": "loader.dll",
+          "Dll": "loader.dll",
+          "Arch": "x64",
+          "Requires": [],
+          "Include": []
+        }
+      ]
+    }
   },
   "CreateCRC32s": true
 }

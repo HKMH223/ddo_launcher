@@ -62,43 +62,46 @@
         "Unsupported": false
       }
     ],
-    "Hooks": [
-      {
-        "Name": "dinput8.dll",
-        "Dll": "dinput8.dll",
-        "Arch": "x64",
-        "Requires": [],
-        "Include": []
-      },
-      {
-        "Name": "SpecialK64.dll",
-        "Dll": "dxgi.dll",
-        "Arch": "x64",
-        "Requires": [],
-        "Include": []
-      },
-      {
-        "Name": "SpecialK32.dll",
-        "Dll": "dxgi.dll",
-        "Arch": "x86",
-        "Requires": [],
-        "Include": []
-      },
-      {
-        "Name": "dstorage.dll",
-        "Dll": "dstorage.dll",
-        "Arch": "x64",
-        "Requires": [],
-        "Include": []
-      },
-      {
-        "Name": "dstoragecore.dll",
-        "Dll": "dstoragecore.dll",
-        "Arch": "x64",
-        "Requires": [],
-        "Include": []
-      }
-    ]
+    "Hooks": {
+      "Formats": [".dll"],
+      "Data": [
+        {
+          "Name": "dinput8.dll",
+          "Dll": "dinput8.dll",
+          "Arch": "x64",
+          "Requires": [],
+          "Include": []
+        },
+        {
+          "Name": "SpecialK64.dll",
+          "Dll": "dxgi.dll",
+          "Arch": "x64",
+          "Requires": [],
+          "Include": []
+        },
+        {
+          "Name": "SpecialK32.dll",
+          "Dll": "dxgi.dll",
+          "Arch": "x86",
+          "Requires": [],
+          "Include": []
+        },
+        {
+          "Name": "dstorage.dll",
+          "Dll": "dstorage.dll",
+          "Arch": "x64",
+          "Requires": [],
+          "Include": []
+        },
+        {
+          "Name": "dstoragecore.dll",
+          "Dll": "dstoragecore.dll",
+          "Arch": "x64",
+          "Requires": [],
+          "Include": []
+        }
+      ]
+    }
   },
   "CreateCRC32s": true
 }

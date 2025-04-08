@@ -80,7 +80,7 @@ public class NtPcRules
                 continue;
 
             string outputPath = VFS.Combine(basePath, exclusion.Path!);
-            if (exclusion.Path! == ".")
+            if (exclusion.Path!.Equals(".", System.StringComparison.CurrentCultureIgnoreCase))
                 outputPath = VFS.Combine(basePath);
 
             if (!VFS.Exists(outputPath))

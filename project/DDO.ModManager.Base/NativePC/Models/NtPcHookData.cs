@@ -21,17 +21,26 @@ using System.Text.Json.Serialization;
 
 namespace DDO.ModManager.Base.NativePC.Models;
 
-public class NtPcEngine
+public class NtPcHookData
 {
-    [JsonPropertyName("Paths")]
-    public List<NtPcPath>? Paths { get; set; }
+    [JsonPropertyName("Name")]
+    public string? Name { get; set; }
 
-    [JsonPropertyName("Hooks")]
-    public NtPcHook? Hooks { get; set; }
+    [JsonPropertyName("Dll")]
+    public string? Dll { get; set; }
 
-    public NtPcEngine() { }
+    [JsonPropertyName("Arch")]
+    public string? Arch { get; set; }
+
+    [JsonPropertyName("Requires")]
+    public List<string>? Requires { get; set; }
+
+    [JsonPropertyName("Include")]
+    public List<string>? Include { get; set; }
+
+    public NtPcHookData() { }
 }
 
 [JsonSourceGenerationOptions(WriteIndented = true)]
-[JsonSerializable(typeof(NtPcEngine))]
-internal partial class NtPcEngineContext : JsonSerializerContext;
+[JsonSerializable(typeof(NtPcHookData))]
+internal partial class NtPcHookDataContext : JsonSerializerContext;
