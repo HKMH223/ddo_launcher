@@ -18,6 +18,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace DDO.ModManager.Base.NativePC.Helpers.Models;
@@ -51,6 +52,10 @@ public class CopyOptions
     public CopyOptions() { }
 }
 
-[JsonSourceGenerationOptions(WriteIndented = true)]
+[JsonSourceGenerationOptions(
+    WriteIndented = true,
+    ReadCommentHandling = JsonCommentHandling.Skip,
+    AllowTrailingCommas = true
+)]
 [JsonSerializable(typeof(CopyOptions))]
 internal partial class CopyOptionsContext : JsonSerializerContext;

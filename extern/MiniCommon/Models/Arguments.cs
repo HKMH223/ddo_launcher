@@ -18,6 +18,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using MiniCommon.Validation;
 using MiniCommon.Validation.Operators;
@@ -51,6 +52,10 @@ public class MArguments
     }
 }
 
-[JsonSourceGenerationOptions(WriteIndented = true)]
+[JsonSourceGenerationOptions(
+    WriteIndented = true,
+    ReadCommentHandling = JsonCommentHandling.Skip,
+    AllowTrailingCommas = true
+)]
 [JsonSerializable(typeof(MArguments))]
 internal partial class MArgumentsContext : JsonSerializerContext;

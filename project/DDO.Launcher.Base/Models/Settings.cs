@@ -17,6 +17,7 @@
  */
 
 using System.Collections.Generic;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace DDO.Launcher.Base.Models;
@@ -38,6 +39,10 @@ public class Settings
     public Settings() { }
 }
 
-[JsonSourceGenerationOptions(WriteIndented = true)]
+[JsonSourceGenerationOptions(
+    WriteIndented = true,
+    ReadCommentHandling = JsonCommentHandling.Skip,
+    AllowTrailingCommas = true
+)]
 [JsonSerializable(typeof(Settings))]
 internal partial class SettingsContext : JsonSerializerContext;

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace DDO.Launcher.Base.Models;
@@ -37,6 +38,10 @@ public class DDORequest
     public DDORequest() { }
 }
 
-[JsonSourceGenerationOptions(WriteIndented = true)]
+[JsonSourceGenerationOptions(
+    WriteIndented = true,
+    ReadCommentHandling = JsonCommentHandling.Skip,
+    AllowTrailingCommas = true
+)]
 [JsonSerializable(typeof(DDORequest))]
 internal partial class DDORequestContext : JsonSerializerContext;

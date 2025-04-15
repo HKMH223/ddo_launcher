@@ -17,6 +17,7 @@
  */
 
 using System.Collections.Generic;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using MiniCommon.IO.Enums;
 
@@ -86,6 +87,10 @@ public class PathCheck
     }
 }
 
-[JsonSourceGenerationOptions(WriteIndented = true)]
+[JsonSourceGenerationOptions(
+    WriteIndented = true,
+    ReadCommentHandling = JsonCommentHandling.Skip,
+    AllowTrailingCommas = true
+)]
 [JsonSerializable(typeof(PathCheck))]
 internal partial class PathCheckContext : JsonSerializerContext;

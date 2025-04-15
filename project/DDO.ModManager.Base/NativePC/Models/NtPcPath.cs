@@ -17,6 +17,7 @@
  */
 
 using System.Collections.Generic;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace DDO.ModManager.Base.NativePC.Models;
@@ -38,6 +39,10 @@ public class NtPcPath
     public NtPcPath() { }
 }
 
-[JsonSourceGenerationOptions(WriteIndented = true)]
+[JsonSourceGenerationOptions(
+    WriteIndented = true,
+    ReadCommentHandling = JsonCommentHandling.Skip,
+    AllowTrailingCommas = true
+)]
 [JsonSerializable(typeof(NtPcPath))]
 internal partial class NtPcPathContext : JsonSerializerContext;

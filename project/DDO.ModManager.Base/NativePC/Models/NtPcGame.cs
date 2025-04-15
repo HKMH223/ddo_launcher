@@ -17,6 +17,7 @@
  */
 
 using System.Collections.Generic;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using MiniCommon.IO;
 using MiniCommon.Validation;
@@ -62,6 +63,10 @@ public class NtPcGame
     }
 }
 
-[JsonSourceGenerationOptions(WriteIndented = true)]
+[JsonSourceGenerationOptions(
+    WriteIndented = true,
+    ReadCommentHandling = JsonCommentHandling.Skip,
+    AllowTrailingCommas = true
+)]
 [JsonSerializable(typeof(NtPcGame))]
 internal partial class NtPcGameContext : JsonSerializerContext;

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace MiniCommon.Web.Models;
@@ -33,6 +34,10 @@ public class HttpRequest
     public HttpRequest() { }
 }
 
-[JsonSourceGenerationOptions(WriteIndented = true)]
+[JsonSourceGenerationOptions(
+    WriteIndented = true,
+    ReadCommentHandling = JsonCommentHandling.Skip,
+    AllowTrailingCommas = true
+)]
 [JsonSerializable(typeof(HttpRequest))]
 internal partial class HttpRequestContext : JsonSerializerContext;

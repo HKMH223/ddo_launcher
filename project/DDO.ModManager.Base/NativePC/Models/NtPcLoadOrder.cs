@@ -16,6 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace DDO.ModManager.Base.NativePC.Models;
@@ -31,6 +32,10 @@ public class NtPcLoadOrder
     public NtPcLoadOrder() { }
 }
 
-[JsonSourceGenerationOptions(WriteIndented = true)]
+[JsonSourceGenerationOptions(
+    WriteIndented = true,
+    ReadCommentHandling = JsonCommentHandling.Skip,
+    AllowTrailingCommas = true
+)]
 [JsonSerializable(typeof(NtPcLoadOrder))]
 internal partial class NtPcLoadOrderContext : JsonSerializerContext;

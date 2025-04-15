@@ -16,6 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using MiniCommon.Models;
 using MiniCommon.Validation;
@@ -62,6 +63,10 @@ public class SevenZipSettings
     }
 }
 
-[JsonSourceGenerationOptions(WriteIndented = true)]
+[JsonSourceGenerationOptions(
+    WriteIndented = true,
+    ReadCommentHandling = JsonCommentHandling.Skip,
+    AllowTrailingCommas = true
+)]
 [JsonSerializable(typeof(SevenZipSettings))]
 internal partial class SevenZipSettingsContext : JsonSerializerContext;
