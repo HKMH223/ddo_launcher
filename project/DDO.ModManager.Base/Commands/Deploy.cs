@@ -18,9 +18,11 @@
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using DDO.ModManager.Base.Enums;
 using DDO.ModManager.Base.NativePC.Helpers;
 using DDO.ModManager.Base.NativePC.Models;
 using DDO.ModManager.Base.NativePC.Providers;
+using DDO.ModManager.Base.Resolvers;
 using MiniCommon.CommandParser;
 using MiniCommon.Extensions;
 using MiniCommon.Interfaces;
@@ -64,7 +66,8 @@ public class Deploy : IBaseCommand<object>
                             VFS.FileSystem.Cwd,
                             options.GetValueOrDefault(
                                 "game",
-                                "game" + JsonExtensionHelper.ToString(JsonExtensionType.Default)
+                                KnownGameResolver.ToString(KnownGame.DDO)
+                                    + JsonExtensionHelper.ToString(JsonExtensionType.Default)
                             )
                         )
                         .NormalizePath()
@@ -74,7 +77,8 @@ public class Deploy : IBaseCommand<object>
                             VFS.FileSystem.Cwd,
                             options.GetValueOrDefault(
                                 "rules",
-                                "rules" + JsonExtensionHelper.ToString(JsonExtensionType.Default)
+                                KnownGameResolver.ToString(KnownGame.DDO)
+                                    + JsonExtensionHelper.ToString(JsonExtensionType.Default)
                             )
                         )
                         .NormalizePath()
