@@ -27,6 +27,7 @@ using DDO.ModManager.Base.NativePC.Providers;
 using MiniCommon.BuildInfo;
 using MiniCommon.Extensions;
 using MiniCommon.IO;
+using MiniCommon.IO.Enums;
 using MiniCommon.IO.Helpers;
 using MiniCommon.Logger.Enums;
 using MiniCommon.Providers;
@@ -93,26 +94,38 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         if (Validate.For.IsNullOrWhiteSpace([_game]))
             return Task.CompletedTask;
 
-        string gamePath = VFS.GetRelativePath(
-                VFS.FileSystem.Cwd,
-                VFS.Combine(AssemblyConstants.DataDirectory, "games", _game + ".json")
-            )
-            .NormalizePath();
-        string rulePath = VFS.GetRelativePath(
-                VFS.FileSystem.Cwd,
-                VFS.Combine(AssemblyConstants.DataDirectory, "user", _game + ".json")
-            )
-            .NormalizePath();
+        (string? gamePath, string expectedGamePath) = JsonExtensionHelper.MaybeJsonWithComments(
+            VFS.GetRelativePath(
+                    VFS.FileSystem.Cwd,
+                    VFS.Combine(
+                        AssemblyConstants.DataDirectory,
+                        "games",
+                        _game + JsonExtensionHelper.ToString(JsonExtensionType.Default)
+                    )
+                )
+                .NormalizePath()
+        );
+        (string? rulePath, string expectedRulePath) = JsonExtensionHelper.MaybeJsonWithComments(
+            VFS.GetRelativePath(
+                    VFS.FileSystem.Cwd,
+                    VFS.Combine(
+                        AssemblyConstants.DataDirectory,
+                        "user",
+                        _game + JsonExtensionHelper.ToString(JsonExtensionType.Default)
+                    )
+                )
+                .NormalizePath()
+        );
 
-        if (!VFS.Exists(gamePath))
+        if (gamePath is null)
         {
-            NotificationProvider.Error("error.readfile", gamePath);
+            NotificationProvider.Error("error.readfile", expectedGamePath);
             return Task.CompletedTask;
         }
 
-        if (!VFS.Exists(rulePath))
+        if (rulePath is null)
         {
-            NotificationProvider.Error("error.readfile", rulePath);
+            NotificationProvider.Error("error.readfile", expectedRulePath);
             return Task.CompletedTask;
         }
 

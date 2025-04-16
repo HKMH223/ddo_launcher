@@ -41,11 +41,11 @@ public static class LocalizationProvider
     {
         if (
             language != Language.ENGLISH
-            && VFS.Exists(LocalizationPathResolver.LanguageFilePath(filepath, Language.ENGLISH))
+            && LocalizationPathResolver.LanguageFilePath(filepath, Language.ENGLISH) is not null
         )
         {
             Localization = Json.Load<Localization>(
-                LocalizationPathResolver.LanguageFilePath(filepath, Language.ENGLISH),
+                LocalizationPathResolver.LanguageFilePath(filepath, Language.ENGLISH)!,
                 LocalizationContext.Default
             );
             if (Localization?.Entries is null)
@@ -53,18 +53,18 @@ public static class LocalizationProvider
         }
 
         if (
-            !VFS.Exists(LocalizationPathResolver.LanguageFilePath(filepath, language))
+            LocalizationPathResolver.LanguageFilePath(filepath, language) is null
             || alwaysSaveNewTranslation
         )
         {
             Json.Save(
-                LocalizationPathResolver.LanguageFilePath(filepath, language),
+                LocalizationPathResolver.DefaultLanguageFilePath(filepath, language),
                 new Localization(),
                 LocalizationContext.Default
             );
         }
         Localization? local = Json.Load<Localization>(
-            LocalizationPathResolver.LanguageFilePath(filepath, language),
+            LocalizationPathResolver.LanguageFilePath(filepath, language)!,
             LocalizationContext.Default
         );
         if (Localization?.Entries is null || local?.Entries is null)
@@ -93,7 +93,7 @@ public static class LocalizationProvider
         {
             NotificationProvider.Error(
                 "error.readfile",
-                LocalizationPathResolver.LanguageFilePath(filepath, language)
+                LocalizationPathResolver.LanguageFilePath(filepath, language)!
             );
         }
     }

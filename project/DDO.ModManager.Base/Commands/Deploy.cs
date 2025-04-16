@@ -25,6 +25,7 @@ using MiniCommon.CommandParser;
 using MiniCommon.Extensions;
 using MiniCommon.Interfaces;
 using MiniCommon.IO;
+using MiniCommon.IO.Enums;
 using MiniCommon.IO.Helpers;
 using MiniCommon.Logger.Enums;
 using MiniCommon.Providers;
@@ -56,28 +57,38 @@ public class Deploy : IBaseCommand<object>
                 ],
                 Description = LocalizationProvider.Translate("command.deploy"),
             },
-            options =>
+            static options =>
             {
-                string gamePath = VFS.GetRelativePath(
-                        VFS.FileSystem.Cwd,
-                        options.GetValueOrDefault("game", "game.json")
-                    )
-                    .NormalizePath();
-                string rulePath = VFS.GetRelativePath(
-                        VFS.FileSystem.Cwd,
-                        options.GetValueOrDefault("rules", "rules.json")
-                    )
-                    .NormalizePath();
+                (string? gamePath, string expectedGamePath) = JsonExtensionHelper.MaybeJsonWithComments(
+                    VFS.GetRelativePath(
+                            VFS.FileSystem.Cwd,
+                            options.GetValueOrDefault(
+                                "game",
+                                "game" + JsonExtensionHelper.ToString(JsonExtensionType.Default)
+                            )
+                        )
+                        .NormalizePath()
+                );
+                (string? rulePath, string expectedRulePath) = JsonExtensionHelper.MaybeJsonWithComments(
+                    VFS.GetRelativePath(
+                            VFS.FileSystem.Cwd,
+                            options.GetValueOrDefault(
+                                "rules",
+                                "rules" + JsonExtensionHelper.ToString(JsonExtensionType.Default)
+                            )
+                        )
+                        .NormalizePath()
+                );
 
-                if (!VFS.Exists(gamePath))
+                if (gamePath is null)
                 {
-                    NotificationProvider.Error("error.readfile", gamePath);
+                    NotificationProvider.Error("error.readfile", expectedGamePath);
                     return;
                 }
 
-                if (!VFS.Exists(rulePath))
+                if (rulePath is null)
                 {
-                    NotificationProvider.Error("error.readfile", rulePath);
+                    NotificationProvider.Error("error.readfile", expectedRulePath);
                     return;
                 }
 

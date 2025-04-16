@@ -19,6 +19,7 @@
 using DDO.Launcher.Base.Models;
 using MiniCommon.BuildInfo;
 using MiniCommon.IO;
+using MiniCommon.IO.Helpers;
 using MiniCommon.Providers;
 
 namespace DDO.Launcher.Base.Providers;
@@ -34,10 +35,13 @@ public static class SettingsProvider
     /// </summary>
     public static void FirstRun()
     {
-        if (!VFS.Exists(_settingsFilePath))
+        (string? resultSettingsFilePath, string expectedSettingsFilePath) = JsonExtensionHelper.MaybeJsonWithComments(
+            _settingsFilePath
+        );
+        if (resultSettingsFilePath is null)
         {
             NotificationProvider.Warn("launcher.settings.missing", SettingsFileName, AssemblyConstants.DataDirectory);
-            NotificationProvider.Info("launcher.settings.setup", _settingsFilePath);
+            NotificationProvider.Info("launcher.settings.setup", expectedSettingsFilePath);
             ServerInfo serverInfo = new()
             {
                 ServerName = "Default",
@@ -59,10 +63,10 @@ public static class SettingsProvider
                 LocalMode = false,
             };
 
-            Json.Save(_settingsFilePath, settings, SettingsContext.Default);
+            Json.Save(expectedSettingsFilePath, settings, SettingsContext.Default);
         }
 
-        NotificationProvider.Info("launcher.settings.using", _settingsFilePath);
+        NotificationProvider.Info("launcher.settings.using", expectedSettingsFilePath);
     }
 
     /// <summary>
@@ -70,16 +74,20 @@ public static class SettingsProvider
     /// </summary>
     public static void Save(Settings settings)
     {
-        NotificationProvider.Info("launcher.settings.save", _settingsFilePath);
+        (string? resultSettingsFilePath, string expectedSettingsFilePath) = JsonExtensionHelper.MaybeJsonWithComments(
+            _settingsFilePath
+        );
 
-        if (!VFS.Exists(_settingsFilePath))
+        NotificationProvider.Info("launcher.settings.save", expectedSettingsFilePath);
+
+        if (resultSettingsFilePath is null)
             return;
 
         Settings? existingSettings = Load();
         if (existingSettings == settings)
             return;
 
-        Json.Save(_settingsFilePath, settings, SettingsContext.Default);
+        Json.Save(expectedSettingsFilePath, settings, SettingsContext.Default);
     }
 
     /// <summary>
@@ -87,11 +95,15 @@ public static class SettingsProvider
     /// </summary>
     public static Settings? Load()
     {
-        NotificationProvider.Info("launcher.settings.load", _settingsFilePath);
+        (string? resultSettingsFilePath, string expectedSettingsFilePath) = JsonExtensionHelper.MaybeJsonWithComments(
+            _settingsFilePath
+        );
 
-        if (VFS.Exists(_settingsFilePath))
+        NotificationProvider.Info("launcher.settings.load", expectedSettingsFilePath);
+
+        if (resultSettingsFilePath is not null)
         {
-            Settings? inputJson = Json.Load<Settings>(_settingsFilePath, SettingsContext.Default);
+            Settings? inputJson = Json.Load<Settings>(resultSettingsFilePath!, SettingsContext.Default);
             if (inputJson is not null)
                 return inputJson;
 

@@ -18,6 +18,8 @@
 
 using MiniCommon.Enums;
 using MiniCommon.IO;
+using MiniCommon.IO.Enums;
+using MiniCommon.IO.Helpers;
 
 namespace MiniCommon.Resolvers;
 
@@ -26,6 +28,22 @@ public static class LocalizationPathResolver
     /// <summary>
     /// The language file path specified by the Language.
     /// </summary>
-    public static string LanguageFilePath(string filepath, Language language) =>
-        VFS.FromCwd(filepath, $"localization.{LanguageResolver.ToString(language)}.json");
+    public static string? LanguageFilePath(string filepath, Language language) =>
+        JsonExtensionHelper
+            .MaybeJsonWithComments(
+                VFS.FromCwd(
+                    filepath,
+                    $"localization.{LanguageResolver.ToString(language)}{JsonExtensionHelper.ToString(JsonExtensionType.Default)}"
+                )
+            )
+            .Result;
+
+    /// <summary>
+    /// The default language file path specified by the Language.
+    /// </summary>
+    public static string DefaultLanguageFilePath(string filepath, Language language) =>
+        VFS.FromCwd(
+            filepath,
+            $"localization.{LanguageResolver.ToString(language)}{JsonExtensionHelper.ToString(JsonExtensionType.Default)}"
+        );
 }
