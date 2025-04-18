@@ -46,6 +46,52 @@ public class FileGlobber(StringComparison comparisonType = StringComparison.Ordi
     }
 
     /// <inheritdoc/>
+    public override List<string> IncludePatterns
+    {
+        init
+        {
+            if (Validate.For.IsNullOrEmpty(value, NativeLogLevel.Fatal))
+                return;
+            base.IncludePatterns = value;
+        }
+    }
+
+    /// <inheritdoc/>
+    public override List<string> ExcludePatterns
+    {
+        init
+        {
+            if (Validate.For.IsNullOrEmpty(value, NativeLogLevel.Fatal))
+                return;
+            base.ExcludePatterns = value;
+        }
+    }
+
+    /// <inheritdoc/>
+    public override List<string> RegexIncludePatterns
+    {
+        get => base.RegexIncludePatterns;
+        init
+        {
+            if (Validate.For.IsNullOrEmpty(value, NativeLogLevel.Fatal))
+                return;
+            base.RegexIncludePatterns = value;
+        }
+    }
+
+    /// <inheritdoc/>
+    public override List<string> RegexExcludePatterns
+    {
+        get => base.RegexExcludePatterns;
+        init
+        {
+            if (Validate.For.IsNullOrEmpty(value, NativeLogLevel.Fatal))
+                return;
+            base.RegexExcludePatterns = value;
+        }
+    }
+
+    /// <inheritdoc/>
     public override void AddIncludePatterns(List<string> patterns)
     {
         if (Validate.For.IsNullOrEmpty(patterns, NativeLogLevel.Fatal))
@@ -59,5 +105,21 @@ public class FileGlobber(StringComparison comparisonType = StringComparison.Ordi
         if (Validate.For.IsNullOrEmpty(patterns, NativeLogLevel.Fatal))
             return;
         base.AddExcludePatterns(patterns);
+    }
+
+    /// <inheritdoc/>
+    public override void AddRegexIncludePatterns(List<string> patterns)
+    {
+        if (Validate.For.IsNullOrEmpty(patterns, NativeLogLevel.Fatal))
+            return;
+        base.AddRegexIncludePatterns(patterns);
+    }
+
+    /// <inheritdoc/>
+    public override void AddRegexExcludePatterns(List<string> patterns)
+    {
+        if (Validate.For.IsNullOrEmpty(patterns, NativeLogLevel.Fatal))
+            return;
+        base.AddRegexExcludePatterns(patterns);
     }
 }

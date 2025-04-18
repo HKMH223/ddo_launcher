@@ -18,9 +18,12 @@
 
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using DDO.ModManager.Base.NativePC.Helpers;
 using MiniCommon.Extensions;
+using MiniCommon.Extensions.FileGlobber;
 using MiniCommon.IO;
 using MiniCommon.Validation;
 using MiniCommon.Validation.Operators;
@@ -52,10 +55,34 @@ public class NtPcRules
     /// </summary>
     public static NtPcRules? Read(string path)
     {
-        NtPcRules? rules = Json.Deserialize<NtPcRules>(VFS.ReadAllText(path), NtPcRulesContext.Default);
+        if (Validate.For.IsNullOrWhiteSpace([path]))
+            return default;
 
+        NtPcRules? rules = Json.Deserialize<NtPcRules>(VFS.ReadAllText(path), NtPcRulesContext.Default);
         if (Validate.For.IsNull(rules))
             return default;
+
+        FileGlobber globber = new()
+        {
+            IncludePatterns =
+            [
+                $"{VFS.GetFileNameWithoutExtension(path)}.*.json",
+                $"{VFS.GetFileNameWithoutExtension(path)}.*.jsonc",
+            ],
+            RegexIncludePatterns =
+            [
+                @$"^{VFS.GetFileNameWithoutExtension(path)}\.[a-zA-Z0-9]+\.json$",
+                @$"^{VFS.GetFileNameWithoutExtension(path)}\.[a-zA-Z0-9]+\.jsonc$",
+            ],
+        };
+
+        globber
+            .Match(VFS.GetFullPath(VFS.GetDirectoryName(path)))
+            .Select(addon => Json.Deserialize<NtPcRules>(VFS.ReadAllText(addon), NtPcRulesContext.Default))
+            .Where(addonRules => addonRules is not null)
+            .ToList()
+            .ForEach(addonRules => rules!.ConcatWith(addonRules!));
+
         return rules!;
     }
 

@@ -17,6 +17,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
@@ -102,5 +103,19 @@ public static class CryptographyHelper
         digestedHash[8] = (byte)((digestedHash[8] & 0x3f) | 0x80);
         string encoded = BitConverter.ToString(digestedHash).Replace("-", string.Empty).ToLower();
         return encoded;
+    }
+
+    /// <summary>
+    /// Computes a combined hash code for a sequence of string patterns.
+    /// </summary>
+    public static int ComputeHash(List<string> patterns)
+    {
+        unchecked
+        {
+            int hash = 17;
+            foreach (string pattern in patterns)
+                hash = (hash * 23) + pattern.GetHashCode();
+            return hash;
+        }
     }
 }

@@ -36,10 +36,45 @@ public interface IBaseFileGlobber
     /// <summary>
     /// Add include patterns to the file matcher.
     /// </summary>
+    public abstract List<string> IncludePatterns { init; }
+
+    /// <summary>
+    /// Add exclude patterns to the file matcher.
+    /// </summary>
+    public abstract List<string> ExcludePatterns { init; }
+
+    /// <summary>
+    /// Add regex include patterns to the file matcher.
+    /// </summary>
+    public abstract List<string> RegexIncludePatterns { init; }
+
+    /// <summary>
+    /// Add regex exclude patterns to the file matcher.
+    /// </summary>
+    public abstract List<string> RegexExcludePatterns { init; }
+
+    /// <summary>
+    /// Add include patterns to the file matcher.
+    /// </summary>
     public abstract void AddIncludePatterns(List<string> patterns);
 
     /// <summary>
     /// Add exclude patterns to the file matcher.
     /// </summary>
     public abstract void AddExcludePatterns(List<string> patterns);
+
+    /// <summary>
+    /// Add regex include patterns to the file matcher.
+    /// </summary>
+    public abstract void AddRegexIncludePatterns(List<string> patterns);
+
+    /// <summary>
+    /// Add regex exclude patterns to the file matcher.
+    /// </summary>
+    public abstract void AddRegexExcludePatterns(List<string> patterns);
+
+    /// <summary>
+    /// Compile Regex patterns used by RegexIncludePatterns() and RegexExcludePatterns().
+    /// </summary>
+    public abstract void CompileRegexPatterns();
 }

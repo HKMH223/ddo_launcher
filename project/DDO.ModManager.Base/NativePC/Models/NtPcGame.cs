@@ -55,6 +55,9 @@ public class NtPcGame
     /// </summary>
     public static NtPcGame? Read(string path)
     {
+        if (Validate.For.IsNullOrWhiteSpace([path]))
+            return default;
+
         NtPcGame? game = Json.Deserialize<NtPcGame>(VFS.ReadAllText(path), NtPcGameContext.Default);
 
         if (Validate.For.IsNull(game))

@@ -17,11 +17,15 @@
  */
 
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MiniCommon.Extensions;
 
 public static class ListExt
 {
+    /// <summary>
+    /// Moves a specified entry within a list to a new index. If the entry is not found, the list remains unchanged.
+    /// </summary>
     public static List<T> MoveEntry<T>(this List<T> list, T entry, int newIndex)
     {
         int currentIndex = list.IndexOf(entry);
@@ -41,5 +45,22 @@ public static class ListExt
         }
 
         return list;
+    }
+
+    /// <summary>
+    /// Merges two lists into one, removing duplicate entries. If either list is null, the other is returned.
+    /// </summary>
+    public static List<T> Merge<T>(this List<T>? first, List<T>? second)
+    {
+        if (first is null && second is null)
+            return [];
+
+        if (first is null)
+            return new List<T>(second!);
+
+        if (second is null)
+            return new List<T>(first);
+
+        return first.Concat(second).Distinct().ToList();
     }
 }
