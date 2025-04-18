@@ -38,6 +38,7 @@ static class Program
     public static async Task Main(string[] args)
     {
         AssemblyConstants.AssemblyName = "DDO.Launcher.Cli";
+        AssemblyConstants.DataDirectory = ".ddo_launcher";
 
         VFS.FileSystem.Cwd = AppDomain.CurrentDomain.BaseDirectory;
 

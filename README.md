@@ -48,7 +48,7 @@ All non-machine translation contributions for any languages are welcome.
 
 Contribution Guidelines are not required for translation contributions.
 
-- English [View](./project/DDO.Resources/.data/localization/localization.en.json)
+- English [View](./project/DDO.Resources/.ddo_launcher/localization/localization.en.json)
 
 ## Contribution Guidelines
 If you would like to contribute to `DDO.Launcher` please take the time to carefully read the guidelines below.

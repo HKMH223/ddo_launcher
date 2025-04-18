@@ -37,6 +37,8 @@ internal static class Program
     private static async Task Main(string[] args)
     {
         AssemblyConstants.AssemblyName = "CodeAnalyzers";
+        AssemblyConstants.DataDirectory = ".ddo_launcher";
+
         VFS.FileSystem.Cwd = AppDomain.CurrentDomain.BaseDirectory;
 
         Console.Title = "CodeAnalyzers";

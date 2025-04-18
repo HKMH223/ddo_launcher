@@ -41,6 +41,7 @@ static class Program
     {
         // Call necessary functions before starting the Avalonia application.
         AssemblyConstants.AssemblyName = "DDO.Launcher";
+        AssemblyConstants.DataDirectory = ".ddo_launcher";
 
         VFS.FileSystem.Cwd = AppDomain.CurrentDomain.BaseDirectory;
 
