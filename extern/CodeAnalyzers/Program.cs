@@ -43,8 +43,8 @@ internal static class Program
 
         Console.Title = "CodeAnalyzers";
         Log.Add(new NativeLogger(NativeLogLevel.Info));
-        Log.Add(new FileStreamLogger(AssemblyConstants.LogFilePath, NativeLogLevel.Info));
-        LocalizationProvider.Init(AssemblyConstants.LocalizationPath, Language.ENGLISH);
+        Log.Add(new FileStreamLogger(AssemblyConstants.LogFilePath(), NativeLogLevel.Info));
+        LocalizationProvider.Init(AssemblyConstants.LocalizationPath(), Language.ENGLISH);
         NotificationProvider.OnNotificationAdded(
             (Notification notification) => Log.Base(notification.LogLevel, notification.Message)
         );

@@ -44,7 +44,7 @@ static class Program
         VFS.FileSystem.Cwd = AppDomain.CurrentDomain.BaseDirectory;
 
         Log.Add(new NativeLogger(NativeLogLevel.Info, CensorLevel.REDACT));
-        Log.Add(new FileStreamLogger(AssemblyConstants.LogFilePath, NativeLogLevel.Info, CensorLevel.REDACT));
+        Log.Add(new FileStreamLogger(AssemblyConstants.LogFilePath(), NativeLogLevel.Info, CensorLevel.REDACT));
         await ServiceManager.Init();
 
         if (args.Length != 0)

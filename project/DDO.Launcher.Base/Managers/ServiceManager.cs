@@ -43,7 +43,7 @@ public static class ServiceManager
     {
         try
         {
-            LocalizationProvider.Init(AssemblyConstants.LocalizationPath, Language.ENGLISH);
+            LocalizationProvider.Init(AssemblyConstants.LocalizationPath(), Language.ENGLISH);
             NotificationProvider.OnNotificationAdded(
                 (Notification notification) => Log.Base(notification.LogLevel, notification.Message)
             );

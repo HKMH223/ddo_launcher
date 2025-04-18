@@ -28,15 +28,11 @@ public static class AssemblyConstants
     public static string DataDirectory { get; set; } = ".data";
     public static string LocalizationDirectory { get; set; } = "localization";
     public static string LogsDirectory { get; set; } = "logs";
-    public static readonly string LogFilePath = VFS.FromCwd(
-        DataDirectory,
-        LogsDirectory,
-        $"{DateTime.Now:yyyy-MM-dd-HH-mm-ss}.log"
-    );
-    public static readonly string LocalizationPath = VFS.FromCwd(
-        DataDirectory,
-        LocalizationDirectory
-    );
+
+    public static string LogFilePath() =>
+        VFS.FromCwd(DataDirectory, LogsDirectory, $"{DateTime.Now:yyyy-MM-dd-HH-mm-ss}.log");
+
+    public static string LocalizationPath() => VFS.FromCwd(DataDirectory, LocalizationDirectory);
 
     public static List<string> WatermarkText() =>
         [AssemblyName, "This work is free of charge", "If you paid money, you were scammed"];
