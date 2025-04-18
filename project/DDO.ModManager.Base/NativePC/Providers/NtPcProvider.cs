@@ -132,6 +132,7 @@ public static class NtPcProvider
                                 NtPcRules = rules,
                                 Exclusions = exclusions,
                                 HookNames = [],
+                                LogLevel = game.LogLevel,
                                 CreateCRC32s = game.CreateCRC32s,
                             }
                         ) is
@@ -160,6 +161,7 @@ public static class NtPcProvider
                         NtPcRules = rules,
                         Exclusions = exclusions,
                         HookNames = hookNames,
+                        LogLevel = game.LogLevel,
                         CreateCRC32s = game.CreateCRC32s,
                     }
                 ) is
@@ -178,6 +180,7 @@ public static class NtPcProvider
                         Destination = destination,
                         NtPcRules = rules,
                         HookNames = hookNames,
+                        LogLevel = game.LogLevel,
                         CreateCRC32s = game.CreateCRC32s,
                     }
                 ) is
@@ -196,6 +199,7 @@ public static class NtPcProvider
                     Destination = destination,
                     NtPcRules = rules,
                     HookNames = [],
+                    LogLevel = game.LogLevel,
                     CreateCRC32s = game.CreateCRC32s,
                 }
             ) is

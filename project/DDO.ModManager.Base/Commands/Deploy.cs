@@ -133,10 +133,12 @@ public class Deploy : IBaseCommand<object>
                     return;
                 }
 
+                NotificationProvider.Info("ntpc.working");
                 ExtractHelper.Extract(modPath, tempPath, game);
                 NtPcProvider.DeleteDirectory(outputPath);
                 NtPcProvider.Deploy(tempPath, outputPath, game, rules!);
                 NtPcProvider.DeleteDirectory(tempPath);
+                NotificationProvider.Info("ntpc.done");
             }
         );
 

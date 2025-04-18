@@ -45,6 +45,9 @@ public class NtPcGame
     [JsonPropertyName("Engine")]
     public NtPcEngine? Engine { get; set; }
 
+    [JsonPropertyName("LogLevel")]
+    public string? LogLevel { get; set; }
+
     [JsonPropertyName("CreateCRC32s")]
     public bool CreateCRC32s { get; set; }
 

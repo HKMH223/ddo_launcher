@@ -53,7 +53,8 @@ public class SevenZipService
             SevenZipPathResolver.SevenZipPath(SevenZipSettings),
             string.Format(args!, source, destination),
             Environment.CurrentDirectory,
-            false
+            SevenZipSettings!.UseShellExecute,
+            SevenZipSettings!.Silent
         );
     }
 
@@ -73,7 +74,8 @@ public class SevenZipService
             SevenZipPathResolver.SevenZipPath(SevenZipSettings),
             string.Format(args!, source, destination),
             Environment.CurrentDirectory,
-            false
+            SevenZipSettings!.UseShellExecute,
+            SevenZipSettings!.Silent
         );
     }
 }

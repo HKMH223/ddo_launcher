@@ -46,6 +46,9 @@ public class CopyOptions
     [JsonPropertyName("HookNames")]
     public List<string>? HookNames { get; set; }
 
+    [JsonPropertyName("LogLevel")]
+    public string? LogLevel { get; set; }
+
     [JsonPropertyName("CreateCRC32s")]
     public bool CreateCRC32s { get; set; }
 

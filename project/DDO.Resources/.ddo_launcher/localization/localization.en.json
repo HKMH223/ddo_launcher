@@ -62,6 +62,8 @@
         "ddo.register.success": "Successfully registered account.",
         "ddo.login.failed": "Log-in failure. View log for details.",
         "ddo.login.local": "Using local mode for log-in.",
+        "ntpc.working": "... WORKING",
+        "ntpc.done": "... DONE",
         "ntpc.copy": "Copying: {0} to {1}",
         "ntpc.missing": "File: {0} is invalid or does not exist.",
         "ntpc.unsupported": "Unsupported file type: {0}, {1}."

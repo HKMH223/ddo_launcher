@@ -59,6 +59,7 @@ public static class DDOLauncher
             MLaunchOptions.DefaultArguments(settings!, token!)?.Arguments()?.Build() ?? Validate.For.EmptyString(),
             workingDirectory,
             true,
+            false,
             settings.RequireAdmin == true
                 ? ProcessActionResolver.ToString(ProcessAction.OPEN)
                 : ProcessActionResolver.ToString(ProcessAction.RUNAS)

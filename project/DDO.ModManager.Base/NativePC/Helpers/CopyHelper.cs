@@ -20,6 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using DDO.Launcher.Base.Resolvers;
 using DDO.ModManager.Base.NativePC.Helpers.Models;
 using DDO.ModManager.Base.NativePC.Models;
 using MiniCommon.Extensions;
@@ -159,6 +160,7 @@ public static class CopyHelper
                             Rename = (dest) => RenameDestination(options.Source!, dest, options.NtPcRules!),
                             IgnorePrefixes = [.. options.NtPcRules!.IgnorePrefixes ?? Validate.For.EmptyList<string>()],
                             HookNames = options.HookNames!,
+                            LogLevel = options.LogLevel!,
                             CreateCRC32s = options.CreateCRC32s,
                         }
                     ),
@@ -193,6 +195,7 @@ public static class CopyHelper
                 Rename = (dest) => RenameDestination(options.Source!, dest, options.NtPcRules!),
                 IgnorePrefixes = [.. options.NtPcRules!.IgnorePrefixes ?? Validate.For.EmptyList<string>()],
                 HookNames = options.HookNames!,
+                LogLevel = options.LogLevel!,
                 CreateCRC32s = options.CreateCRC32s,
             }
         );
@@ -235,6 +238,7 @@ public static class CopyHelper
                             Rename = (dest) => RenameDestination(absoluteSource, dest, options.NtPcRules!),
                             IgnorePrefixes = [.. options.NtPcRules!.IgnorePrefixes ?? Validate.For.EmptyList<string>()],
                             HookNames = options.HookNames!,
+                            LogLevel = options.LogLevel!,
                             CreateCRC32s = options.CreateCRC32s,
                         }
                     ),
@@ -278,6 +282,7 @@ public static class CopyHelper
                     Rename = (dest) => RenameDestination(options.Source!, dest, options.NtPcRules!),
                     IgnorePrefixes = [.. options.NtPcRules!.IgnorePrefixes ?? Validate.For.EmptyList<string>()],
                     HookNames = options.HookNames!,
+                    LogLevel = options.LogLevel!,
                     CreateCRC32s = options.CreateCRC32s,
                 }
             );
@@ -337,7 +342,12 @@ public static class CopyHelper
             {
                 if (options.HookNames!.Contains(VFS.GetFileName(normalizedFilePath)))
                     continue;
-                NotificationProvider.Info("ntpc.copy", normalizedFilePath, newDestination);
+                NotificationProvider.Log(
+                    LogLevelResolver.FromString(options.LogLevel),
+                    "ntpc.copy",
+                    normalizedFilePath,
+                    newDestination
+                );
                 VFS.CopyFile(normalizedFilePath, newDestination);
                 ntPcFiles.Add(
                     new()
@@ -370,7 +380,12 @@ public static class CopyHelper
         {
             if (options.HookNames!.Contains(VFS.GetFileName(normalizedSource)))
                 return [];
-            NotificationProvider.Info("ntpc.copy", normalizedSource, newDestination);
+            NotificationProvider.Log(
+                LogLevelResolver.FromString(options.LogLevel),
+                "ntpc.copy",
+                normalizedSource,
+                newDestination
+            );
             VFS.CopyFile(normalizedSource, newDestination);
             ntPcFiles.Add(
                 new()

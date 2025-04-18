@@ -36,6 +36,7 @@ public static class ProcessHelper
         string arguments,
         string workingDirectory,
         bool useShellExecute = true,
+        bool silent = false,
         string verb = "",
         Dictionary<string, string>? environmentalVariables = null
     )
@@ -65,12 +66,16 @@ public static class ProcessHelper
             {
                 process.OutputDataReceived += (sender, e) =>
                 {
+                    if (silent)
+                        return;
                     if (Validate.For.IsNotNullOrWhiteSpace([e?.Data], NativeLogLevel.Debug))
                         NotificationProvider.PrintLog(DetermineLogType(e!.Data!), e!.Data!);
                 };
 
                 process.ErrorDataReceived += (sender, e) =>
                 {
+                    if (silent)
+                        return;
                     if (Validate.For.IsNotNullOrWhiteSpace([e?.Data], NativeLogLevel.Debug))
                         NotificationProvider.PrintLog(DetermineLogType(e!.Data!), e!.Data!);
                 };
@@ -82,7 +87,8 @@ public static class ProcessHelper
             else
             {
                 process.Start();
-                NotificationProvider.InfoLog(process.StandardOutput.ReadToEnd());
+                if (!silent)
+                    NotificationProvider.InfoLog(process.StandardOutput.ReadToEnd());
             }
 
             process.WaitForExit();

@@ -18,9 +18,12 @@
 
 using System.IO;
 using System.Linq;
+using DDO.Launcher.Base.Resolvers;
 using DDO.ModManager.Base.NativePC.Models;
+using MiniCommon.FileExtractors.Models;
 using MiniCommon.FileExtractors.Services;
 using MiniCommon.IO;
+using MiniCommon.Logger.Enums;
 using MiniCommon.Validation;
 using MiniCommon.Validation.Validators;
 
@@ -43,7 +46,10 @@ public static class ExtractHelper
             return;
 
         FileInfo[] files = VFS.GetFileInfos(basePath, "*", SearchOption.AllDirectories);
-        SevenZipService sevenZip = new(new());
+        SevenZipSettings sevenZipSettings = new();
+        if (LogLevelResolver.FromString(game.LogLevel) == NativeLogLevel.Debug)
+            sevenZipSettings.Silent = true;
+        SevenZipService sevenZip = new(sevenZipSettings);
 
         foreach (FileInfo file in files)
         {

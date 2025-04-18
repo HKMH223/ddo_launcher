@@ -89,5 +89,6 @@
       ]
     }
   },
+  "LogLevel": "DEBUG",
   "CreateCRC32s": true
 }

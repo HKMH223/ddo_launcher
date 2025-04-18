@@ -28,6 +28,10 @@ public class SevenZipSettings
 {
     public string Executable { get; set; } = "7z";
 
+    public bool UseShellExecute { get; set; } = false;
+
+    public bool Silent { get; set; } = false;
+
     public SevenZipSettings() { }
 
     public static MOption[]? DefaultExtractArguments(string source, string destination)
