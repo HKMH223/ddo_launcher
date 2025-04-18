@@ -18,6 +18,9 @@
 
 using System;
 using MiniCommon.Enums;
+using MiniCommon.Logger.Enums;
+using MiniCommon.Validation;
+using MiniCommon.Validation.Validators;
 
 namespace MiniCommon.Resolvers;
 
@@ -33,4 +36,20 @@ public static class LanguageResolver
             Language.CHINESE => "cn",
             _ => throw new ArgumentOutOfRangeException(nameof(type)),
         };
+
+    /// <summary>
+    /// Convert a two character language code to Language.
+    /// </summary>
+    public static Language FromString(string? code)
+    {
+        if (Validate.For.IsNullOrWhiteSpace([code], NativeLogLevel.Fatal))
+            return default;
+
+        return code!.ToLowerInvariant() switch
+        {
+            "en" => Language.ENGLISH,
+            "cn" => Language.CHINESE,
+            _ => throw new ArgumentOutOfRangeException(nameof(code)),
+        };
+    }
 }

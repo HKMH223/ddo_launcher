@@ -34,6 +34,9 @@ public static class AssemblyConstants
 
     public static string LocalizationPath() => VFS.FromCwd(DataDirectory, LocalizationDirectory);
 
+    public static string LocalizationSettingsFilePath() =>
+        VFS.FromCwd(DataDirectory, LocalizationDirectory, $"{LocalizationDirectory}.json");
+
     public static List<string> WatermarkText() =>
         [AssemblyName, "This work is free of charge", "If you paid money, you were scammed"];
 }
