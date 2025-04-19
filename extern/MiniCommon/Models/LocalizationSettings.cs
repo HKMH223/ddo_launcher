@@ -18,10 +18,8 @@
 
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using MiniCommon.Enums;
 using MiniCommon.IO;
 using MiniCommon.IO.Helpers;
-using MiniCommon.Resolvers;
 using MiniCommon.Validation;
 using MiniCommon.Validation.Validators;
 
@@ -32,16 +30,19 @@ public class LocalizationSettings
     [JsonPropertyName("Language")]
     public string? Language { get; set; } = "en";
 
+    [JsonIgnore]
+    public static readonly string? DefaultLanguageCode = "en";
+
     public LocalizationSettings() { }
 
     /// <summary>
-    /// Read and deserialize a file as a LocalizationSettings object, and return the Language type.
+    /// Read and deserialize a file as a LocalizationSettings object, and return the language name.
     /// </summary>
-    public static Language Read(string path)
+    public static string Read(string path)
     {
         (string? result, _) = JsonExtensionHelper.MaybeJsonWithComments(path);
         if (Validate.For.IsNullOrWhiteSpace([path, result]))
-            return Enums.Language.ENGLISH;
+            return DefaultLanguageCode!;
 
         LocalizationSettings? settings = Json.Deserialize<LocalizationSettings>(
             VFS.ReadAllText(result!),
@@ -49,10 +50,10 @@ public class LocalizationSettings
         );
 
         if (Validate.For.IsNull(settings))
-            return Enums.Language.ENGLISH;
+            return DefaultLanguageCode!;
         if (Validate.For.IsNullOrWhiteSpace([settings!.Language]))
-            return Enums.Language.ENGLISH;
-        return LanguageResolver.FromString(settings!.Language);
+            return DefaultLanguageCode!;
+        return settings!.Language!;
     }
 }
 

@@ -16,34 +16,52 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-using MiniCommon.Enums;
 using MiniCommon.IO;
 using MiniCommon.IO.Enums;
 using MiniCommon.IO.Helpers;
+using MiniCommon.Validation;
+using MiniCommon.Validation.Validators;
 
 namespace MiniCommon.Resolvers;
 
 public static class LocalizationPathResolver
 {
     /// <summary>
-    /// The language file path specified by the Language.
+    /// The language file path specified by the language string.
     /// </summary>
-    public static string? LanguageFilePath(string filepath, Language language) =>
-        JsonExtensionHelper
-            .MaybeJsonWithComments(
-                VFS.FromCwd(
-                    filepath,
-                    $"localization.{LanguageResolver.ToString(language)}{JsonExtensionHelper.ToString(JsonExtensionType.Default)}"
-                )
-            )
-            .Result;
+    public static string? LanguageFilePath(string filepath, string language)
+    {
+        string? defaultPath =
+            $"localization.{language}{JsonExtensionHelper.ToString(JsonExtensionType.Default)}";
+        string? optionalPath =
+            $"{language}{JsonExtensionHelper.ToString(JsonExtensionType.Default)}";
+        if (Validate.For.IsNullOrWhiteSpace([defaultPath, optionalPath]))
+            return default;
+        return TryGetLanguageFilePath(filepath, defaultPath)
+            ?? TryGetLanguageFilePath(filepath, optionalPath);
+    }
 
     /// <summary>
-    /// The default language file path specified by the Language.
+    /// The default language file path specified by the language string.
     /// </summary>
-    public static string DefaultLanguageFilePath(string filepath, Language language) =>
+    public static string DefaultLanguageFilePath(string filepath, string language) =>
         VFS.FromCwd(
             filepath,
-            $"localization.{LanguageResolver.ToString(language)}{JsonExtensionHelper.ToString(JsonExtensionType.Default)}"
+            $"localization.{language}{JsonExtensionHelper.ToString(JsonExtensionType.Default)}"
         );
+
+    /// <summary>
+    /// Validate for a language file based on a base path and file name.
+    /// </summary>
+    public static string? TryGetLanguageFilePath(string basePath, string fileName)
+    {
+        string? path = JsonExtensionHelper
+            .MaybeJsonWithComments(VFS.FromCwd(basePath, fileName))
+            .Result;
+        if (Validate.For.IsNullOrWhiteSpace([path]))
+            return default;
+        if (VFS.Exists(path!))
+            return path;
+        return default;
+    }
 }

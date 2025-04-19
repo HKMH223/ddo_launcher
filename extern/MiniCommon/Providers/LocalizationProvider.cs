@@ -34,18 +34,25 @@ public static class LocalizationProvider
     /// </summary>
     public static void Init(
         string filepath,
-        Language language,
+        string language,
         LocalizationDefaultOrder localizationDefaultOrder = LocalizationDefaultOrder.PREPEND,
         bool alwaysSaveNewTranslation = false
     )
     {
         if (
-            language != Language.ENGLISH
-            && LocalizationPathResolver.LanguageFilePath(filepath, Language.ENGLISH) is not null
+            language != LocalizationSettings.DefaultLanguageCode!
+            && LocalizationPathResolver.LanguageFilePath(
+                filepath,
+                LocalizationSettings.DefaultLanguageCode!
+            )
+                is not null
         )
         {
             Localization = Json.Load<Localization>(
-                LocalizationPathResolver.LanguageFilePath(filepath, Language.ENGLISH)!,
+                LocalizationPathResolver.LanguageFilePath(
+                    filepath,
+                    LocalizationSettings.DefaultLanguageCode!
+                )!,
                 LocalizationContext.Default
             );
             if (Localization?.Entries is null)
@@ -72,9 +79,9 @@ public static class LocalizationProvider
 
         Localization!.Entries = Localization
             .Entries.Concat(local.Entries)
-            .GroupBy(a => a)
+            .GroupBy(a => a.Key)
             .Select(a => a.Last())
-            .ToDictionary();
+            .ToDictionary(a => a.Key, a => a.Value);
 
         Localization!.Entries = (
             localizationDefaultOrder == LocalizationDefaultOrder.PREPEND

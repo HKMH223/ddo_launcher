@@ -41,12 +41,12 @@ public static class JsonExtensionHelper
             return (default, path);
         }
 
-        if (VFS.Exists(path)) // ".json"
-            return (path, path);
-
         string jsoncPath = path + "c";
         if (VFS.Exists(jsoncPath)) // ".jsonc"
             return (jsoncPath, path);
+
+        if (VFS.Exists(path)) // ".json"
+            return (path, path);
 
         return (default, path);
     }
