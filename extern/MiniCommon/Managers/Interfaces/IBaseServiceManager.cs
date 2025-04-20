@@ -16,30 +16,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using MiniCommon.Interfaces;
-using MiniCommon.Logger;
 
-namespace DDO.ModManager.Base.Managers;
+namespace MiniCommon.Managers.Interfaces;
 
-public static class CommandManager
+public interface IBaseServiceManager
 {
     /// <summary>
-    /// Register a list of commands to be callable by the program.
+    /// Initialize required services and providers with necessary values.
     /// </summary>
-    public static async Task Init(string[] args, List<IBaseCommand<object>> commands)
-    {
-        try
-        {
-            foreach (IBaseCommand<object> command in commands)
-                await command.Init(args, null);
-        }
-        catch (Exception ex)
-        {
-            Log.Fatal(ex.ToString());
-            return;
-        }
-    }
+    public abstract Task<bool> Initialize<T>(List<IBaseService> services, T instance);
 }

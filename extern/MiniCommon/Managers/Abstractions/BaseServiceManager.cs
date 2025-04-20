@@ -16,11 +16,33 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using MiniCommon.Logger;
+using MiniCommon.Managers.Interfaces;
 
-namespace MiniCommon.Interfaces;
+namespace MiniCommon.Managers.Abstractions;
 
-public interface IBaseCommand<in T>
+public class BaseServiceManager : IBaseServiceManager
 {
-    public abstract Task Initialize(string[] args, T? settings);
+    /// <inheritdoc />
+    public virtual Task<bool> Initialize<T>(List<IBaseService> services, T instance)
+    {
+        try
+        {
+            foreach (IBaseService service in services)
+            {
+                Task<bool> result = service.Initialize(instance);
+                if (!result.Result)
+                    return Task.FromResult(false);
+            }
+            return Task.FromResult(true);
+        }
+        catch (Exception ex)
+        {
+            Log.Fatal(ex.ToString());
+            return Task.FromResult(false);
+        }
+    }
 }

@@ -16,11 +16,31 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+using System;
 using System.Threading.Tasks;
+using MiniCommon.Logger;
+using MiniCommon.Managers.Interfaces;
+using MiniCommon.Models;
+using MiniCommon.Providers;
 
-namespace MiniCommon.Interfaces;
+namespace MiniCommon.Managers.Services;
 
-public interface IBaseCommand<in T>
+public class NotificationService : IBaseService
 {
-    public abstract Task Initialize(string[] args, T? settings);
+    public Task<bool> Initialize<T>(T? _)
+    {
+        try
+        {
+            NotificationProvider.OnNotificationAdded(
+                (Notification notification) => Log.Base(notification.LogLevel, notification.Message)
+            );
+            NotificationProvider.Info("log.initialized");
+            return Task.FromResult(true);
+        }
+        catch (Exception ex)
+        {
+            Log.Fatal(ex.ToString());
+            return Task.FromResult(false);
+        }
+    }
 }

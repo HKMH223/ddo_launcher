@@ -18,9 +18,9 @@
 
 using System.Threading.Tasks;
 
-namespace MiniCommon.Interfaces;
+namespace MiniCommon.Managers.Interfaces;
 
-public interface IBaseCommand<in T>
+public interface IBaseService
 {
-    public abstract Task Initialize(string[] args, T? settings);
+    public abstract Task<bool> Initialize<T>(T? settings);
 }

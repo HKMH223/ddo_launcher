@@ -16,11 +16,27 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+using System;
 using System.Threading.Tasks;
+using MiniCommon.BuildInfo;
+using MiniCommon.Logger;
+using MiniCommon.Managers.Interfaces;
 
-namespace MiniCommon.Interfaces;
+namespace MiniCommon.Managers.Services;
 
-public interface IBaseCommand<in T>
+public class WatermarkService : IBaseService
 {
-    public abstract Task Initialize(string[] args, T? settings);
+    public Task<bool> Initialize<T>(T? _)
+    {
+        try
+        {
+            Watermark.Draw(AssemblyConstants.WatermarkText());
+            return Task.FromResult(true);
+        }
+        catch (Exception ex)
+        {
+            Log.Fatal(ex.ToString());
+            return Task.FromResult(false);
+        }
+    }
 }

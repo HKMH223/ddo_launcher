@@ -42,7 +42,7 @@ public class Deploy : IBaseCommand<object>
     /// Deploy files to an output directory based on a user-specified game and rule JSON object.
     /// Additional parameters take the format of 'key=value' pairs.
     /// </summary>
-    public Task Init(string[] args, object? settings)
+    public Task Initialize(string[] args, object? settings)
     {
         CommandLine.ProcessArgument(
             args,

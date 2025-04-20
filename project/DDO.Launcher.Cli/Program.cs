@@ -18,8 +18,8 @@
 
 using System;
 using System.Threading.Tasks;
+using DDO.Launcher.Base;
 using DDO.Launcher.Base.Commands;
-using DDO.Launcher.Base.Managers;
 using DDO.Launcher.Base.Models;
 using DDO.ModManager.Base.Commands;
 using MiniCommon.BuildInfo;
@@ -44,8 +44,7 @@ static class Program
 
         Log.Add(new NativeLogger(NativeLogLevel.Info, CensorLevel.REDACT));
         Log.Add(new FileStreamLogger(AssemblyConstants.LogFilePath(), NativeLogLevel.Info, CensorLevel.REDACT));
-        await ServiceManager.Init();
-        await CommandManager.Init(
+        await RuntimeManager.Initialize(
             args,
             [new Verifier(), new Patcher(), new Deploy(), new Register(), new Login(), new Help<Settings>()]
         );

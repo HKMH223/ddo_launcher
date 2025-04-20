@@ -19,8 +19,8 @@
 using System;
 using System.Threading.Tasks;
 using Avalonia;
+using DDO.ModManager.Base;
 using DDO.ModManager.Base.Commands;
-using DDO.ModManager.Base.Managers;
 using MiniCommon.BuildInfo;
 using MiniCommon.CommandParser.Commands;
 using MiniCommon.IO;
@@ -45,13 +45,10 @@ static class Program
 
         Log.Add(new NativeLogger(NativeLogLevel.Info, CensorLevel.REDACT));
         Log.Add(new FileStreamLogger(AssemblyConstants.LogFilePath(), NativeLogLevel.Info, CensorLevel.REDACT));
-        await ServiceManager.Init();
+        await RuntimeManager.Initialize(args, [new Deploy(), new Help<object>()]);
 
         if (args.Length != 0)
-        {
-            await CommandManager.Init(args, [new Deploy(), new Help<object>()]);
             return;
-        }
 
         BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
     }

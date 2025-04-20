@@ -37,7 +37,7 @@ public class Login : IBaseCommand<Settings>
     /// Initiate a server login request through the client command line.
     /// Additional parameters take the format of 'key=value' pairs.
     /// </summary>
-    public Task Init(string[] args, Settings? settings)
+    public Task Initialize(string[] args, Settings? settings)
     {
         CommandLine.ProcessArgument(
             args,

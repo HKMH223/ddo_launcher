@@ -16,11 +16,20 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using MiniCommon.Managers.Abstractions;
+using MiniCommon.Managers.Interfaces;
 
-namespace MiniCommon.Interfaces;
+namespace MiniCommon.Managers;
 
-public interface IBaseCommand<in T>
+public class ServiceManager : IServiceManager
 {
-    public abstract Task Initialize(string[] args, T? settings);
+    public static BaseServiceManager Manager { get; } = new();
+
+    /// <inheritdoc />
+    public static Task<bool> Initialize<T>(List<IBaseService> services, T instance)
+    {
+        return Manager.Initialize(services, instance);
+    }
 }

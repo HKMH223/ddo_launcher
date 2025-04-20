@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <AssemblyName>DDO.ModManager.Cli</AssemblyName>
+        <RootNamespace>DDO.ModManager.Cli</RootNamespace>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net8.0</TargetFramework>
+        <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+        <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+        <PublishDir>./bin/publish</PublishDir>
+        <FileVersion>1.0.0.0</FileVersion>
+        <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+        <ApplicationManifest>app.manifest</ApplicationManifest>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+        <!--<PublishAot>true</PublishAot>-->
+        <!--<PublishReadyToRun>true</PublishReadyToRun>-->
+        <PublishSingleFile>true</PublishSingleFile>
+        <BuiltInComInteropSupport>false</BuiltInComInteropSupport>
+        <TrimMode>link</TrimMode>
+        <DebugSymbols>False</DebugSymbols>
+        <DebugType>None</DebugType>
+        <TrimmerRemoveSymbols>true</TrimmerRemoveSymbols>
+    </PropertyGroup>
+    <PropertyGroup>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <Nullable>enable</Nullable>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    </PropertyGroup>
+    <PropertyGroup Condition="Exists('../DDO.Resources.Local/icon.ico')">
+        <ApplicationIcon>../DDO.Resources.Local/icon.ico</ApplicationIcon>
+    </PropertyGroup>
+    <ItemGroup>
+        <AvaloniaResource Include="Assets/**" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="../DDO.ModManager.Base/DDO.ModManager.Base.csproj" />
+    </ItemGroup>
+
+</Project>

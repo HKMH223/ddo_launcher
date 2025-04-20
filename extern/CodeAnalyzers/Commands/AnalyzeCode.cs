@@ -32,7 +32,7 @@ namespace CodeAnalyzers.Commands;
 
 public class AnalyzeCode<T> : IBaseCommand<T>
 {
-    public Task Init(string[] args, T? settings)
+    public Task Initialize(string[] args, T? settings)
     {
         CommandLine.ProcessArgument(
             args,

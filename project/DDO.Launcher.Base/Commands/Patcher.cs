@@ -35,7 +35,7 @@ public class Patcher : IBaseCommand<Settings>
     /// Patch a file from a list of Patch objects.
     /// Additional parameters take the format of 'key=value' pairs.
     /// </summary>
-    public Task Init(string[] args, Settings? settings)
+    public Task Initialize(string[] args, Settings? settings)
     {
         CommandLine.ProcessArgument(
             args,

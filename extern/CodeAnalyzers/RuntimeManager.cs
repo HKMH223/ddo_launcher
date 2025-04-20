@@ -16,11 +16,25 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using MiniCommon.Interfaces;
+using MiniCommon.Managers.Interfaces;
+using MiniCommon.Managers.Services;
+using MManager = MiniCommon.Managers;
 
-namespace MiniCommon.Interfaces;
+namespace CodeAnalyzers;
 
-public interface IBaseCommand<in T>
+public class RuntimeManager : IRuntimeManager<object>
 {
-    public abstract Task Initialize(string[] args, T? settings);
+    public static async Task<bool> Initialize(string[] args, List<IBaseCommand<object>> commands)
+    {
+        bool result = await MManager.ServiceManager.Initialize(
+            [new LocalizationService(), new NotificationService(), new WatermarkService()],
+            new object()
+        );
+        if (args.Length != 0)
+            await MManager.CommandManager.Initialize(args, commands, new object());
+        return result;
+    }
 }

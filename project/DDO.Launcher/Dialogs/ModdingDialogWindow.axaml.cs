@@ -20,7 +20,7 @@ using System.ComponentModel;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Threading;
-using DDO.Launcher.Base.Managers;
+using DDO.Launcher.Base;
 using DDO.ModManager.Base.NativePC.Helpers;
 using DDO.ModManager.Base.NativePC.Models;
 using DDO.ModManager.Base.NativePC.Providers;
@@ -58,7 +58,7 @@ public partial class ModdingDialogWindow : Window, INotifyPropertyChanged
 
     public ModdingDialogWindow()
     {
-        if (ServiceManager.Settings is null)
+        if (RuntimeManager.RuntimeSettings is null)
             NotificationProvider.Warn("log.unhandled.exception", "Settings is null");
 
         InitializeComponent();

@@ -16,30 +16,37 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+using System;
 using System.Threading.Tasks;
-using MiniCommon.CommandParser.Converters;
-using MiniCommon.CommandParser.Helpers;
-using MiniCommon.Interfaces;
+using MiniCommon.Logger;
+using MiniCommon.Managers.Interfaces;
 using MiniCommon.Models;
 using MiniCommon.Providers;
+using MiniCommon.Web;
 
-namespace MiniCommon.CommandParser.Commands;
+namespace MiniCommon.Managers.Services;
 
-public class Help<T> : IBaseCommand<T>
+public class RequestService : IBaseService
 {
-    public Task Initialize(string[] args, T? settings)
+    public Task<bool> Initialize<T>(T? _)
     {
-        CommandLine.ProcessArgument(
-            args,
-            new() { Name = "help" },
-            ArgumentConverter.ToString,
-            _ =>
-            {
-                foreach (Command command in CommandHelper.Commands)
-                    NotificationProvider.InfoLog(command.Usage());
-            }
-        );
-
-        return Task.CompletedTask;
+        try
+        {
+            RequestDataProvider.OnRequestCompleted(
+                (RequestData requestData) =>
+                    NotificationProvider.Info(
+                        "request.get.success",
+                        requestData.URL,
+                        requestData.Elapsed.ToString("c")
+                    )
+            );
+            Request.HttpRequest.HttpClientTimeOut = TimeSpan.FromMinutes(1);
+            return Task.FromResult(true);
+        }
+        catch (Exception ex)
+        {
+            Log.Fatal(ex.ToString());
+            return Task.FromResult(false);
+        }
     }
 }

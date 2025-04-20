@@ -16,11 +16,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using MiniCommon.Interfaces;
 
-namespace MiniCommon.Interfaces;
+namespace MiniCommon.Managers.Interfaces;
 
-public interface IBaseCommand<in T>
+public interface IBaseCommandManager
 {
-    public abstract Task Initialize(string[] args, T? settings);
+    /// <summary>
+    /// Register a list of commands to be callable by the program.
+    /// </summary>
+    public abstract Task Initialize<T>(string[] args, List<IBaseCommand<T>> commands, T instance);
 }

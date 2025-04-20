@@ -16,11 +16,25 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using MiniCommon.Interfaces;
+using MiniCommon.Managers.Abstractions;
+using MiniCommon.Managers.Interfaces;
 
-namespace MiniCommon.Interfaces;
+namespace MiniCommon.Managers;
 
-public interface IBaseCommand<in T>
+public class CommandManager : ICommandManager
 {
-    public abstract Task Initialize(string[] args, T? settings);
+    public static BaseCommandManager Manager { get; } = new();
+
+    /// <inheritdoc />
+    public static async Task Initialize<T>(
+        string[] args,
+        List<IBaseCommand<T>> commands,
+        T instance
+    )
+    {
+        await Manager.Initialize(args, commands, instance);
+    }
 }

@@ -16,11 +16,32 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+using System;
 using System.Threading.Tasks;
+using MiniCommon.BuildInfo;
+using MiniCommon.Logger;
+using MiniCommon.Managers.Interfaces;
+using MiniCommon.Models;
+using MiniCommon.Providers;
 
-namespace MiniCommon.Interfaces;
+namespace MiniCommon.Managers.Services;
 
-public interface IBaseCommand<in T>
+public class LocalizationService : IBaseService
 {
-    public abstract Task Initialize(string[] args, T? settings);
+    public Task<bool> Initialize<T>(T? _)
+    {
+        try
+        {
+            LocalizationProvider.Initialize(
+                AssemblyConstants.LocalizationPath(),
+                LocalizationSettings.Read(AssemblyConstants.LocalizationSettingsFilePath())
+            );
+            return Task.FromResult(true);
+        }
+        catch (Exception ex)
+        {
+            Log.Fatal(ex.ToString());
+            return Task.FromResult(false);
+        }
+    }
 }

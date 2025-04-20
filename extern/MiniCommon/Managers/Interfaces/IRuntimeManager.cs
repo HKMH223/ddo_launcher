@@ -16,11 +16,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using MiniCommon.Interfaces;
 
-namespace MiniCommon.Interfaces;
+namespace MiniCommon.Managers.Interfaces;
 
-public interface IBaseCommand<in T>
+public interface IRuntimeManager<T>
 {
-    public abstract Task Initialize(string[] args, T? settings);
+    public static abstract Task<bool> Initialize(string[] args, List<IBaseCommand<T>> commands);
 }

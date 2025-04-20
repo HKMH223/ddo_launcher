@@ -17,39 +17,32 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using MiniCommon.BuildInfo;
-using MiniCommon.Enums;
+using MiniCommon.Interfaces;
 using MiniCommon.Logger;
-using MiniCommon.Models;
-using MiniCommon.Providers;
+using MiniCommon.Managers.Interfaces;
 
-namespace DDO.ModManager.Base.Managers;
+namespace MiniCommon.Managers.Abstractions;
 
-public static class ServiceManager
+public class BaseCommandManager : IBaseCommandManager
 {
-    /// <summary>
-    /// Initialize required services and providers with necessary values.
-    /// </summary>
-    public static Task<bool> Init()
+    /// <inheritdoc />
+    public virtual async Task Initialize<T>(
+        string[] args,
+        List<IBaseCommand<T>> commands,
+        T instance
+    )
     {
         try
         {
-            LocalizationProvider.Init(
-                AssemblyConstants.LocalizationPath(),
-                LocalizationSettings.Read(AssemblyConstants.LocalizationSettingsFilePath())
-            );
-            NotificationProvider.OnNotificationAdded(
-                (Notification notification) => Log.Base(notification.LogLevel, notification.Message)
-            );
-            NotificationProvider.Info("log.initialized");
-            Watermark.Draw(AssemblyConstants.WatermarkText());
-            return Task.FromResult(true);
+            foreach (IBaseCommand<T> command in commands)
+                await command.Initialize(args, instance);
         }
         catch (Exception ex)
         {
             Log.Fatal(ex.ToString());
-            return Task.FromResult(false);
+            return;
         }
     }
 }

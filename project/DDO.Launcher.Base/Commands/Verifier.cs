@@ -34,7 +34,7 @@ public class Verifier : IBaseCommand<Settings>
     /// Verify file hashes.
     /// Additional parameters take the format of 'key=value' pairs.
     /// </summary>
-    public Task Init(string[] args, Settings? settings)
+    public Task Initialize(string[] args, Settings? settings)
     {
         CommandLine.ProcessArgument(
             args,

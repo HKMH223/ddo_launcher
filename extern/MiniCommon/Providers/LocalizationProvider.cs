@@ -32,7 +32,7 @@ public static class LocalizationProvider
     /// <summary>
     /// Initialize the Localization service.
     /// </summary>
-    public static void Init(
+    public static void Initialize(
         string filepath,
         string language,
         LocalizationDefaultOrder localizationDefaultOrder = LocalizationDefaultOrder.PREPEND,

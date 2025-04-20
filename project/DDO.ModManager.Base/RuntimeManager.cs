@@ -16,33 +16,25 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using DDO.Launcher.Base.Models;
 using MiniCommon.Interfaces;
-using MiniCommon.Logger;
+using MiniCommon.Managers.Interfaces;
+using MiniCommon.Managers.Services;
+using MManager = MiniCommon.Managers;
 
-namespace DDO.Launcher.Base.Managers;
+namespace DDO.ModManager.Base;
 
-public static class CommandManager
+public class RuntimeManager : IRuntimeManager<object>
 {
-    public static Settings? Settings { get; }
-
-    /// <summary>
-    /// Register a list of commands to be callable by the program.
-    /// </summary>
-    public static async Task Init(string[] args, List<IBaseCommand<Settings>> commands)
+    public static async Task<bool> Initialize(string[] args, List<IBaseCommand<object>> commands)
     {
-        try
-        {
-            foreach (IBaseCommand<Settings> command in commands)
-                await command.Init(args, ServiceManager.Settings);
-        }
-        catch (Exception ex)
-        {
-            Log.Fatal(ex.ToString());
-            return;
-        }
+        bool result = await MManager.ServiceManager.Initialize(
+            [new LocalizationService(), new NotificationService(), new WatermarkService()],
+            new object()
+        );
+        if (args.Length != 0)
+            await MManager.CommandManager.Initialize(args, commands, new object());
+        return result;
     }
 }

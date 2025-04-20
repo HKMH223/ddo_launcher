@@ -16,11 +16,30 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+using System;
+using System.Text;
 using System.Threading.Tasks;
+using MiniCommon.Logger;
+using MiniCommon.Managers.Interfaces;
+using MiniCommon.Web;
 
-namespace MiniCommon.Interfaces;
+namespace MiniCommon.Managers.Services;
 
-public interface IBaseCommand<in T>
+public class TcpService : IBaseService
 {
-    public abstract Task Initialize(string[] args, T? settings);
+    public Task<bool> Initialize<T>(T? _)
+    {
+        try
+        {
+            Tcp.TcpClient.ReceiveTimeout = 5000;
+            Tcp.TcpClient.SendTimeout = 5000;
+            Tcp.TcpClient.Encoding = new UTF8Encoding(false);
+            return Task.FromResult(true);
+        }
+        catch (Exception ex)
+        {
+            Log.Fatal(ex.ToString());
+            return Task.FromResult(false);
+        }
+    }
 }

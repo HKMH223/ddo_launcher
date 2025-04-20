@@ -17,13 +17,11 @@
  */
 
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using CodeAnalyzers.Commands;
 using MiniCommon.BuildInfo;
 using MiniCommon.CommandParser.Commands;
-using MiniCommon.Enums;
-using MiniCommon.Interfaces;
+using MiniCommon.CommandParser.Helpers;
 using MiniCommon.IO;
 using MiniCommon.Logger;
 using MiniCommon.Logger.Enums;
@@ -44,24 +42,14 @@ internal static class Program
         Console.Title = "CodeAnalyzers";
         Log.Add(new NativeLogger(NativeLogLevel.Info));
         Log.Add(new FileStreamLogger(AssemblyConstants.LogFilePath(), NativeLogLevel.Info));
-        LocalizationProvider.Init(
-            AssemblyConstants.LocalizationPath(),
-            LocalizationSettings.Read(AssemblyConstants.LocalizationSettingsFilePath())
-        );
-        NotificationProvider.OnNotificationAdded(
-            (Notification notification) => Log.Base(notification.LogLevel, notification.Message)
-        );
-        NotificationProvider.Info("log.initialized");
-        Watermark.Draw(AssemblyConstants.WatermarkText());
+        await RuntimeManager.Initialize(args, [new AnalyzeCode<object>(), new Help<object>()]);
 
         if (args.Length == 0)
-            return;
+        {
+            foreach (Command command in CommandHelper.Commands)
+                NotificationProvider.InfoLog(command.Usage());
+        }
 
-        List<IBaseCommand<object>> commands = [];
-        commands.Add(new AnalyzeCode<object>());
-        commands.Add(new Help<object>());
-
-        foreach (IBaseCommand<object> command in commands)
-            await command.Init(args, null);
+        return;
     }
 }

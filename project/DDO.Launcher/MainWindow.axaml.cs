@@ -21,8 +21,8 @@ using System.ComponentModel;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Threading;
+using DDO.Launcher.Base;
 using DDO.Launcher.Base.Helpers;
-using DDO.Launcher.Base.Managers;
 using DDO.Launcher.Base.Models;
 using DDO.Launcher.Base.Providers;
 using DDO.Launcher.Base.Services;
@@ -91,10 +91,10 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
     public MainWindow()
     {
-        if (ServiceManager.Settings is null)
+        if (RuntimeManager.RuntimeSettings is null)
             NotificationProvider.Warn("log.unhandled.exception", "Settings is null");
 
-        _settings = ServiceManager.Settings ?? new Settings();
+        _settings = RuntimeManager.RuntimeSettings ?? new Settings();
         _accountService = new(_settings);
 
         InitializeComponent();

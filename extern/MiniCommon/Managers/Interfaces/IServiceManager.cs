@@ -16,11 +16,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace MiniCommon.Interfaces;
+namespace MiniCommon.Managers.Interfaces;
 
-public interface IBaseCommand<in T>
+public interface IServiceManager
 {
-    public abstract Task Initialize(string[] args, T? settings);
+    /// <summary>
+    /// Initialize required services and providers with necessary values.
+    /// </summary>
+    public abstract static Task<bool> Initialize<T>(List<IBaseService> services, T instance);
 }

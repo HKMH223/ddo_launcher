@@ -16,30 +16,35 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+using System;
 using System.Threading.Tasks;
-using MiniCommon.CommandParser.Converters;
-using MiniCommon.CommandParser.Helpers;
-using MiniCommon.Interfaces;
-using MiniCommon.Models;
-using MiniCommon.Providers;
+using DDO.Launcher.Base.Models;
+using DDO.Launcher.Base.Providers;
+using MiniCommon.Logger;
+using MiniCommon.Managers.Interfaces;
+using MiniCommon.Validation;
+using MiniCommon.Validation.Validators;
 
-namespace MiniCommon.CommandParser.Commands;
+namespace DDO.Launcher.Base.Services;
 
-public class Help<T> : IBaseCommand<T>
+public class SettingsService : IBaseService
 {
-    public Task Initialize(string[] args, T? settings)
-    {
-        CommandLine.ProcessArgument(
-            args,
-            new() { Name = "help" },
-            ArgumentConverter.ToString,
-            _ =>
-            {
-                foreach (Command command in CommandHelper.Commands)
-                    NotificationProvider.InfoLog(command.Usage());
-            }
-        );
+    public static Settings? Settings { get; set; }
 
-        return Task.CompletedTask;
+    public Task<bool> Initialize<T>(T? _)
+    {
+        try
+        {
+            SettingsProvider.FirstRun();
+            Settings = SettingsProvider.Load();
+            if (Validate.For.IsNull(Settings))
+                return Task.FromResult(false);
+            return Task.FromResult(true);
+        }
+        catch (Exception ex)
+        {
+            Log.Fatal(ex.ToString());
+            return Task.FromResult(false);
+        }
     }
 }
