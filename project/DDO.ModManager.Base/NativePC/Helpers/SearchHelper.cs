@@ -91,7 +91,7 @@ public static class SearchHelper
                     continue;
 
                 if (path.Unsupported == true)
-                    NotificationProvider.Warn("ntpc.unsupported", extension, fileName);
+                    LogProvider.Warn("ntpc.unsupported", extension, fileName);
                 return (VFS.GetDirectoryName(fileName), path);
             }
         }

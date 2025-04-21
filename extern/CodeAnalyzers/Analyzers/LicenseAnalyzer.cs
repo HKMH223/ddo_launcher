@@ -46,7 +46,7 @@ public static class LicenseAnalyzer
             if (!fileData.Contains(license))
             {
                 fail++;
-                NotificationProvider.Error("analyzer.error.license", file);
+                LogProvider.Error("analyzer.error.license", file);
             }
             else
             {
@@ -54,7 +54,7 @@ public static class LicenseAnalyzer
             }
         }
 
-        NotificationProvider.Info(
+        LogProvider.Info(
             "analyzer.output",
             nameof(LicenseAnalyzer),
             success.ToString(),

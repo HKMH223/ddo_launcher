@@ -30,9 +30,9 @@ using MiniCommon.Validation.Operators;
 
 namespace CodeAnalyzers.Commands;
 
-public class AnalyzeCode<T> : IBaseCommand<T>
+public class AnalyzeCode : IBaseCommand
 {
-    public Task Initialize(string[] args, T? settings)
+    public Task Initialize(string[] args)
     {
         CommandLine.ProcessArgument(
             args,

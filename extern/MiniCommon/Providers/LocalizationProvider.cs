@@ -98,7 +98,7 @@ public static class LocalizationProvider
         }
         else
         {
-            NotificationProvider.Error(
+            LogProvider.Error(
                 "error.readfile",
                 LocalizationPathResolver.LanguageFilePath(filepath, language)!
             );

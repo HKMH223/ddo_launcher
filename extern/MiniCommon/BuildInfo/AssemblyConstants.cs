@@ -28,6 +28,9 @@ public static class AssemblyConstants
     public static string DataDirectory { get; set; } = ".data";
     public static string LocalizationDirectory { get; set; } = "localization";
     public static string LogsDirectory { get; set; } = "logs";
+    public static string SettingsFileName { get; set; } = "settings.json";
+
+    public static string SettingsFilePath() => VFS.FromCwd(DataDirectory, SettingsFileName);
 
     public static string LogFilePath() =>
         VFS.FromCwd(DataDirectory, LogsDirectory, $"{DateTime.Now:yyyy-MM-dd-HH-mm-ss}.log");

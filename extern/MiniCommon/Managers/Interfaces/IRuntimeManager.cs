@@ -22,7 +22,7 @@ using MiniCommon.Interfaces;
 
 namespace MiniCommon.Managers.Interfaces;
 
-public interface IRuntimeManager<T>
+public interface IRuntimeManager
 {
-    public static abstract Task<bool> Initialize(string[] args, List<IBaseCommand<T>> commands);
+    public static abstract Task<bool> Initialize(string[] args, List<IBaseCommand> commands);
 }

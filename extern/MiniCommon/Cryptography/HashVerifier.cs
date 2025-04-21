@@ -57,7 +57,7 @@ public static class HashVerifier
         foreach (string file in files)
         {
             string hash = ComputeHash(hashType, file);
-            NotificationProvider.Info("hash.writing", file, hash);
+            LogProvider.Info("hash.writing", file, hash);
             fileData.Add($"{file}={hash}");
         }
 
@@ -74,7 +74,7 @@ public static class HashVerifier
         List<HashVerifiedFile> hashVerifiedFiles = [];
         if (!VFS.Exists(filePath))
         {
-            NotificationProvider.Warn("error.hash.nohash", filePath);
+            LogProvider.Warn("error.hash.nohash", filePath);
             return hashVerifiedFiles;
         }
 
@@ -89,7 +89,7 @@ public static class HashVerifier
         {
             if (!VFS.Exists(key))
             {
-                NotificationProvider.Warn("error.hash.missing", key, value);
+                LogProvider.Warn("error.hash.missing", key, value);
                 hashVerifiedFiles.Add(
                     new()
                     {
@@ -104,7 +104,7 @@ public static class HashVerifier
             string currentHash = ComputeHash(hashType, key);
             if (value != currentHash)
             {
-                NotificationProvider.Warn("error.hash.invalid", key, currentHash, value);
+                LogProvider.Warn("error.hash.invalid", key, currentHash, value);
                 hashVerifiedFiles.Add(
                     new()
                     {
@@ -118,7 +118,7 @@ public static class HashVerifier
 
             if (value == currentHash)
             {
-                NotificationProvider.Info("hash.success", key, currentHash, value);
+                LogProvider.Info("hash.success", key, currentHash, value);
                 hashVerifiedFiles.Add(
                     new()
                     {

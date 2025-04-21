@@ -59,12 +59,12 @@ public class NtPcGame
     public static NtPcGame? Read(string path)
     {
         if (Validate.For.IsNullOrWhiteSpace([path]))
-            return default;
+            return null;
 
         NtPcGame? game = Json.Deserialize<NtPcGame>(VFS.ReadAllText(path), NtPcGameContext.Default);
 
         if (Validate.For.IsNull(game))
-            return default;
+            return null;
         return game!;
     }
 }

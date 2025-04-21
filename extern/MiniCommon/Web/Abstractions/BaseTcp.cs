@@ -45,7 +45,7 @@ public class BaseTcp : IBaseTcp
     {
         try
         {
-            NotificationProvider.Info("tcp.connect", $"{addr}:{port}");
+            LogProvider.Info("tcp.connect", $"{addr}:{port}");
 
             if (_tcpClient is null)
             {
@@ -68,7 +68,7 @@ public class BaseTcp : IBaseTcp
         }
         catch (Exception ex)
         {
-            NotificationProvider.Error(
+            LogProvider.Error(
                 "log.stack.trace",
                 ex.Message,
                 ex.StackTrace ?? LocalizationProvider.Translate("stack.trace.null")
@@ -101,7 +101,7 @@ public class BaseTcp : IBaseTcp
             using StreamWriter writer = new(stream, Encoding);
             using StreamReader reader = new(stream, Encoding);
 
-            NotificationProvider.Info("tcp.request", request);
+            LogProvider.Info("tcp.request", request);
             writer.Write(request);
             writer.Flush();
 
@@ -123,7 +123,7 @@ public class BaseTcp : IBaseTcp
         }
         catch (Exception ex)
         {
-            NotificationProvider.Error(
+            LogProvider.Error(
                 "log.stack.trace",
                 ex.Message,
                 ex.StackTrace ?? LocalizationProvider.Translate("stack.trace.null")

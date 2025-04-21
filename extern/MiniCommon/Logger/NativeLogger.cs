@@ -135,11 +135,11 @@ public partial class NativeLogger : ILogger
     {
         if (e.ExceptionObject is Exception ex)
         {
-            NotificationProvider.Error("log.unhandled.exception", ex.ToString());
+            LogProvider.Error("log.unhandled.exception", ex.ToString());
         }
         else
         {
-            NotificationProvider.Error(
+            LogProvider.Error(
                 "log.unhandled.object",
                 e.ExceptionObject.ToString() ?? Validate.For.EmptyString()
             );

@@ -34,7 +34,7 @@ public static class TimingDecorator
         Stopwatch sw = Stopwatch.StartNew();
         T? result = await func();
         sw.Stop();
-        NotificationProvider.Benchmark("timing.output", methodName, sw.Elapsed.ToString("c"));
+        LogProvider.Benchmark("timing.output", methodName, sw.Elapsed.ToString("c"));
         return result;
     }
 
@@ -43,6 +43,6 @@ public static class TimingDecorator
         Stopwatch sw = Stopwatch.StartNew();
         await func();
         sw.Stop();
-        NotificationProvider.Benchmark("timing.output", memberName, sw.Elapsed.ToString("c"));
+        LogProvider.Benchmark("timing.output", memberName, sw.Elapsed.ToString("c"));
     }
 }

@@ -29,13 +29,15 @@ using MiniCommon.Validation.Validators;
 
 namespace DDO.Launcher.Base.Commands;
 
-public class Patcher : IBaseCommand<Settings>
+public class Patcher(Settings _settings) : IBaseCommand
 {
+    private Settings RuntimeSettings { get; } = _settings;
+
     /// <summary>
     /// Patch a file from a list of Patch objects.
     /// Additional parameters take the format of 'key=value' pairs.
     /// </summary>
-    public Task Initialize(string[] args, Settings? settings)
+    public Task Initialize(string[] args)
     {
         CommandLine.ProcessArgument(
             args,
@@ -52,7 +54,7 @@ public class Patcher : IBaseCommand<Settings>
             },
             options =>
             {
-                if (Validate.For.IsNull(settings))
+                if (Validate.For.IsNull(RuntimeSettings))
                     return;
 
                 string input = options.GetValueOrDefault("input", "");

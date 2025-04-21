@@ -77,7 +77,7 @@ public class BaseValidator<T>
         else
         {
             foreach (string error in _errors)
-                NotificationProvider.PrintLog(level, error);
+                LogProvider.PrintLog(level, error);
         }
         return _errors.Count == 0;
     }

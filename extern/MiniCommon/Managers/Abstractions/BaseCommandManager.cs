@@ -28,16 +28,12 @@ namespace MiniCommon.Managers.Abstractions;
 public class BaseCommandManager : IBaseCommandManager
 {
     /// <inheritdoc />
-    public virtual async Task Initialize<T>(
-        string[] args,
-        List<IBaseCommand<T>> commands,
-        T instance
-    )
+    public virtual async Task Initialize(string[] args, List<IBaseCommand> commands)
     {
         try
         {
-            foreach (IBaseCommand<T> command in commands)
-                await command.Initialize(args, instance);
+            foreach (IBaseCommand command in commands)
+                await command.Initialize(args);
         }
         catch (Exception ex)
         {

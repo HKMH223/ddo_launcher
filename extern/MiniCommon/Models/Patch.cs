@@ -59,7 +59,7 @@ public class Patch
         Patch? rules = Json.Deserialize<Patch>(VFS.ReadAllText(path), PatchContext.Default);
 
         if (Validate.For.IsNull(rules))
-            return default;
+            return null;
         return rules!;
     }
 
@@ -95,7 +95,7 @@ public class Patch
             int index = FindPattern(buffer, patches[i].Pattern!, 0);
             if (index == -1)
             {
-                NotificationProvider.Warn(
+                LogProvider.Warn(
                     "error.patch",
                     (i + 1).ToString(),
                     patches.Count.ToString(),
@@ -111,7 +111,7 @@ public class Patch
                     index + patches[i].Offset,
                     patches[i].Replacement!.Length
                 );
-                NotificationProvider.Info(
+                LogProvider.Info(
                     "patch.success",
                     (i + 1).ToString(),
                     patches.Count.ToString(),

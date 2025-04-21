@@ -28,13 +28,13 @@ namespace MiniCommon.Managers.Services;
 
 public class RequestService : IBaseService
 {
-    public Task<bool> Initialize<T>(T? _)
+    public Task<bool> Initialize()
     {
         try
         {
             RequestDataProvider.OnRequestCompleted(
                 (RequestData requestData) =>
-                    NotificationProvider.Info(
+                    LogProvider.Info(
                         "request.get.success",
                         requestData.URL,
                         requestData.Elapsed.ToString("c")

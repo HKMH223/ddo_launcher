@@ -55,7 +55,7 @@ public static class ClassOperator
     {
         if (string.IsNullOrWhiteSpace(message))
         {
-            NotificationProvider.Log(
+            LogProvider.Log(
                 level,
                 "error.validation.class-shim",
                 memberName,
@@ -65,7 +65,7 @@ public static class ClassOperator
         }
         else
         {
-            NotificationProvider.PrintLog(
+            LogProvider.PrintLog(
                 level,
                 message,
                 memberName,

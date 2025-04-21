@@ -27,13 +27,13 @@ namespace MiniCommon.Managers.Abstractions;
 public class BaseServiceManager : IBaseServiceManager
 {
     /// <inheritdoc />
-    public virtual Task<bool> Initialize<T>(List<IBaseService> services, T instance)
+    public virtual Task<bool> Initialize(List<IBaseService> services)
     {
         try
         {
             foreach (IBaseService service in services)
             {
-                Task<bool> result = service.Initialize(instance);
+                Task<bool> result = service.Initialize();
                 if (!result.Result)
                     return Task.FromResult(false);
             }

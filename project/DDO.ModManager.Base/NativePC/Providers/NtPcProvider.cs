@@ -85,7 +85,7 @@ public static class NtPcProvider
         {
             case PathCheckAction.Warn: // Fall-through
             case PathCheckAction.Deny:
-                NotificationProvider.Error("error.badpath", filepath, check.Target ?? Validate.For.EmptyString());
+                LogProvider.Error("error.badpath", filepath, check.Target ?? Validate.For.EmptyString());
                 break;
             default:
                 throw new NotImplementedException();

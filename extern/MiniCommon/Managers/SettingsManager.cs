@@ -16,15 +16,37 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.Text.Json.Serialization;
+using MiniCommon.Managers.Abstractions;
+using MiniCommon.Managers.Interfaces;
 
-namespace MiniCommon.Managers.Interfaces;
+namespace MiniCommon.Managers;
 
-public interface IBaseServiceManager
+public class SettingsManager<T> : ISettingsManager<T>
+    where T : class
 {
-    /// <summary>
-    /// Initialize required services and providers with necessary values.
-    /// </summary>
-    public abstract Task<bool> Initialize(List<IBaseService> services);
+    public static BaseSettingsManager<T>? Manager { get; private set; }
+
+    public SettingsManager(JsonSerializerContext _ctx)
+    {
+        Manager = new(_ctx);
+    }
+
+    /// <inheritdoc />
+    public void FirstRun(T data)
+    {
+        Manager!.FirstRun(data);
+    }
+
+    /// <inheritdoc />
+    public T? Load()
+    {
+        return Manager!.Load()!;
+    }
+
+    /// <inheritdoc />
+    public void Save(T data)
+    {
+        Manager!.Save(data);
+    }
 }

@@ -21,7 +21,6 @@ using System.Threading.Tasks;
 using Avalonia;
 using DDO.Launcher.Base;
 using DDO.Launcher.Base.Commands;
-using DDO.Launcher.Base.Models;
 using DDO.ModManager.Base.Commands;
 using MiniCommon.BuildInfo;
 using MiniCommon.CommandParser.Commands;
@@ -49,7 +48,14 @@ static class Program
         Log.Add(new FileStreamLogger(AssemblyConstants.LogFilePath(), NativeLogLevel.Info, CensorLevel.REDACT));
         await RuntimeManager.Initialize(
             args,
-            [new Verifier(), new Patcher(), new Deploy(), new Register(), new Login(), new Help<Settings>()]
+            [
+                new Verifier(RuntimeManager.RuntimeSettings!),
+                new Patcher(RuntimeManager.RuntimeSettings!),
+                new Deploy(),
+                new Register(RuntimeManager.RuntimeSettings!),
+                new Login(RuntimeManager.RuntimeSettings!),
+                new Help(),
+            ]
         );
 
         if (args.Length != 0)

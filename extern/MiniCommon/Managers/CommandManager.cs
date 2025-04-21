@@ -29,12 +29,8 @@ public class CommandManager : ICommandManager
     public static BaseCommandManager Manager { get; } = new();
 
     /// <inheritdoc />
-    public static async Task Initialize<T>(
-        string[] args,
-        List<IBaseCommand<T>> commands,
-        T instance
-    )
+    public static async Task Initialize(string[] args, List<IBaseCommand> commands)
     {
-        await Manager.Initialize(args, commands, instance);
+        await Manager.Initialize(args, commands);
     }
 }

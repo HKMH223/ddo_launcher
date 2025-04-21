@@ -70,10 +70,7 @@ public class BaseDialog : IBaseDialog
     /// <inheritdoc/>
     public virtual void Show()
     {
-        NotificationProvider.Info(
-            "avalonia.open.dialog",
-            _dialog.Title ?? Validate.For.EmptyString()
-        );
+        LogProvider.Info("avalonia.open.dialog", _dialog.Title ?? Validate.For.EmptyString());
         _window.IsHitTestVisible = false;
         _dialog.Show();
     }
@@ -99,10 +96,7 @@ public class BaseDialog : IBaseDialog
             Confirmed.SetResult(false);
         }
 
-        NotificationProvider.Info(
-            "avalonia.close.dialog",
-            _dialog.Title ?? Validate.For.EmptyString()
-        );
+        LogProvider.Info("avalonia.close.dialog", _dialog.Title ?? Validate.For.EmptyString());
         _window.IsHitTestVisible = true;
         _dialog.Close();
     }

@@ -24,7 +24,6 @@ using Avalonia.Threading;
 using DDO.Launcher.Base;
 using DDO.Launcher.Base.Helpers;
 using DDO.Launcher.Base.Models;
-using DDO.Launcher.Base.Providers;
 using DDO.Launcher.Base.Services;
 using DDO.Launcher.Dialogs;
 using MiniCommon.BuildInfo;
@@ -44,7 +43,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     private bool _remember = false;
 
     private readonly DDOAccountService _accountService;
-    private readonly Settings _settings;
+    private readonly Settings _runtimeSettings;
 
     public new event PropertyChangedEventHandler? PropertyChanged;
 
@@ -56,7 +55,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             if (_username != value)
             {
                 _username = value;
-                _settings.Account = _username;
+                _runtimeSettings.Account = _username;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Username)));
             }
         }
@@ -70,7 +69,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             if (_password != value)
             {
                 _password = value;
-                _settings.Password = _password;
+                _runtimeSettings.Password = _password;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Password)));
             }
         }
@@ -92,10 +91,10 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     public MainWindow()
     {
         if (RuntimeManager.RuntimeSettings is null)
-            NotificationProvider.Warn("log.unhandled.exception", "Settings is null");
+            LogProvider.Warn("log.unhandled.exception", "Settings is null");
 
-        _settings = RuntimeManager.RuntimeSettings ?? new Settings();
-        _accountService = new(_settings);
+        _runtimeSettings = RuntimeManager.RuntimeSettings ?? new Settings();
+        _accountService = new(_runtimeSettings);
 
         InitializeComponent();
         DataContext = this;
@@ -109,19 +108,19 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
     private void UsernameTextBox_Initialized(object sender, EventArgs e)
     {
-        if (_settings.Account != string.Empty && _settings.Password != string.Empty)
+        if (_runtimeSettings.Account != string.Empty && _runtimeSettings.Password != string.Empty)
         {
-            Username = _settings.Account ?? Validate.For.EmptyString();
-            Password = _settings.Password ?? Validate.For.EmptyString();
+            Username = _runtimeSettings.Account ?? Validate.For.EmptyString();
+            Password = _runtimeSettings.Password ?? Validate.For.EmptyString();
         }
     }
 
     private void RememberMe_Unchecked(object sender, RoutedEventArgs e)
     {
-        Settings settings = _settings;
-        settings.Account = string.Empty;
-        settings.Password = string.Empty;
-        SettingsProvider.Save(settings);
+        Settings runtimeSettings = _runtimeSettings;
+        runtimeSettings.Account = string.Empty;
+        runtimeSettings.Password = string.Empty;
+        RuntimeManager.SettingsManager?.Save(runtimeSettings);
     }
 
     private void ModdingButton_Click(object sender, RoutedEventArgs e)
@@ -136,11 +135,11 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
     private async void RegisterButton_Click(object sender, RoutedEventArgs e)
     {
-        _settings.Account = _username;
-        _settings.Password = _password;
+        _runtimeSettings.Account = _username;
+        _runtimeSettings.Password = _password;
 
         if (_remember)
-            SettingsProvider.Save(_settings);
+            RuntimeManager.SettingsManager?.Save(_runtimeSettings);
 
         IsHitTestVisible = false;
         await RegisterTask();
@@ -148,11 +147,11 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
     private async void LoginButton_Click(object sender, RoutedEventArgs e)
     {
-        _settings.Account = _username;
-        _settings.Password = _password;
+        _runtimeSettings.Account = _username;
+        _runtimeSettings.Password = _password;
 
         if (_remember)
-            SettingsProvider.Save(_settings);
+            RuntimeManager.SettingsManager?.Save(_runtimeSettings);
 
         IsHitTestVisible = false;
         await LoginTask();
@@ -206,7 +205,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
                 return;
             }
 
-            if (!WindowsAdminHelper.IsAdmin() && _settings.RequireAdmin == true)
+            if (!WindowsAdminHelper.IsAdmin() && _runtimeSettings.RequireAdmin == true)
             {
                 new MessageDialog(
                     LocalizationProvider.Translate("avalonia.title.error"),
@@ -216,7 +215,11 @@ public partial class MainWindow : Window, INotifyPropertyChanged
                 return;
             }
 
-            DDOLauncher.Launch(_settings!, _accountService.Token ?? Validate.For.EmptyString(), VFS.FileSystem.Cwd);
+            DDOLauncher.Launch(
+                _runtimeSettings!,
+                _accountService.Token ?? Validate.For.EmptyString(),
+                VFS.FileSystem.Cwd
+            );
         });
     }
 }

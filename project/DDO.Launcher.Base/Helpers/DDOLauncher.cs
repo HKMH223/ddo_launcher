@@ -33,34 +33,36 @@ public static class DDOLauncher
     /// <summary>
     /// Launch the game process.
     /// </summary>
-    public static void Launch(Settings settings, string token, string workingDirectory)
+    public static void Launch(Settings runtimeSettings, string token, string workingDirectory)
     {
         if (
-            Validate.For.IsNull(settings)
-            || Validate.For.IsNullOrWhiteSpace([settings.Executable])
+            Validate.For.IsNull(runtimeSettings)
+            || Validate.For.IsNullOrWhiteSpace([runtimeSettings.Executable])
             || Validate.For.IsNullOrWhiteSpace([workingDirectory])
         )
         {
             return;
         }
 
-        if (!WindowsAdminHelper.IsAdmin() && settings.RequireAdmin == true)
+        if (!WindowsAdminHelper.IsAdmin() && runtimeSettings.RequireAdmin == true)
         {
-            NotificationProvider.Error("error.admin.required");
+            LogProvider.Error("error.admin.required");
             return;
         }
 
-        NotificationProvider.InfoLog(
-            MLaunchOptions.DefaultArguments(settings!, token!)?.Arguments()?.Build() ?? Validate.For.EmptyString()
+        LogProvider.InfoLog(
+            MLaunchOptions.DefaultArguments(runtimeSettings!, token!)?.Arguments()?.Build()
+                ?? Validate.For.EmptyString()
         );
 
         ProcessHelper.RunProcess(
-            PathHelper.MaybeCwd(settings.Executable!, workingDirectory),
-            MLaunchOptions.DefaultArguments(settings!, token!)?.Arguments()?.Build() ?? Validate.For.EmptyString(),
+            PathHelper.MaybeCwd(runtimeSettings.Executable!, workingDirectory),
+            MLaunchOptions.DefaultArguments(runtimeSettings!, token!)?.Arguments()?.Build()
+                ?? Validate.For.EmptyString(),
             workingDirectory,
             true,
             false,
-            settings.RequireAdmin == true
+            runtimeSettings.RequireAdmin == true
                 ? ProcessActionResolver.ToString(ProcessAction.OPEN)
                 : ProcessActionResolver.ToString(ProcessAction.RUNAS)
         );

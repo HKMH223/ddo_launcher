@@ -93,7 +93,7 @@ public class BaseCommandLine : IBaseCommandLine
                     }
                     else
                     {
-                        NotificationProvider.Error("commandline.error", command.Usage());
+                        LogProvider.Error("commandline.error", command.Usage());
                     }
                 }
             }
@@ -164,7 +164,7 @@ public class BaseCommandLine : IBaseCommandLine
                     }
                     else
                     {
-                        NotificationProvider.Error("commandline.error", command.Usage());
+                        LogProvider.Error("commandline.error", command.Usage());
                     }
                 }
             }
@@ -180,7 +180,7 @@ public class BaseCommandLine : IBaseCommandLine
     /// </summary>
     public virtual void LogException(Exception ex)
     {
-        NotificationProvider.Error(
+        LogProvider.Error(
             "log.stack.trace",
             ex.Message,
             ex.StackTrace ?? LocalizationProvider.Translate("stack.trace.null")
@@ -192,7 +192,7 @@ public class BaseCommandLine : IBaseCommandLine
     /// </summary>
     public virtual void Pause()
     {
-        NotificationProvider.Info("commandline.exit", "F");
+        LogProvider.Info("commandline.exit", "F");
 
 #pragma warning disable S108
         while (Console.ReadKey(intercept: true).Key != ConsoleKey.F) { }

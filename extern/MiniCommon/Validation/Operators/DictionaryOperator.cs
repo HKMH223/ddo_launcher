@@ -67,7 +67,7 @@ public static class DictionaryOperator
     {
         if (string.IsNullOrWhiteSpace(message))
         {
-            NotificationProvider.Log(
+            LogProvider.Log(
                 level,
                 "error.validation.list-shim",
                 memberName,
@@ -77,7 +77,7 @@ public static class DictionaryOperator
         }
         else
         {
-            NotificationProvider.PrintLog(
+            LogProvider.PrintLog(
                 level,
                 message,
                 memberName,

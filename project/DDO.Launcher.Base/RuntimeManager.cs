@@ -21,34 +21,35 @@ using System.Threading.Tasks;
 using DDO.Launcher.Base.Models;
 using DDO.Launcher.Base.Services;
 using MiniCommon.Interfaces;
+using MiniCommon.Managers;
 using MiniCommon.Managers.Interfaces;
 using MiniCommon.Managers.Services;
-using MManager = MiniCommon.Managers;
 
 namespace DDO.Launcher.Base;
 
-public class RuntimeManager : IRuntimeManager<Settings>
+public class RuntimeManager : IRuntimeManager
 {
     public static Settings? RuntimeSettings { get; private set; }
+    public static SettingsManager<Settings>? SettingsManager { get; private set; }
 
-    public static async Task<bool> Initialize(string[] args, List<IBaseCommand<Settings>> commands)
+    public static async Task<bool> Initialize(string[] args, List<IBaseCommand> commands)
     {
         SettingsService service = new();
-        bool result = await MManager.ServiceManager.Initialize(
+        bool result = await ServiceManager.Initialize(
             [
                 new LocalizationService(),
-                new NotificationService(),
+                new LogService(),
                 service,
                 new RequestService(),
                 new TcpService(),
                 new WatermarkService(),
-            ],
-            SettingsService.Settings
+            ]
         );
 
-        RuntimeSettings = SettingsService.Settings;
+        RuntimeSettings = SettingsService.RuntimeSettings;
+        SettingsManager = SettingsService.SettingsManager;
         if (args.Length != 0)
-            await MManager.CommandManager.Initialize(args, commands, RuntimeSettings!);
+            await CommandManager.Initialize(args, commands);
         return result;
     }
 }

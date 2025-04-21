@@ -19,22 +19,21 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using MiniCommon.Interfaces;
+using MiniCommon.Managers;
 using MiniCommon.Managers.Interfaces;
 using MiniCommon.Managers.Services;
-using MManager = MiniCommon.Managers;
 
 namespace DDO.ModManager.Base;
 
-public class RuntimeManager : IRuntimeManager<object>
+public class RuntimeManager : IRuntimeManager
 {
-    public static async Task<bool> Initialize(string[] args, List<IBaseCommand<object>> commands)
+    public static async Task<bool> Initialize(string[] args, List<IBaseCommand> commands)
     {
-        bool result = await MManager.ServiceManager.Initialize(
-            [new LocalizationService(), new NotificationService(), new WatermarkService()],
-            new object()
+        bool result = await ServiceManager.Initialize(
+            [new LocalizationService(), new LogService(), new WatermarkService()]
         );
         if (args.Length != 0)
-            await MManager.CommandManager.Initialize(args, commands, new object());
+            await CommandManager.Initialize(args, commands);
         return result;
     }
 }

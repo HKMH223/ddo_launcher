@@ -58,7 +58,7 @@ public class BaseRequest : IBaseHttpRequest
         }
         catch (Exception ex)
         {
-            NotificationProvider.Error(
+            LogProvider.Error(
                 "error.request",
                 request,
                 ex.Message,
@@ -77,7 +77,7 @@ public class BaseRequest : IBaseHttpRequest
         }
         catch (Exception ex)
         {
-            NotificationProvider.Error(
+            LogProvider.Error(
                 "error.request",
                 request,
                 ex.Message,
@@ -96,7 +96,7 @@ public class BaseRequest : IBaseHttpRequest
         }
         catch (Exception ex)
         {
-            NotificationProvider.Error(
+            LogProvider.Error(
                 "error.request",
                 request,
                 ex.Message,
@@ -119,13 +119,13 @@ public class BaseRequest : IBaseHttpRequest
         }
         catch (Exception ex)
         {
-            NotificationProvider.Error(
+            LogProvider.Error(
                 "error.request",
                 request,
                 ex.Message,
                 ex.StackTrace ?? LocalizationProvider.Translate("stack.trace.null")
             );
-            return default;
+            return null;
         }
     }
 
@@ -141,7 +141,7 @@ public class BaseRequest : IBaseHttpRequest
         Stopwatch sw = Stopwatch.StartNew();
         for (int retry = 0; retry < Math.Max(1, Retry); retry++)
         {
-            NotificationProvider.Info("request.get.start", request);
+            LogProvider.Info("request.get.start", request);
             string response;
             string hash;
             try
@@ -149,8 +149,8 @@ public class BaseRequest : IBaseHttpRequest
                 response = await GetStringAsync(request) ?? Validate.For.EmptyString();
                 if (Validate.For.IsNullOrWhiteSpace([response]))
                 {
-                    NotificationProvider.Error("error.download", request);
-                    return default;
+                    LogProvider.Error("error.download", request);
+                    return null;
                 }
                 hash = CryptographyHelper.CreateSHA1(response, encoding);
                 RequestDataProvider.Add(
@@ -162,7 +162,7 @@ public class BaseRequest : IBaseHttpRequest
                 );
                 if (VFS.Exists(filepath) && CryptographyHelper.CreateSHA1(filepath, true) == hash)
                 {
-                    NotificationProvider.Info("request.get.exists", request);
+                    LogProvider.Info("request.get.exists", request);
                     return response;
                 }
 
@@ -171,7 +171,7 @@ public class BaseRequest : IBaseHttpRequest
             }
             catch (Exception ex)
             {
-                NotificationProvider.Error(
+                LogProvider.Error(
                     "error.request",
                     request,
                     ex.Message,
@@ -180,7 +180,7 @@ public class BaseRequest : IBaseHttpRequest
             }
         }
 
-        return default;
+        return null;
     }
 
     /// <inheritdoc />
@@ -193,7 +193,7 @@ public class BaseRequest : IBaseHttpRequest
         Stopwatch sw = Stopwatch.StartNew();
         for (int retry = 0; retry < Math.Max(1, Retry); retry++)
         {
-            NotificationProvider.Info("request.get.start", request);
+            LogProvider.Info("request.get.start", request);
             string response;
             string hash;
             try
@@ -201,8 +201,8 @@ public class BaseRequest : IBaseHttpRequest
                 response = await GetStringAsync(request) ?? Validate.For.EmptyString();
                 if (Validate.For.IsNullOrWhiteSpace([response]))
                 {
-                    NotificationProvider.Error("error.download", request);
-                    return default;
+                    LogProvider.Error("error.download", request);
+                    return null;
                 }
                 hash = CryptographyHelper.CreateSHA1(response, encoding);
                 RequestDataProvider.Add(
@@ -214,7 +214,7 @@ public class BaseRequest : IBaseHttpRequest
                 );
                 if (VFS.Exists(filepath) && CryptographyHelper.CreateSHA1(filepath, true) == hash)
                 {
-                    NotificationProvider.Info("request.get.exists", request);
+                    LogProvider.Info("request.get.exists", request);
                     return response;
                 }
 
@@ -223,7 +223,7 @@ public class BaseRequest : IBaseHttpRequest
             }
             catch (Exception ex)
             {
-                NotificationProvider.Error(
+                LogProvider.Error(
                     "error.request",
                     request,
                     ex.Message,
@@ -232,7 +232,7 @@ public class BaseRequest : IBaseHttpRequest
             }
         }
 
-        return default;
+        return null;
     }
 
     /// <inheritdoc />
@@ -244,7 +244,7 @@ public class BaseRequest : IBaseHttpRequest
         }
         catch (Exception ex)
         {
-            NotificationProvider.Error(
+            LogProvider.Error(
                 "error.request",
                 request,
                 ex.Message,
@@ -260,7 +260,7 @@ public class BaseRequest : IBaseHttpRequest
         if (VFS.Exists(filepath) && CryptographyHelper.CreateSHA256(filepath, true) == hash)
         {
             RequestDataProvider.Add(request, filepath, 0, hash, TimeSpan.Zero);
-            NotificationProvider.Info("request.get.exists", request);
+            LogProvider.Info("request.get.exists", request);
             return true;
         }
         else if (!await Download(request, filepath))
@@ -277,7 +277,7 @@ public class BaseRequest : IBaseHttpRequest
         if (VFS.Exists(filepath) && CryptographyHelper.CreateSHA1(filepath, true) == hash)
         {
             RequestDataProvider.Add(request, filepath, 0, hash, TimeSpan.Zero);
-            NotificationProvider.Info("request.get.exists", request);
+            LogProvider.Info("request.get.exists", request);
             return true;
         }
         else if (!await Download(request, filepath))
@@ -294,7 +294,7 @@ public class BaseRequest : IBaseHttpRequest
         Stopwatch sw = Stopwatch.StartNew();
         for (int retry = 0; retry < Math.Max(1, Retry); retry++)
         {
-            NotificationProvider.Info("request.get.start", request);
+            LogProvider.Info("request.get.start", request);
             HttpResponseMessage response;
             try
             {
@@ -322,7 +322,7 @@ public class BaseRequest : IBaseHttpRequest
             }
             catch (Exception ex)
             {
-                NotificationProvider.Error(
+                LogProvider.Error(
                     "error.request",
                     request,
                     ex.Message,

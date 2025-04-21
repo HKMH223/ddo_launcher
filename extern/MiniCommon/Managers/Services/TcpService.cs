@@ -27,7 +27,7 @@ namespace MiniCommon.Managers.Services;
 
 public class TcpService : IBaseService
 {
-    public Task<bool> Initialize<T>(T? _)
+    public Task<bool> Initialize()
     {
         try
         {

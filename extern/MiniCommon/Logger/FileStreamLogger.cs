@@ -117,11 +117,11 @@ public class FileStreamLogger : ILogger, IDisposable
     {
         if (e.ExceptionObject is Exception ex)
         {
-            NotificationProvider.Error("log.unhandled.exception", ex.ToString());
+            LogProvider.Error("log.unhandled.exception", ex.ToString());
         }
         else
         {
-            NotificationProvider.Error(
+            LogProvider.Error(
                 "log.unhandled.object",
                 e.ExceptionObject.ToString() ?? Validate.For.EmptyString()
             );
@@ -185,7 +185,7 @@ public class FileStreamLogger : ILogger, IDisposable
         }
         catch (Exception ex)
         {
-            NotificationProvider.Error("error.writefile", ex.Message);
+            LogProvider.Error("error.writefile", ex.Message);
         }
     }
 

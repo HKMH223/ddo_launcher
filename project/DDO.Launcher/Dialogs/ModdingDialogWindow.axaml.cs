@@ -59,7 +59,7 @@ public partial class ModdingDialogWindow : Window, INotifyPropertyChanged
     public ModdingDialogWindow()
     {
         if (RuntimeManager.RuntimeSettings is null)
-            NotificationProvider.Warn("log.unhandled.exception", "Settings is null");
+            LogProvider.Warn("log.unhandled.exception", "Settings is null");
 
         InitializeComponent();
         DataContext = this;
@@ -110,13 +110,13 @@ public partial class ModdingDialogWindow : Window, INotifyPropertyChanged
 
         if (gamePath is null)
         {
-            NotificationProvider.Error("error.readfile", expectedGamePath);
+            LogProvider.Error("error.readfile", expectedGamePath);
             return Task.CompletedTask;
         }
 
         if (rulePath is null)
         {
-            NotificationProvider.Error("error.readfile", expectedRulePath);
+            LogProvider.Error("error.readfile", expectedRulePath);
             return Task.CompletedTask;
         }
 
@@ -147,16 +147,16 @@ public partial class ModdingDialogWindow : Window, INotifyPropertyChanged
 
         if (!VFS.Exists(modPath))
         {
-            NotificationProvider.Error("error.readfile", modPath);
+            LogProvider.Error("error.readfile", modPath);
             return Task.CompletedTask;
         }
 
-        NotificationProvider.Info("ntpc.working");
+        LogProvider.Info("ntpc.working");
         ExtractHelper.Extract(modPath, tempPath, game);
         NtPcProvider.DeleteDirectory(outputPath);
         NtPcProvider.Deploy(tempPath, outputPath, game, rules!);
         NtPcProvider.DeleteDirectory(tempPath);
-        NotificationProvider.Info("ntpc.done");
+        LogProvider.Info("ntpc.done");
 
         return Task.CompletedTask;
     }

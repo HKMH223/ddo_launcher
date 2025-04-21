@@ -29,20 +29,24 @@ public static class MLaunchOptions
     /// <summary>
     /// The default arguments to launch the process with.
     /// </summary>
-    public static MOption[]? DefaultArguments(Settings settings, string token)
+    public static MOption[]? DefaultArguments(Settings runtimeSettings, string token)
     {
-        if (Validate.For.IsNull(settings))
+        if (Validate.For.IsNull(runtimeSettings))
             return null;
-        if (Validate.For.IsNull(settings!.ServerInfo))
+        if (Validate.For.IsNull(runtimeSettings!.ServerInfo))
             return null;
 
         return
         [
-            new MOption { Arg = "addr={0}", ArgParams = [settings.ServerInfo!.LobbyIP ?? Validate.For.EmptyString()] },
+            new MOption
+            {
+                Arg = "addr={0}",
+                ArgParams = [runtimeSettings.ServerInfo!.LobbyIP ?? Validate.For.EmptyString()],
+            },
             new MOption
             {
                 Arg = "port={0}",
-                ArgParams = [settings.ServerInfo!.LobbyPort ?? Validate.For.EmptyString()],
+                ArgParams = [runtimeSettings.ServerInfo!.LobbyPort ?? Validate.For.EmptyString()],
             },
             new MOption { Arg = "token={0}", ArgParams = [token ?? Validate.For.EmptyString()] },
             new MOption
@@ -50,8 +54,8 @@ public static class MLaunchOptions
                 Arg = "DL=http://{0}:{1}/win/",
                 ArgParams =
                 [
-                    settings.ServerInfo!.DownloadIP ?? Validate.For.EmptyString(),
-                    settings.ServerInfo!.DownloadPort ?? Validate.For.EmptyString(),
+                    runtimeSettings.ServerInfo!.DownloadIP ?? Validate.For.EmptyString(),
+                    runtimeSettings.ServerInfo!.DownloadPort ?? Validate.For.EmptyString(),
                 ],
             },
             new MOption { Arg = "LVer={0}", ArgParams = ["03.04.003.20181115.0"] },

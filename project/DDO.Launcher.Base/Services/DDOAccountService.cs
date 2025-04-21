@@ -32,13 +32,13 @@ namespace DDO.Launcher.Base.Services;
 public class DDOAccountService
 {
     public string? Token;
-    private readonly Settings? _settings;
+    private readonly Settings? _runtimeSettings;
 
     private DDOAccountService() { }
 
-    public DDOAccountService(Settings? settings)
+    public DDOAccountService(Settings? runtimeSettings)
     {
-        _settings = settings;
+        _runtimeSettings = runtimeSettings;
     }
 
     /// <summary>
@@ -46,15 +46,19 @@ public class DDOAccountService
     /// </summary>
     public bool Login()
     {
-        if (Validate.For.IsNull(_settings))
+        if (Validate.For.IsNull(_runtimeSettings))
             return false;
-        if (Validate.For.IsNull(_settings!.ServerInfo))
+        if (Validate.For.IsNull(_runtimeSettings!.ServerInfo))
             return false;
-        if (Validate.For.IsNullOrWhiteSpace([_settings!.Account, _settings.Password]))
+        if (Validate.For.IsNullOrWhiteSpace([_runtimeSettings!.Account, _runtimeSettings.Password]))
             return false;
         if (
             Validate.For.IsNullOrWhiteSpace(
-                [_settings!.ServerInfo!.AccountAPI, _settings.ServerInfo.DownloadIP, _settings.ServerInfo.DownloadPort]
+                [
+                    _runtimeSettings!.ServerInfo!.AccountAPI,
+                    _runtimeSettings.ServerInfo.DownloadIP,
+                    _runtimeSettings.ServerInfo.DownloadPort,
+                ]
             )
         )
         {
@@ -68,15 +72,19 @@ public class DDOAccountService
     /// </summary>
     public bool Register()
     {
-        if (Validate.For.IsNull(_settings))
+        if (Validate.For.IsNull(_runtimeSettings))
             return false;
-        if (Validate.For.IsNull(_settings!.ServerInfo))
+        if (Validate.For.IsNull(_runtimeSettings!.ServerInfo))
             return false;
-        if (Validate.For.IsNullOrWhiteSpace([_settings!.Account, _settings.Password]))
+        if (Validate.For.IsNullOrWhiteSpace([_runtimeSettings!.Account, _runtimeSettings.Password]))
             return false;
         if (
             Validate.For.IsNullOrWhiteSpace(
-                [_settings!.ServerInfo!.AccountAPI, _settings.ServerInfo.DownloadIP, _settings.ServerInfo.DownloadPort]
+                [
+                    _runtimeSettings!.ServerInfo!.AccountAPI,
+                    _runtimeSettings.ServerInfo.DownloadIP,
+                    _runtimeSettings.ServerInfo.DownloadPort,
+                ]
             )
         )
         {
@@ -90,29 +98,29 @@ public class DDOAccountService
     /// </summary>
     private bool AccountRequest(ActionType action)
     {
-        if (_settings!.LocalMode == true)
+        if (_runtimeSettings!.LocalMode == true)
         {
-            NotificationProvider.Info("ddo.login.local");
-            Token = LoginToken.Generate(_settings!.Account!, _settings.Password!);
+            LogProvider.Info("ddo.login.local");
+            Token = LoginToken.Generate(_runtimeSettings!.Account!, _runtimeSettings.Password!);
             return true;
         }
 
-        if (Tcp.EnsureConnection(_settings!.ServerInfo!.DownloadIP!, _settings.ServerInfo.DownloadPort!))
+        if (Tcp.EnsureConnection(_runtimeSettings!.ServerInfo!.DownloadIP!, _runtimeSettings.ServerInfo.DownloadPort!))
         {
             HttpRequest request = new()
             {
                 Method = "POST",
                 Version = "1.1",
-                Path = _settings.ServerInfo.AccountAPI,
-                Address = _settings.ServerInfo.DownloadIP,
-                Port = _settings.ServerInfo.DownloadPort,
+                Path = _runtimeSettings.ServerInfo.AccountAPI,
+                Address = _runtimeSettings.ServerInfo.DownloadIP,
+                Port = _runtimeSettings.ServerInfo.DownloadPort,
                 ContentType = "application/json",
                 Content = Json.Serialize(
                     new DDORequest()
                     {
                         Action = ActionTypeResolver.ToString(action),
-                        Account = _settings?.Account,
-                        Password = _settings?.Password,
+                        Account = _runtimeSettings?.Account,
+                        Password = _runtimeSettings?.Password,
                         Email = "",
                     },
                     DDORequestContext.Default
@@ -130,11 +138,11 @@ public class DDOAccountService
             {
                 if (response.Error == "Account already exists")
                 {
-                    NotificationProvider.Warn("tcp.error.response", response.Error);
+                    LogProvider.Warn("tcp.error.response", response.Error);
                     return true;
                 }
 
-                NotificationProvider.Error("log.unhandled.exception", response.Error);
+                LogProvider.Error("log.unhandled.exception", response.Error);
                 return false;
             }
 

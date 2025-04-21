@@ -22,5 +22,5 @@ namespace MiniCommon.Managers.Interfaces;
 
 public interface IBaseService
 {
-    public abstract Task<bool> Initialize<T>(T? settings);
+    public abstract Task<bool> Initialize();
 }

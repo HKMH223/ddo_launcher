@@ -48,7 +48,7 @@ public static class LogLevelResolver
     public static NativeLogLevel FromString(string? name)
     {
         if (Validate.For.IsNullOrWhiteSpace([name], NativeLogLevel.Fatal))
-            return default;
+            return NativeLogLevel.Debug;
 
         return name!.ToUpperInvariant() switch
         {

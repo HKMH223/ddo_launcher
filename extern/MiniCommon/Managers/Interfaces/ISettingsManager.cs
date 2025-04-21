@@ -16,15 +16,23 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
 namespace MiniCommon.Managers.Interfaces;
 
-public interface IBaseServiceManager
+public interface ISettingsManager<T>
 {
     /// <summary>
-    /// Initialize required services and providers with necessary values.
+    /// Initialize the Settings service.
+    /// Create a new configuration file if one is not present.
     /// </summary>
-    public abstract Task<bool> Initialize(List<IBaseService> services);
+    public abstract void FirstRun(T data);
+
+    /// <summary>
+    /// Save a Settings object to the Settings file path.
+    /// </summary>
+    public abstract void Save(T settings);
+
+    /// <summary>
+    /// Load a Settings object from the Settings file path.
+    /// </summary>
+    public abstract T? Load();
 }

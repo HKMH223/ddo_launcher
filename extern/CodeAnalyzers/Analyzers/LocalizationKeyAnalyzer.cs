@@ -30,7 +30,7 @@ namespace CodeAnalyzers.Analyzers;
 public static partial class LocalizationKeyAnalyzer
 {
     /// <summary>
-    /// Analyze all files, find all occurences of NotificationService and check that all used localization keys are valid.
+    /// Analyze all files, find all occurences of LogProvider and check that all used localization keys are valid.
     /// </summary>
     public static void Analyze(string[] files, Localization localization)
     {
@@ -45,10 +45,10 @@ public static partial class LocalizationKeyAnalyzer
             if (AnalyzerFiles.Restricted.Exists(file.Contains))
                 continue;
 
-            Regex matchNotification = NotificationRegex();
-            MatchCollection notificationMatches = matchNotification.Matches(VFS.ReadAllText(file));
+            Regex matchLogMessage = LogMessageRegex();
+            MatchCollection logMessageMatches = matchLogMessage.Matches(VFS.ReadAllText(file));
 
-            foreach (Match match in notificationMatches)
+            foreach (Match match in logMessageMatches)
             {
                 Regex matchQuotes = QuoteRegex();
                 Match quoteMatch = matchQuotes.Match(match.Value);
@@ -63,11 +63,7 @@ public static partial class LocalizationKeyAnalyzer
                 )
                 {
                     fail++;
-                    NotificationProvider.Error(
-                        "analyzer.error.localization",
-                        file,
-                        quoteMatch!.Value
-                    );
+                    LogProvider.Error("analyzer.error.localization", file, quoteMatch!.Value);
                 }
                 else
                 {
@@ -76,7 +72,7 @@ public static partial class LocalizationKeyAnalyzer
             }
         }
 
-        NotificationProvider.Info(
+        LogProvider.Info(
             "analyzer.output",
             nameof(LocalizationKeyAnalyzer),
             success.ToString(),
@@ -85,8 +81,8 @@ public static partial class LocalizationKeyAnalyzer
         );
     }
 
-    [GeneratedRegex(@"NotificationProvider\.[^;]*\);(?=\s|$)")]
-    private static partial Regex NotificationRegex();
+    [GeneratedRegex(@"LogProvider\.[^;]*\);(?=\s|$)")]
+    private static partial Regex LogMessageRegex();
 
     [GeneratedRegex("\"([^\"]*)\"")]
     private static partial Regex QuoteRegex();

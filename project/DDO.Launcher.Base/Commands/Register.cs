@@ -28,13 +28,15 @@ using MiniCommon.Validation.Validators;
 
 namespace DDO.Launcher.Base.Commands;
 
-public class Register : IBaseCommand<Settings>
+public class Register(Settings _settings) : IBaseCommand
 {
+    private Settings RuntimeSettings { get; } = _settings;
+
     /// <summary>
     /// Initiate a server regisration request through the client command line.
     /// Additional parameters take the format of 'key=value' pairs.
     /// </summary>
-    public Task Initialize(string[] args, Settings? settings)
+    public Task Initialize(string[] args)
     {
         CommandLine.ProcessArgument(
             args,
@@ -56,30 +58,36 @@ public class Register : IBaseCommand<Settings>
             },
             options =>
             {
-                if (Validate.For.IsNull(settings))
+                if (Validate.For.IsNull(RuntimeSettings))
                     return;
-                if (Validate.For.IsNull(settings!.ServerInfo))
+                if (Validate.For.IsNull(RuntimeSettings!.ServerInfo))
                     return;
 
-                settings!.ServerInfo!.AccountAPI = options.GetValueOrDefault("api", settings!.ServerInfo!.AccountAPI!);
-                settings!.ServerInfo!.DownloadIP = options.GetValueOrDefault(
+                RuntimeSettings!.ServerInfo!.AccountAPI = options.GetValueOrDefault(
+                    "api",
+                    RuntimeSettings!.ServerInfo!.AccountAPI!
+                );
+                RuntimeSettings!.ServerInfo!.DownloadIP = options.GetValueOrDefault(
                     "download-ip",
-                    settings!.ServerInfo!.DownloadIP!
+                    RuntimeSettings!.ServerInfo!.DownloadIP!
                 );
-                settings!.ServerInfo!.DownloadPort = options.GetValueOrDefault(
+                RuntimeSettings!.ServerInfo!.DownloadPort = options.GetValueOrDefault(
                     "download-port",
-                    settings!.ServerInfo!.DownloadPort!
+                    RuntimeSettings!.ServerInfo!.DownloadPort!
                 );
-                settings!.ServerInfo!.LobbyIP = options.GetValueOrDefault("lobby-ip", settings!.ServerInfo!.LobbyIP!);
-                settings!.ServerInfo!.LobbyPort = options.GetValueOrDefault(
+                RuntimeSettings!.ServerInfo!.LobbyIP = options.GetValueOrDefault(
+                    "lobby-ip",
+                    RuntimeSettings!.ServerInfo!.LobbyIP!
+                );
+                RuntimeSettings!.ServerInfo!.LobbyPort = options.GetValueOrDefault(
                     "lobby-port",
-                    settings!.ServerInfo!.LobbyPort!
+                    RuntimeSettings!.ServerInfo!.LobbyPort!
                 );
-                settings!.Account = options.GetValueOrDefault("account", settings!.Account!);
-                settings!.Password = options.GetValueOrDefault("password", settings!.Password!);
-                settings!.Email = options.GetValueOrDefault("email", settings!.Email!);
+                RuntimeSettings!.Account = options.GetValueOrDefault("account", RuntimeSettings!.Account!);
+                RuntimeSettings!.Password = options.GetValueOrDefault("password", RuntimeSettings!.Password!);
+                RuntimeSettings!.Email = options.GetValueOrDefault("email", RuntimeSettings!.Email!);
 
-                DDOAccountService service = new(settings);
+                DDOAccountService service = new(RuntimeSettings);
                 if (!service.Register())
                     return;
             }

@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 
 namespace MiniCommon.Interfaces;
 
-public interface IBaseCommand<in T>
+public interface IBaseCommand
 {
-    public abstract Task Initialize(string[] args, T? settings);
+    public abstract Task Initialize(string[] args);
 }

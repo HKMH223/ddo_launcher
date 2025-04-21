@@ -25,9 +25,9 @@ using MiniCommon.Providers;
 
 namespace MiniCommon.CommandParser.Commands;
 
-public class Help<T> : IBaseCommand<T>
+public class Help : IBaseCommand
 {
-    public Task Initialize(string[] args, T? settings)
+    public Task Initialize(string[] args)
     {
         CommandLine.ProcessArgument(
             args,
@@ -36,7 +36,7 @@ public class Help<T> : IBaseCommand<T>
             _ =>
             {
                 foreach (Command command in CommandHelper.Commands)
-                    NotificationProvider.InfoLog(command.Usage());
+                    LogProvider.InfoLog(command.Usage());
             }
         );
 

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+using System.Linq;
 using System.Runtime.CompilerServices;
 using MiniCommon.Logger.Enums;
 using MiniCommon.Providers;
@@ -115,7 +116,11 @@ public static class StringValidator
     {
         BaseValidator<string> validator = new();
 
-        foreach (string? property in properties ?? [.. Validate.For.EmptyList<string>()])
+        foreach (
+            (string? property, int index) in (
+                properties ?? [.. Validate.For.EmptyList<string>()]
+            ).Select((p, i) => (p, i))
+        )
         {
             if (string.IsNullOrWhiteSpace(message))
             {
@@ -124,7 +129,8 @@ public static class StringValidator
                     propertiesName,
                     memberName,
                     sourceFilePath,
-                    sourceLineNumber.ToString()
+                    sourceLineNumber.ToString(),
+                    index.ToString()
                 );
             }
             else
@@ -134,7 +140,8 @@ public static class StringValidator
                     propertiesName,
                     memberName,
                     sourceFilePath,
-                    sourceLineNumber.ToString()
+                    sourceLineNumber.ToString(),
+                    index.ToString()
                 );
             }
 

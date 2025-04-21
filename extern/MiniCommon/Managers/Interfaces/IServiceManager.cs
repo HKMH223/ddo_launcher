@@ -26,5 +26,5 @@ public interface IServiceManager
     /// <summary>
     /// Initialize required services and providers with necessary values.
     /// </summary>
-    public abstract static Task<bool> Initialize<T>(List<IBaseService> services, T instance);
+    public abstract static Task<bool> Initialize(List<IBaseService> services);
 }

@@ -28,13 +28,15 @@ using MiniCommon.Validation.Validators;
 
 namespace DDO.Launcher.Base.Commands;
 
-public class Verifier : IBaseCommand<Settings>
+public class Verifier(Settings _settings) : IBaseCommand
 {
+    private Settings RuntimeSettings { get; } = _settings;
+
     /// <summary>
     /// Verify file hashes.
     /// Additional parameters take the format of 'key=value' pairs.
     /// </summary>
-    public Task Initialize(string[] args, Settings? settings)
+    public Task Initialize(string[] args)
     {
         CommandLine.ProcessArgument(
             args,
@@ -46,7 +48,7 @@ public class Verifier : IBaseCommand<Settings>
             },
             options =>
             {
-                if (Validate.For.IsNull(settings))
+                if (Validate.For.IsNull(RuntimeSettings))
                     return;
 
                 if (!bool.TryParse(options.GetValueOrDefault("write", "true"), out bool write))

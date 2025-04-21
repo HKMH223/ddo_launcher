@@ -22,26 +22,26 @@ using MiniCommon.Providers;
 
 namespace MiniCommon.Models;
 
-public class Notification
+public class LogMessage
 {
     public DateTime CurrentDateTime { get; set; } = DateTime.Now;
     public NativeLogLevel LogLevel { get; set; }
     public string ID { get; set; }
     public string Message { get; set; }
     public string[]? Params { get; set; }
-    public static event Action<Notification>? OnNotificationAdded;
+    public static event Action<LogMessage>? OnLogMessageAdded;
     public Exception? Exception { get; set; }
 
-    public Notification(NativeLogLevel logLevel, string id, Exception? exception = null)
+    public LogMessage(NativeLogLevel logLevel, string id, Exception? exception = null)
     {
         LogLevel = logLevel;
         ID = id;
         Message = LocalizationProvider.Translate(ID);
         Exception = exception;
-        OnNotificationAdded?.Invoke(this);
+        OnLogMessageAdded?.Invoke(this);
     }
 
-    public Notification(
+    public LogMessage(
         NativeLogLevel logLevel,
         string id,
         string[] _params,
@@ -53,6 +53,6 @@ public class Notification
         Params = _params;
         Message = LocalizationProvider.FormatTranslate(ID, Params);
         Exception = exception;
-        OnNotificationAdded?.Invoke(this);
+        OnLogMessageAdded?.Invoke(this);
     }
 }

@@ -42,12 +42,12 @@ static class Program
 
         Log.Add(new NativeLogger(NativeLogLevel.Info, CensorLevel.REDACT));
         Log.Add(new FileStreamLogger(AssemblyConstants.LogFilePath(), NativeLogLevel.Info, CensorLevel.REDACT));
-        await RuntimeManager.Initialize(args, [new Deploy(), new Help<object>()]);
+        await RuntimeManager.Initialize(args, [new Deploy(), new Help()]);
 
         if (args.Length == 0)
         {
             foreach (Command command in CommandHelper.Commands)
-                NotificationProvider.InfoLog(command.Usage());
+                LogProvider.InfoLog(command.Usage());
         }
 
         return;

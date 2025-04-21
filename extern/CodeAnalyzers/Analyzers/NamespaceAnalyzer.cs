@@ -50,7 +50,7 @@ public static partial class NamespaceAnalyzer
 
             if (Validate.For.IsNullOrWhiteSpace([name], NativeLogLevel.Debug))
             {
-                NotificationProvider.Error(
+                LogProvider.Error(
                     "analyzer.error.namespace",
                     file,
                     name ?? Validate.For.EmptyString(),
@@ -87,7 +87,7 @@ public static partial class NamespaceAnalyzer
                 string newNamespace = "namespace " + directory.Replace("/", ".") + ";";
 
                 fail++;
-                NotificationProvider.Error(
+                LogProvider.Error(
                     "analyzer.error.namespace",
                     VFS.GetFileName(file),
                     oldNamespace,
@@ -96,7 +96,7 @@ public static partial class NamespaceAnalyzer
             }
         }
 
-        NotificationProvider.Info(
+        LogProvider.Info(
             "analyzer.output",
             nameof(NamespaceAnalyzer),
             success.ToString(),

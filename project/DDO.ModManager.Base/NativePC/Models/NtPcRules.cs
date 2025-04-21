@@ -56,11 +56,11 @@ public class NtPcRules
     public static NtPcRules? Read(string path)
     {
         if (Validate.For.IsNullOrWhiteSpace([path]))
-            return default;
+            return null;
 
         NtPcRules? rules = Json.Deserialize<NtPcRules>(VFS.ReadAllText(path), NtPcRulesContext.Default);
         if (Validate.For.IsNull(rules))
-            return default;
+            return null;
 
         FileGlobber globber = new()
         {

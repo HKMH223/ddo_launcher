@@ -36,7 +36,7 @@ public static class LocalizationPathResolver
         string? optionalPath =
             $"{language}{JsonExtensionHelper.ToString(JsonExtensionType.Default)}";
         if (Validate.For.IsNullOrWhiteSpace([defaultPath, optionalPath]))
-            return default;
+            return null;
         return TryGetLanguageFilePath(filepath, defaultPath)
             ?? TryGetLanguageFilePath(filepath, optionalPath);
     }
@@ -59,9 +59,9 @@ public static class LocalizationPathResolver
             .MaybeJsonWithComments(VFS.FromCwd(basePath, fileName))
             .Result;
         if (Validate.For.IsNullOrWhiteSpace([path]))
-            return default;
+            return null;
         if (VFS.Exists(path!))
             return path;
-        return default;
+        return null;
     }
 }

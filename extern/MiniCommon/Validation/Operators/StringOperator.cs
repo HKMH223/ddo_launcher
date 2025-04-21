@@ -52,7 +52,7 @@ public static class StringOperator
     {
         if (string.IsNullOrWhiteSpace(message))
         {
-            NotificationProvider.Log(
+            LogProvider.Log(
                 level,
                 "error.validation.string-shim",
                 memberName,
@@ -62,7 +62,7 @@ public static class StringOperator
         }
         else
         {
-            NotificationProvider.PrintLog(
+            LogProvider.PrintLog(
                 level,
                 message,
                 memberName,

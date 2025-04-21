@@ -36,13 +36,13 @@ using MiniCommon.Validation.Validators;
 
 namespace DDO.ModManager.Base.Commands;
 
-public class Deploy : IBaseCommand<object>
+public class Deploy : IBaseCommand
 {
     /// <summary>
     /// Deploy files to an output directory based on a user-specified game and rule JSON object.
     /// Additional parameters take the format of 'key=value' pairs.
     /// </summary>
-    public Task Initialize(string[] args, object? settings)
+    public Task Initialize(string[] args)
     {
         CommandLine.ProcessArgument(
             args,
@@ -86,13 +86,13 @@ public class Deploy : IBaseCommand<object>
 
                 if (gamePath is null)
                 {
-                    NotificationProvider.Error("error.readfile", expectedGamePath);
+                    LogProvider.Error("error.readfile", expectedGamePath);
                     return;
                 }
 
                 if (rulePath is null)
                 {
-                    NotificationProvider.Error("error.readfile", expectedRulePath);
+                    LogProvider.Error("error.readfile", expectedRulePath);
                     return;
                 }
 
@@ -129,16 +129,16 @@ public class Deploy : IBaseCommand<object>
 
                 if (!VFS.Exists(modPath))
                 {
-                    NotificationProvider.Error("error.readfile", modPath);
+                    LogProvider.Error("error.readfile", modPath);
                     return;
                 }
 
-                NotificationProvider.Info("ntpc.working");
+                LogProvider.Info("ntpc.working");
                 ExtractHelper.Extract(modPath, tempPath, game);
                 NtPcProvider.DeleteDirectory(outputPath);
                 NtPcProvider.Deploy(tempPath, outputPath, game, rules!);
                 NtPcProvider.DeleteDirectory(tempPath);
-                NotificationProvider.Info("ntpc.done");
+                LogProvider.Info("ntpc.done");
             }
         );
 

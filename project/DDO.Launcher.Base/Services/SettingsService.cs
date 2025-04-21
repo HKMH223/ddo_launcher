@@ -19,8 +19,8 @@
 using System;
 using System.Threading.Tasks;
 using DDO.Launcher.Base.Models;
-using DDO.Launcher.Base.Providers;
 using MiniCommon.Logger;
+using MiniCommon.Managers;
 using MiniCommon.Managers.Interfaces;
 using MiniCommon.Validation;
 using MiniCommon.Validation.Validators;
@@ -29,15 +29,38 @@ namespace DDO.Launcher.Base.Services;
 
 public class SettingsService : IBaseService
 {
-    public static Settings? Settings { get; set; }
+    public static Settings? RuntimeSettings { get; set; }
+    public static SettingsManager<Settings>? SettingsManager { get; private set; }
 
-    public Task<bool> Initialize<T>(T? _)
+    public Task<bool> Initialize()
     {
         try
         {
-            SettingsProvider.FirstRun();
-            Settings = SettingsProvider.Load();
-            if (Validate.For.IsNull(Settings))
+            ServerInfo serverInfo = new()
+            {
+                ServerName = "Default",
+                AccountAPI = "/api/account",
+                DownloadIP = "127.0.0.1",
+                DownloadPort = "52099",
+                LobbyIP = "127.0.0.1",
+                LobbyPort = "52100",
+            };
+            Settings settings = new()
+            {
+                Executable = "cwd:ddo.exe",
+                ServerInfo = serverInfo,
+                ServerInfos = [serverInfo],
+                Account = "",
+                Password = "",
+                Email = "",
+                RequireAdmin = false,
+                LocalMode = false,
+            };
+
+            SettingsManager = new(SettingsContext.Default);
+            SettingsManager.FirstRun(settings);
+            RuntimeSettings = SettingsManager.Load();
+            if (Validate.For.IsNull(RuntimeSettings))
                 return Task.FromResult(false);
             return Task.FromResult(true);
         }

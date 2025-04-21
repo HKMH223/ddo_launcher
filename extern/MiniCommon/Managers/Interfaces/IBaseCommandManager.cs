@@ -27,5 +27,5 @@ public interface IBaseCommandManager
     /// <summary>
     /// Register a list of commands to be callable by the program.
     /// </summary>
-    public abstract Task Initialize<T>(string[] args, List<IBaseCommand<T>> commands, T instance);
+    public abstract Task Initialize(string[] args, List<IBaseCommand> commands);
 }

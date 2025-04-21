@@ -25,16 +25,14 @@ using MiniCommon.Providers;
 
 namespace MiniCommon.Managers.Services;
 
-public class NotificationService : IBaseService
+public class LogService : IBaseService
 {
-    public Task<bool> Initialize<T>(T? _)
+    public Task<bool> Initialize()
     {
         try
         {
-            NotificationProvider.OnNotificationAdded(
-                (Notification notification) => Log.Base(notification.LogLevel, notification.Message)
-            );
-            NotificationProvider.Info("log.initialized");
+            LogProvider.OnLogMessageAdded((LogMessage msg) => Log.Base(msg.LogLevel, msg.Message));
+            LogProvider.Info("log.initialized");
             return Task.FromResult(true);
         }
         catch (Exception ex)

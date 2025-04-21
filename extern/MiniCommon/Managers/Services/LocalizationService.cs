@@ -28,7 +28,7 @@ namespace MiniCommon.Managers.Services;
 
 public class LocalizationService : IBaseService
 {
-    public Task<bool> Initialize<T>(T? _)
+    public Task<bool> Initialize()
     {
         try
         {

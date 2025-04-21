@@ -106,19 +106,19 @@ public static class CopyHelper
     public static NtPcFileMap? CopyHooks(CopyHelperOptions options)
     {
         if (Validate.For.IsNull(options.NtPcGame))
-            return default;
+            return null;
 
         if (Validate.For.IsNullOrWhiteSpace([options.NtPcGame!.Arch]))
-            return default;
+            return null;
 
         if (Validate.For.IsNull(options.NtPcGame.Engine))
-            return default;
+            return null;
 
         if (Validate.For.IsNull(options.NtPcGame.Engine!.Hooks))
-            return default;
+            return null;
 
         if (Validate.For.IsNull(options.NtPcGame.Engine!.Hooks!.Data))
-            return default;
+            return null;
 
         List<NtPcFile> ntPcFiles = [];
         foreach (NtPcHookData hook in options.NtPcGame.Engine!.Hooks!.Data!)
@@ -169,7 +169,7 @@ public static class CopyHelper
         }
 
         if (ntPcFiles.Count <= 0)
-            return default;
+            return null;
         return new() { Source = options.Source, Files = ntPcFiles };
     }
 
@@ -183,7 +183,7 @@ public static class CopyHelper
             indexOfSource >= 0 ? options.FileName![..indexOfSource] + options.Source : options.FileName;
 
         if (options.NtPcPath!.IsDir == false)
-            return default;
+            return null;
 
         List<NtPcFile> ntPcFiles = Copy(
             new()
@@ -201,7 +201,7 @@ public static class CopyHelper
         );
 
         if (ntPcFiles.Count <= 0)
-            return default;
+            return null;
         return new() { Source = options.Source, Files = ntPcFiles };
     }
 
@@ -214,7 +214,7 @@ public static class CopyHelper
         foreach (NtPcAddon addon in options.NtPcRules!.Addons ?? Validate.For.EmptyList<NtPcAddon>())
         {
             if (Validate.For.IsNull(addon))
-                return default;
+                return null;
 
             if (addon.Name == options.FileName!)
             {
@@ -247,7 +247,7 @@ public static class CopyHelper
         }
 
         if (ntPcFiles.Count <= 0)
-            return default;
+            return null;
         return new() { Source = options.Source, Files = ntPcFiles };
     }
 
@@ -260,7 +260,7 @@ public static class CopyHelper
         foreach (NtPcAddon addon in options.NtPcRules!.Addons ?? Validate.For.EmptyList<NtPcAddon>())
         {
             if (Validate.For.IsNull(addon))
-                return default;
+                return null;
 
             if (addon.Name != "copy")
                 continue;
@@ -289,7 +289,7 @@ public static class CopyHelper
         }
 
         if (ntPcFiles.Count <= 0)
-            return default;
+            return null;
         return new() { Source = options.Source, Files = ntPcFiles };
     }
 
@@ -311,7 +311,7 @@ public static class CopyHelper
                     break;
                 return CopyFile(options);
             default:
-                NotificationProvider.Warn("ntpc.missing", options.Source!);
+                LogProvider.Warn("ntpc.missing", options.Source!);
                 return [];
         }
 
@@ -342,7 +342,7 @@ public static class CopyHelper
             {
                 if (options.HookNames!.Contains(VFS.GetFileName(normalizedFilePath)))
                     continue;
-                NotificationProvider.Log(
+                LogProvider.Log(
                     LogLevelResolver.FromString(options.LogLevel),
                     "ntpc.copy",
                     normalizedFilePath,
@@ -380,7 +380,7 @@ public static class CopyHelper
         {
             if (options.HookNames!.Contains(VFS.GetFileName(normalizedSource)))
                 return [];
-            NotificationProvider.Log(
+            LogProvider.Log(
                 LogLevelResolver.FromString(options.LogLevel),
                 "ntpc.copy",
                 normalizedSource,

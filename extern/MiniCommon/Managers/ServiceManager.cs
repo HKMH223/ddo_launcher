@@ -28,8 +28,8 @@ public class ServiceManager : IServiceManager
     public static BaseServiceManager Manager { get; } = new();
 
     /// <inheritdoc />
-    public static Task<bool> Initialize<T>(List<IBaseService> services, T instance)
+    public static Task<bool> Initialize(List<IBaseService> services)
     {
-        return Manager.Initialize(services, instance);
+        return Manager.Initialize(services);
     }
 }

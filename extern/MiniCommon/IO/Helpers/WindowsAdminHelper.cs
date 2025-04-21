@@ -39,7 +39,7 @@ public static class WindowsAdminHelper
         }
         catch (Exception ex)
         {
-            NotificationProvider.Error(
+            LogProvider.Error(
                 "log.stack.trace",
                 ex.Message,
                 ex.StackTrace ?? LocalizationProvider.Translate("stack.trace.null")

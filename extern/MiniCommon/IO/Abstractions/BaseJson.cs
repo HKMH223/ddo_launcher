@@ -108,7 +108,7 @@ public class BaseJson : IBaseJson
         where T : class
     {
         if (!VFS.Exists(filepath))
-            return default;
+            return null;
 
         string json = VFS.ReadAllText(filepath);
         try
@@ -117,7 +117,7 @@ public class BaseJson : IBaseJson
         }
         catch
         {
-            return default;
+            return null;
         }
     }
 }

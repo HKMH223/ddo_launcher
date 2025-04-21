@@ -119,13 +119,13 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
         if (gamePath is null)
         {
-            NotificationProvider.Error("error.readfile", expectedGamePath);
+            LogProvider.Error("error.readfile", expectedGamePath);
             return Task.CompletedTask;
         }
 
         if (rulePath is null)
         {
-            NotificationProvider.Error("error.readfile", expectedRulePath);
+            LogProvider.Error("error.readfile", expectedRulePath);
             return Task.CompletedTask;
         }
 
@@ -156,16 +156,16 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
         if (!VFS.Exists(modPath))
         {
-            NotificationProvider.Error("error.readfile", modPath);
+            LogProvider.Error("error.readfile", modPath);
             return Task.CompletedTask;
         }
 
-        NotificationProvider.Info("ntpc.working");
+        LogProvider.Info("ntpc.working");
         ExtractHelper.Extract(modPath, tempPath, game);
         NtPcProvider.DeleteDirectory(outputPath);
         NtPcProvider.Deploy(tempPath, outputPath, game, rules!);
         NtPcProvider.DeleteDirectory(tempPath);
-        NotificationProvider.Info("ntpc.done");
+        LogProvider.Info("ntpc.done");
 
         return Task.CompletedTask;
     }
