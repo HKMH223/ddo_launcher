@@ -25,7 +25,7 @@ using MiniCommon.Providers;
 
 namespace MiniCommon.Managers.Abstractions;
 
-public class BaseSettingsManager<T>(JsonSerializerContext _ctx) : IBaseSettingsManager<T>
+public partial class BaseSettingsManager<T>(JsonSerializerContext _ctx) : IBaseSettingsManager<T>
     where T : class
 {
     private JsonSerializerContext SerializerContext { get; } = _ctx;

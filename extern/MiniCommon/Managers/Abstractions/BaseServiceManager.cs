@@ -24,7 +24,7 @@ using MiniCommon.Managers.Interfaces;
 
 namespace MiniCommon.Managers.Abstractions;
 
-public class BaseServiceManager : IBaseServiceManager
+public partial class BaseServiceManager : IBaseServiceManager
 {
     /// <inheritdoc />
     public virtual Task<bool> Initialize(List<IBaseService> services)
