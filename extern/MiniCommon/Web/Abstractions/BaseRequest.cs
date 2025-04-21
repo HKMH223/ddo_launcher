@@ -166,7 +166,7 @@ public class BaseRequest : IBaseHttpRequest
                     return response;
                 }
 
-                Json.Save(filepath, Json.Deserialize<T>(response, ctx), ctx);
+                Json.Save(filepath, Json.Deserialize<T>(response, ctx)!, ctx);
                 return response;
             }
             catch (Exception ex)

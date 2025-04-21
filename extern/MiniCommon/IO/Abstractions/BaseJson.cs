@@ -24,10 +24,11 @@ using MiniCommon.IO.Interfaces;
 
 namespace MiniCommon.IO.Abstractions;
 
-public class BaseJson : IBaseJson
+public partial class BaseJson : IBaseJson
 {
     /// <inheritdoc />
     public virtual string Serialize<T>(T data, JsonSerializerOptions options)
+        where T : class
     {
         if (AotConstants.IsNativeAot)
             throw new SerializationException();
@@ -38,17 +39,19 @@ public class BaseJson : IBaseJson
 
     /// <inheritdoc />
     public virtual string Serialize<T>(T data, JsonSerializerContext ctx)
+        where T : class
     {
         return JsonSerializer.Serialize(data, typeof(T), ctx);
     }
 
     /// <inheritdoc />
-    public virtual T? Deserialize<T>(string json, JsonSerializerOptions options)
+    public virtual T? Deserialize<T>(string data, JsonSerializerOptions options)
+        where T : class
     {
         if (AotConstants.IsNativeAot)
             throw new SerializationException();
 #pragma warning disable IL2026, IL3050
-        return JsonSerializer.Deserialize<T>(json, options);
+        return JsonSerializer.Deserialize<T>(data, options);
 #pragma warning restore IL2026, IL3050
     }
 
@@ -61,6 +64,7 @@ public class BaseJson : IBaseJson
 
     /// <inheritdoc />
     public virtual void Save<T>(string filepath, T data, JsonSerializerOptions options)
+        where T : class
     {
         if (AotConstants.IsNativeAot)
             throw new SerializationException();
@@ -74,6 +78,7 @@ public class BaseJson : IBaseJson
 
     /// <inheritdoc />
     public virtual void Save<T>(string filepath, T data, JsonSerializerContext ctx)
+        where T : class
     {
         if (!VFS.Exists(filepath))
             VFS.CreateDirectory(VFS.GetDirectoryName(filepath));
@@ -84,13 +89,13 @@ public class BaseJson : IBaseJson
 
     /// <inheritdoc />
     public virtual T? Load<T>(string filepath, JsonSerializerOptions options)
-        where T : new()
+        where T : class
     {
         if (AotConstants.IsNativeAot)
             throw new SerializationException();
 
         if (!VFS.Exists(filepath))
-            return default;
+            return null;
 
         string json = VFS.ReadAllText(filepath);
         try
@@ -99,7 +104,7 @@ public class BaseJson : IBaseJson
         }
         catch
         {
-            return default;
+            return null;
         }
     }
 

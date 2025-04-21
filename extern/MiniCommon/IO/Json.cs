@@ -25,22 +25,25 @@ namespace MiniCommon.IO;
 
 public class Json : IJson
 {
-    public static BaseJson BaseJson { get; } = new();
+    public static ValidatedJson BaseJson { get; } = new();
 
     /// <inheritdoc />
     public static string Serialize<T>(T data, JsonSerializerOptions options)
+        where T : class
     {
         return BaseJson.Serialize(data, options);
     }
 
     /// <inheritdoc />
     public static string Serialize<T>(T data, JsonSerializerContext ctx)
+        where T : class
     {
         return BaseJson.Serialize(data, ctx);
     }
 
     /// <inheritdoc />
     public static T? Deserialize<T>(string json, JsonSerializerOptions options)
+        where T : class
     {
         return BaseJson.Deserialize<T>(json, options);
     }
@@ -54,19 +57,21 @@ public class Json : IJson
 
     /// <inheritdoc />
     public static void Save<T>(string filepath, T data, JsonSerializerOptions options)
+        where T : class
     {
         BaseJson.Save(filepath, data, options);
     }
 
     /// <inheritdoc />
     public static void Save<T>(string filepath, T data, JsonSerializerContext ctx)
+        where T : class
     {
         BaseJson.Save(filepath, data, ctx);
     }
 
     /// <inheritdoc />
     public static T? Load<T>(string filepath, JsonSerializerOptions options)
-        where T : new()
+        where T : class
     {
         return BaseJson.Load<T>(filepath, options);
     }

@@ -17,36 +17,35 @@
  */
 
 using System.Text.Json.Serialization;
-using MiniCommon.Managers.Abstractions;
-using MiniCommon.Managers.Interfaces;
+using MiniCommon.Logger.Enums;
+using MiniCommon.Validation;
+using MiniCommon.Validation.Exceptions;
+using MiniCommon.Validation.Validators;
 
-namespace MiniCommon.Managers;
+namespace MiniCommon.Managers.Abstractions;
 
-public class SettingsManager<T> : ISettingsManager<T>
+public class ValidatedSettingsManager<T>(JsonSerializerContext _ctx) : BaseSettingsManager<T>(_ctx)
     where T : class
 {
-    public static ValidatedSettingsManager<T>? Manager { get; private set; }
-
-    public SettingsManager(JsonSerializerContext _ctx)
+    /// <inheritdoc />
+    public override void FirstRun(T data)
     {
-        Manager = new(_ctx);
+        if (Validate.For.IsNull(data, NativeLogLevel.Fatal))
+            throw new ObjectValidationException(nameof(data));
+        base.FirstRun(data);
     }
 
     /// <inheritdoc />
-    public void FirstRun(T data)
+    public override void Save(T data)
     {
-        Manager!.FirstRun(data);
+        if (Validate.For.IsNull(data, NativeLogLevel.Fatal))
+            throw new ObjectValidationException(nameof(data));
+        base.Save(data);
     }
 
     /// <inheritdoc />
-    public T? Load()
+    public override T? Load()
     {
-        return Manager!.Load()!;
-    }
-
-    /// <inheritdoc />
-    public void Save(T data)
-    {
-        Manager!.Save(data);
+        return base.Load();
     }
 }

@@ -19,18 +19,14 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using MiniCommon.Interfaces;
-using MiniCommon.Managers.Abstractions;
-using MiniCommon.Managers.Interfaces;
 
-namespace MiniCommon.Managers;
+namespace MiniCommon.Managers.Abstractions;
 
-public class CommandManager : ICommandManager
+public class ValidatedCommandManager : BaseCommandManager
 {
-    public static ValidatedCommandManager Manager { get; } = new();
-
     /// <inheritdoc />
-    public static async Task Initialize(string[] args, List<IBaseCommand> commands)
+    public override async Task Initialize(string[] args, List<IBaseCommand> commands)
     {
-        await Manager.Initialize(args, commands);
+        await base.Initialize(args, commands);
     }
 }

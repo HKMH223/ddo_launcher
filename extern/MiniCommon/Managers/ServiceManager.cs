@@ -25,7 +25,7 @@ namespace MiniCommon.Managers;
 
 public class ServiceManager : IServiceManager
 {
-    public static BaseServiceManager Manager { get; } = new();
+    public static ValidatedServiceManager Manager { get; } = new();
 
     /// <inheritdoc />
     public static Task<bool> Initialize(List<IBaseService> services)
