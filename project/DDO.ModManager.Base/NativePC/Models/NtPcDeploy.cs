@@ -31,8 +31,6 @@ public class NtPcDeploy
 
     [JsonPropertyName("Output")]
     public string? Output { get; set; }
-
-    public NtPcDeploy() { }
 }
 
 [JsonSourceGenerationOptions(

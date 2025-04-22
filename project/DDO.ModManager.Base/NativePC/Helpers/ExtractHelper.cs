@@ -18,12 +18,12 @@
 
 using System.IO;
 using System.Linq;
-using DDO.Launcher.Base.Resolvers;
 using DDO.ModManager.Base.NativePC.Models;
 using MiniCommon.FileExtractors.Models;
 using MiniCommon.FileExtractors.Services;
 using MiniCommon.IO;
 using MiniCommon.Logger.Enums;
+using MiniCommon.Logger.Resolvers;
 using MiniCommon.Validation;
 using MiniCommon.Validation.Validators;
 

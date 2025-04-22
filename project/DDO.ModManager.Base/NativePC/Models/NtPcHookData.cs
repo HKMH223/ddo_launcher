@@ -38,8 +38,6 @@ public class NtPcHookData
 
     [JsonPropertyName("Include")]
     public List<string>? Include { get; set; }
-
-    public NtPcHookData() { }
 }
 
 [JsonSourceGenerationOptions(

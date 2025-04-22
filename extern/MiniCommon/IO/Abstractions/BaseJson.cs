@@ -24,7 +24,7 @@ using MiniCommon.IO.Interfaces;
 
 namespace MiniCommon.IO.Abstractions;
 
-public partial class BaseJson : IBaseJson
+public abstract class BaseJson : IBaseJson
 {
     /// <inheritdoc />
     public virtual string Serialize<T>(T data, JsonSerializerOptions options)

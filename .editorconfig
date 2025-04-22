@@ -1,0 +1,11 @@
+# Set severity for all analyzers that are enabled by default (https://docs.microsoft.com/en-us/visualstudio/code-quality/use-roslyn-analyzers?view=vs-2022#set-rule-severity-of-multiple-analyzer-rules-at-once-in-an-editorconfig-file)
+#dotnet_analyzer_diagnostic.category-roslynator.severity = default|none|silent|suggestion|warning|error
+dotnet_analyzer_diagnostic.category-roslynator.severity = suggestion
+
+## Set severity for a specific analyzer
+#dotnet_diagnostic.<ANALYZER_ID>.severity = default|none|silent|suggestion|warning|error
+dotnet_diagnostic.RCS1140.severity = silent
+dotnet_diagnostic.RCS1141.severity = silent
+dotnet_diagnostic.RCS1142.severity = silent
+dotnet_diagnostic.RCS1161.severity = silent
+dotnet_diagnostic.RCS1181.severity = silent

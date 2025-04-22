@@ -31,10 +31,10 @@ public static class KnownGameResolver
     public static string ToString(KnownGame? type) =>
         type switch
         {
-            KnownGame.DDO => "ddo" ?? Validate.For.EmptyString(),
-            KnownGame.MHW => "mhw" ?? Validate.For.EmptyString(),
-            KnownGame.MHRISE => "mhrise" ?? Validate.For.EmptyString(),
-            KnownGame.MHWILDS => "mhwilds" ?? Validate.For.EmptyString(),
+            KnownGame.DDO => "ddo",
+            KnownGame.MHW => "mhw",
+            KnownGame.MHRISE => "mhrise",
+            KnownGame.MHWILDS => "mhwilds",
             _ => throw new ArgumentOutOfRangeException(nameof(type)),
         };
 }

@@ -19,10 +19,9 @@
 using System;
 using MiniCommon.Logger.Enums;
 using MiniCommon.Validation;
-using MiniCommon.Validation.Operators;
 using MiniCommon.Validation.Validators;
 
-namespace DDO.Launcher.Base.Resolvers;
+namespace MiniCommon.Logger.Resolvers;
 
 public static class LogLevelResolver
 {
@@ -32,13 +31,13 @@ public static class LogLevelResolver
     public static string ToString(NativeLogLevel? type) =>
         type switch
         {
-            NativeLogLevel.Benchmark => "BENCHMARK" ?? Validate.For.EmptyString(),
-            NativeLogLevel.Debug => "DEBUG" ?? Validate.For.EmptyString(),
-            NativeLogLevel.Warn => "WARN" ?? Validate.For.EmptyString(),
-            NativeLogLevel.Error => "ERROR" ?? Validate.For.EmptyString(),
-            NativeLogLevel.Info => "INFO" ?? Validate.For.EmptyString(),
-            NativeLogLevel.Native => "NATIVE" ?? Validate.For.EmptyString(),
-            NativeLogLevel.Fatal => "FATAL" ?? Validate.For.EmptyString(),
+            NativeLogLevel.Benchmark => "BENCHMARK",
+            NativeLogLevel.Debug => "DEBUG",
+            NativeLogLevel.Warn => "WARN",
+            NativeLogLevel.Error => "ERROR",
+            NativeLogLevel.Info => "INFO",
+            NativeLogLevel.Native => "NATIVE",
+            NativeLogLevel.Fatal => "FATAL",
             _ => throw new ArgumentOutOfRangeException(nameof(type)),
         };
 

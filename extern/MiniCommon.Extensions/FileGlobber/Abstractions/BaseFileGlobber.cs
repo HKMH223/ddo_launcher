@@ -42,8 +42,8 @@ public class BaseFileGlobber(StringComparison comparisonType = StringComparison.
     protected List<Regex> _compiledRegexIncludes = [];
     protected List<Regex> _compiledRegexExcludes = [];
 
-    private int _lastRegexIncludeHash = 0;
-    private int _lastRegexExcludeHash = 0;
+    private int _lastRegexIncludeHash;
+    private int _lastRegexExcludeHash;
 
     public Matcher Matcher
     {
@@ -179,7 +179,9 @@ public class BaseFileGlobber(StringComparison comparisonType = StringComparison.
             currentIncludeHash == _lastRegexIncludeHash
             && currentExcludeHash == _lastRegexExcludeHash
         )
+        {
             return;
+        }
 
         _compiledRegexIncludes =
         [

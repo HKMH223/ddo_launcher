@@ -42,8 +42,7 @@ public class MArguments
     public string Build()
     {
         parsedLaunchArgs.Clear();
-        List<MOption> sortedLaunchArgs = [.. Arguments.OrderBy(a => a.Priority)];
-        foreach (MOption arg in sortedLaunchArgs)
+        foreach (MOption arg in (List<MOption>)([.. Arguments.OrderBy(a => a.Priority)]))
         {
             if (!arg.Ignore)
                 parsedLaunchArgs.Add(arg.Parse() ?? Validate.For.EmptyString());

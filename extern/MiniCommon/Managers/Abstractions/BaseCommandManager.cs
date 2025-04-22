@@ -25,7 +25,7 @@ using MiniCommon.Managers.Interfaces;
 
 namespace MiniCommon.Managers.Abstractions;
 
-public partial class BaseCommandManager : IBaseCommandManager
+public abstract class BaseCommandManager : IBaseCommandManager
 {
     /// <inheritdoc />
     public virtual async Task Initialize(string[] args, List<IBaseCommand> commands)

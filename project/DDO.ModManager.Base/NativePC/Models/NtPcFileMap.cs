@@ -29,8 +29,6 @@ public class NtPcFileMap
 
     [JsonPropertyName("Files")]
     public List<NtPcFile>? Files { get; set; }
-
-    public NtPcFileMap() { }
 }
 
 [JsonSourceGenerationOptions(

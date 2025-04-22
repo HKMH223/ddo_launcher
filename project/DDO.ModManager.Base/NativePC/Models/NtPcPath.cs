@@ -27,6 +27,9 @@ public class NtPcPath
     [JsonPropertyName("Path")]
     public string? Path { get; set; }
 
+    [JsonPropertyName("IgnoreCase")]
+    public bool IgnoreCase { get; set; }
+
     [JsonPropertyName("IsDir")]
     public bool? IsDir { get; set; }
 
@@ -35,8 +38,6 @@ public class NtPcPath
 
     [JsonPropertyName("Unsupported")]
     public bool? Unsupported { get; set; }
-
-    public NtPcPath() { }
 }
 
 [JsonSourceGenerationOptions(

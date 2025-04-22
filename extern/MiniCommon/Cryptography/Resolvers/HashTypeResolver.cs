@@ -18,8 +18,6 @@
 
 using System;
 using MiniCommon.Cryptography.Enums;
-using MiniCommon.Validation;
-using MiniCommon.Validation.Operators;
 
 namespace MiniCommon.Cryptography.Resolvers;
 
@@ -31,9 +29,9 @@ public static class HashTypeResolver
     public static string ToString(HashType? type) =>
         type switch
         {
-            HashType.MD5 => "MD5" ?? Validate.For.EmptyString(),
-            HashType.SHA1 => "SHA1" ?? Validate.For.EmptyString(),
-            HashType.SHA256 => "SHA256" ?? Validate.For.EmptyString(),
+            HashType.MD5 => "MD5",
+            HashType.SHA1 => "SHA1",
+            HashType.SHA256 => "SHA256",
             _ => throw new ArgumentOutOfRangeException(nameof(type)),
         };
 }

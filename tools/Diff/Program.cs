@@ -21,7 +21,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
 
-class Program
+namespace Diff;
+
+static class Program
 {
     static string CalculateChecksum(string filePath)
     {
@@ -41,15 +43,13 @@ class Program
             foreach (string filePath in Directory.EnumerateFiles(folder1, "*", SearchOption.AllDirectories))
             {
                 string relativePath = Path.GetRelativePath(folder1, filePath);
-                string checksum = CalculateChecksum(filePath);
-                fileChecksums1[relativePath] = checksum;
+                fileChecksums1[relativePath] = CalculateChecksum(filePath);
             }
 
             foreach (string filePath in Directory.EnumerateFiles(folder2, "*", SearchOption.AllDirectories))
             {
                 string relativePath = Path.GetRelativePath(folder2, filePath);
-                string checksum = CalculateChecksum(filePath);
-                fileChecksums2[relativePath] = checksum;
+                fileChecksums2[relativePath] = CalculateChecksum(filePath);
             }
 
             foreach (KeyValuePair<string, string> entry in fileChecksums1)

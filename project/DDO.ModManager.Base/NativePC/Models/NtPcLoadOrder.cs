@@ -28,8 +28,6 @@ public class NtPcLoadOrder
 
     [JsonPropertyName("Index")]
     public int? Index { get; set; }
-
-    public NtPcLoadOrder() { }
 }
 
 [JsonSourceGenerationOptions(

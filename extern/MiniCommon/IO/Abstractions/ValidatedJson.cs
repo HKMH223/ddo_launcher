@@ -25,7 +25,7 @@ using MiniCommon.Validation.Validators;
 
 namespace MiniCommon.IO.Abstractions;
 
-public partial class ValidatedJson : BaseJson
+public class ValidatedJson : BaseJson
 {
     /// <inheritdoc />
     public override string Serialize<T>(T data, JsonSerializerOptions options)
@@ -44,11 +44,11 @@ public partial class ValidatedJson : BaseJson
     }
 
     /// <inheritdoc />
-    public override T Deserialize<T>(string json, JsonSerializerOptions options)
+    public override T Deserialize<T>(string data, JsonSerializerOptions options)
     {
-        if (Validate.For.IsNullOrWhiteSpace([json], NativeLogLevel.Fatal))
-            throw new ObjectValidationException(nameof(json));
-        return base.Deserialize<T>(json, options)!;
+        if (Validate.For.IsNullOrWhiteSpace([data], NativeLogLevel.Fatal))
+            throw new ObjectValidationException(nameof(data));
+        return base.Deserialize<T>(data, options)!;
     }
 
     /// <inheritdoc />
@@ -66,7 +66,7 @@ public partial class ValidatedJson : BaseJson
             throw new ObjectValidationException(nameof(filepath));
         if (Validate.For.IsNull(data, NativeLogLevel.Fatal))
             throw new ObjectValidationException(nameof(data));
-        base.Save<T>(filepath, data, options);
+        base.Save(filepath, data, options);
     }
 
     /// <inheritdoc />
@@ -76,7 +76,7 @@ public partial class ValidatedJson : BaseJson
             throw new ObjectValidationException(nameof(filepath));
         if (Validate.For.IsNull(data, NativeLogLevel.Fatal))
             throw new ObjectValidationException(nameof(data));
-        base.Save<T>(filepath, data, ctx);
+        base.Save(filepath, data, ctx);
     }
 
     /// <inheritdoc />

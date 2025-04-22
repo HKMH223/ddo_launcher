@@ -36,7 +36,7 @@ public class FileStreamLogger : ILogger, IDisposable
     private readonly StreamWriter _stream;
     private readonly object _mutex = new();
     private readonly bool _flush = true;
-    private bool _disposed = false;
+    private bool _disposed;
     private readonly NativeLogLevel _minLevel = NativeLogLevel.Debug;
     private readonly CensorLevel _censorLevel = CensorLevel.NONE;
 

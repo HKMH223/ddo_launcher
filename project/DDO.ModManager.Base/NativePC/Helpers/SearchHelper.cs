@@ -16,6 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -41,9 +42,7 @@ public static class SearchHelper
         if (Validate.For.IsNullOrEmpty(paths))
             return (string.Empty, default);
 
-        DirectoryInfo[] directories = VFS.GetDirectoryInfos(basePath, "*", SearchOption.AllDirectories);
-
-        foreach (DirectoryInfo directory in directories)
+        foreach (DirectoryInfo directory in VFS.GetDirectoryInfos(basePath, "*", SearchOption.AllDirectories))
         {
             string normalizedDir = directory.FullName.NormalizePath();
             string[] parts = normalizedDir.Split("/");
@@ -54,7 +53,11 @@ public static class SearchHelper
                 if (Validate.For.IsNull(path))
                     return (string.Empty, default);
 
-                if (path.IsDir == true && parts.Contains(path.Path) && isDir == true)
+                bool found = parts.Contains(path.Path);
+                if (path.IgnoreCase)
+                    found = parts.Contains(path.Path, StringComparer.CurrentCultureIgnoreCase);
+
+                if (path.IsDir == true && found && isDir == true)
                     return (directory.FullName, path!);
             }
         }
@@ -72,9 +75,7 @@ public static class SearchHelper
         SearchOption searchOptions
     )
     {
-        string[] files = VFS.GetFiles(basePath, searchPattern, searchOptions);
-
-        foreach (string file in files)
+        foreach (string file in VFS.GetFiles(basePath, searchPattern, searchOptions))
         {
             string fileName = VFS.Combine(basePath, VFS.GetFileName(file));
             string extension = VFS.GetFileExtension(fileName);
@@ -87,7 +88,10 @@ public static class SearchHelper
                 if (Validate.For.IsNull(path))
                     return (string.Empty, default);
 
-                if (path.IsDir == true || extension != path.Path)
+                bool found = extension != path.Path;
+                if (path.IgnoreCase)
+                    found = !string.Equals(extension, path.Path, StringComparison.CurrentCultureIgnoreCase);
+                if (path.IsDir == true || found)
                     continue;
 
                 if (path.Unsupported == true)

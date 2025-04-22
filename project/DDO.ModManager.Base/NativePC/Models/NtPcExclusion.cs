@@ -28,8 +28,6 @@ public class NtPcExclusion
 
     [JsonPropertyName("Path")]
     public string? Path { get; set; }
-
-    public NtPcExclusion() { }
 }
 
 [JsonSourceGenerationOptions(

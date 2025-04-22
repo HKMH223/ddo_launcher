@@ -54,8 +54,6 @@ public class CopyHelperOptions
 
     [JsonPropertyName("CreateCRC32s")]
     public bool CreateCRC32s { get; set; }
-
-    public CopyHelperOptions() { }
 }
 
 [JsonSourceGenerationOptions(

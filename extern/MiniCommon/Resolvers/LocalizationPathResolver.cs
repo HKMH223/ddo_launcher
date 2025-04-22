@@ -33,8 +33,7 @@ public static class LocalizationPathResolver
     {
         string? defaultPath =
             $"localization.{language}{JsonExtensionHelper.ToString(JsonExtensionType.Default)}";
-        string? optionalPath =
-            $"{language}{JsonExtensionHelper.ToString(JsonExtensionType.Default)}";
+        string? optionalPath = language + JsonExtensionHelper.ToString(JsonExtensionType.Default);
         if (Validate.For.IsNullOrWhiteSpace([defaultPath, optionalPath]))
             return null;
         return TryGetLanguageFilePath(filepath, defaultPath)

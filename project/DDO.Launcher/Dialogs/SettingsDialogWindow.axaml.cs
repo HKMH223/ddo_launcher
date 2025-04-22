@@ -41,8 +41,8 @@ public partial class SettingsDialogWindow : Window, INotifyPropertyChanged
     private string _downloadPort = string.Empty;
     private string _lobbyIP = string.Empty;
     private string _lobbyPort = string.Empty;
-    private bool _requireAdmin = false;
-    private bool _localMode = false;
+    private bool _requireAdmin;
+    private bool _localMode;
 
     private ObservableCollection<ServerInfo>? _serverInfoList;
     private ServerInfo? _selectedServerInfo;

@@ -27,7 +27,7 @@ namespace MiniCommon.Providers;
 public static class LocalizationProvider
 {
     public static Localization? Localization { get; private set; } = new();
-    private static bool _initialized = false;
+    private static bool _initialized;
 
     /// <summary>
     /// Initialize the Localization service.

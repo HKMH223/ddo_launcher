@@ -35,8 +35,6 @@ public class Settings
 
     public bool? RequireAdmin { get; set; }
     public bool? LocalMode { get; set; }
-
-    public Settings() { }
 }
 
 [JsonSourceGenerationOptions(

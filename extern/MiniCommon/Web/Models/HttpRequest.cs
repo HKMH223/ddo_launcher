@@ -30,8 +30,6 @@ public class HttpRequest
     public string? Port { get; set; }
     public string? ContentType { get; set; }
     public string? Content { get; set; }
-
-    public HttpRequest() { }
 }
 
 [JsonSourceGenerationOptions(

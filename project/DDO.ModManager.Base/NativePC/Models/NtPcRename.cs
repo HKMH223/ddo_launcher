@@ -31,8 +31,6 @@ public class NtPcRename
 
     [JsonPropertyName("New")]
     public string? New { get; set; }
-
-    public NtPcRename() { }
 }
 
 [JsonSourceGenerationOptions(

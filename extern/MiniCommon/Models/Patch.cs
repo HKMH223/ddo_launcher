@@ -34,8 +34,6 @@ public class Patch
     public byte[]? Replacement { get; set; }
     public byte[]? Pattern { get; set; }
 
-    public Patch() { }
-
     /// <summary>
     /// Read and deserialize a file as a List<Patch> object.
     /// </summary>

@@ -33,8 +33,6 @@ public class LocalizationSettings
     [JsonIgnore]
     public static readonly string? DefaultLanguageCode = "en";
 
-    public LocalizationSettings() { }
-
     /// <summary>
     /// Read and deserialize a file as a LocalizationSettings object, and return the language name.
     /// </summary>

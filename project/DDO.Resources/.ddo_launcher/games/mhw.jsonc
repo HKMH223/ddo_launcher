@@ -18,36 +18,42 @@
     "Paths": [
       {
         "Path": "nativePC",
+        "IgnoreCase": false,
         "IsDir": true,
         "Requires": [],
         "Unsupported": false
       },
       {
         "Path": "NativePC",
+        "IgnoreCase": false,
         "IsDir": true,
         "Requires": [],
         "Unsupported": false
       },
       {
         "Path": "Nativepc",
+        "IgnoreCase": false,
         "IsDir": true,
         "Requires": [],
         "Unsupported": false
       },
       {
         "Path": "NativePc",
+        "IgnoreCase": false,
         "IsDir": true,
         "Requires": [],
         "Unsupported": false
       },
       {
         "Path": "nativepc",
+        "IgnoreCase": false,
         "IsDir": true,
         "Requires": [],
         "Unsupported": false
       },
       {
         "Path": "vfx",
+        "IgnoreCase": false,
         "IsDir": true,
         "Requires": [
           "nativePC",
@@ -57,6 +63,7 @@
       },
       {
         "Path": "pl",
+        "IgnoreCase": false,
         "IsDir": true,
         "Requires": [
           "nativePC",

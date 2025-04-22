@@ -60,8 +60,6 @@ public class BaseTcp : IBaseTcp
                 _tcpClient.ReceiveTimeout = ReceiveTimeout;
                 _tcpClient.SendTimeout = SendTimeout;
                 _tcpClient.Connect(addr, int.Parse(port));
-
-                return true;
             }
 
             return true;

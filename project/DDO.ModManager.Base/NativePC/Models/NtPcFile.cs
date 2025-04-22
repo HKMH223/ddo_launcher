@@ -31,8 +31,6 @@ public class NtPcFile
 
     [JsonPropertyName("Crc")]
     public string? Crc { get; set; }
-
-    public NtPcFile() { }
 }
 
 [JsonSourceGenerationOptions(

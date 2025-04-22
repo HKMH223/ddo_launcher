@@ -31,8 +31,7 @@ public static class DictionaryExt
     public static Dictionary<string, string> ParseKeyValuePairs(this string input)
     {
         Dictionary<string, string> keyValuePairs = [];
-        string[] pairs = input.Split(_separator, StringSplitOptions.RemoveEmptyEntries);
-        foreach (string pair in pairs)
+        foreach (string pair in input.Split(_separator, StringSplitOptions.RemoveEmptyEntries))
         {
             string[] keyValue = pair.Split('=');
             if (keyValue.Length == 2)

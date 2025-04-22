@@ -29,7 +29,7 @@ public interface IBaseSettingsManager<T>
     /// <summary>
     /// Save a Settings object to the Settings file path.
     /// </summary>
-    public abstract void Save(T settings);
+    public abstract void Save(T data);
 
     /// <summary>
     /// Load a Settings object from the Settings file path.

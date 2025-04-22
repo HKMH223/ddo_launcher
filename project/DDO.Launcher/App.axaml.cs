@@ -22,7 +22,7 @@ using Avalonia.Markup.Xaml;
 
 namespace DDO.Launcher;
 
-public partial class App : Application
+public class App : Application
 {
     public override void Initialize()
     {

@@ -21,7 +21,7 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using DDO.ModManager.Base.NativePC.Helpers;
+using DDO.ModManager.Base.NativePC.Extensions;
 using MiniCommon.Extensions;
 using MiniCommon.Extensions.FileGlobber;
 using MiniCommon.IO;
@@ -33,6 +33,9 @@ namespace DDO.ModManager.Base.NativePC.Models;
 
 public class NtPcRules
 {
+    [JsonPropertyName("Variables")]
+    public List<string>? Variables { get; set; }
+
     [JsonPropertyName("Addons")]
     public List<NtPcAddon>? Addons { get; set; }
 
@@ -47,8 +50,6 @@ public class NtPcRules
 
     [JsonPropertyName("IgnorePrefixes")]
     public List<string>? IgnorePrefixes { get; set; }
-
-    public NtPcRules() { }
 
     /// <summary>
     /// Read and deserialize a file as an NtPcRules object.
@@ -101,24 +102,33 @@ public class NtPcRules
             if (Validate.For.IsNull(exclusion))
                 return [];
 
-            if (Validate.For.IsNullOrWhiteSpace([exclusion.Name, exclusion.Path]))
+            if (
+                Validate.For.IsNullOrWhiteSpace(
+                    [string.Format(exclusion.Name!, rules.Variables), string.Format(exclusion.Path!, rules.Variables)]
+                )
+            )
+            {
                 return [];
+            }
 
-            if (exclusion.Name != fileEntry)
+            if (string.Format(exclusion.Name!, rules.Variables) != fileEntry)
                 continue;
 
-            string outputPath = VFS.Combine(basePath, exclusion.Path!);
-            if (exclusion.Path!.Equals(".", System.StringComparison.CurrentCultureIgnoreCase))
+            string outputPath = VFS.Combine(basePath, string.Format(exclusion.Path!, rules.Variables)!);
+            if (
+                string.Format(exclusion.Path!, rules.Variables)!
+                    .Equals(".", System.StringComparison.CurrentCultureIgnoreCase)
+            )
+            {
                 outputPath = VFS.Combine(basePath);
+            }
 
             if (!VFS.Exists(outputPath))
                 continue;
 
             if (VFS.IsDirFile(outputPath!) == true) // Directory
             {
-                FileInfo[] files = VFS.GetFileInfos(outputPath, "*", SearchOption.AllDirectories);
-
-                foreach (FileInfo file in files)
+                foreach (FileInfo file in VFS.GetFileInfos(outputPath, "*", SearchOption.AllDirectories))
                     filesToExclude.Add(file.FullName.NormalizePath());
 
                 continue;

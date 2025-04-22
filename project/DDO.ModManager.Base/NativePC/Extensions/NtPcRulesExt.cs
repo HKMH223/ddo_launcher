@@ -19,7 +19,7 @@
 using DDO.ModManager.Base.NativePC.Models;
 using MiniCommon.Extensions;
 
-namespace DDO.ModManager.Base.NativePC.Helpers;
+namespace DDO.ModManager.Base.NativePC.Extensions;
 
 public static class NtPcRulesExt
 {

@@ -35,8 +35,6 @@ public class NtPcAddon
 
     [JsonPropertyName("Skip")]
     public List<string>? Skip { get; set; }
-
-    public NtPcAddon() { }
 }
 
 [JsonSourceGenerationOptions(

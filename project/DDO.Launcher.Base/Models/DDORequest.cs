@@ -34,8 +34,6 @@ public class DDORequest
 
     [JsonPropertyName("Email")]
     public string? Email { get; set; }
-
-    public DDORequest() { }
 }
 
 [JsonSourceGenerationOptions(

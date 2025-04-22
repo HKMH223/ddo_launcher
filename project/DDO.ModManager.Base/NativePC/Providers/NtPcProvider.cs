@@ -48,14 +48,14 @@ public static class NtPcProvider
     public static void Deploy(string source, string destination, NtPcGame game, NtPcRules rules)
     {
         (bool sourcePathProblem, PathCheck? sourcePathCheck) = VFS.CheckPathForProblemLocations(source);
-        if (sourcePathProblem == true)
+        if (sourcePathProblem)
         {
             ProblemPath(source, sourcePathCheck!);
             return;
         }
 
         (bool destinationPathProblem, PathCheck? destinationPathCheck) = VFS.CheckPathForProblemLocations(destination);
-        if (destinationPathProblem == true)
+        if (destinationPathProblem)
         {
             ProblemPath(source, destinationPathCheck!);
             return;
@@ -100,9 +100,7 @@ public static class NtPcProvider
         List<NtPcFileMap> ntPcFileMaps = [];
         VFS.CreateDirectory(destination);
 
-        string[] directories = [.. FixDirectories([.. VFS.GetDirectories(source)], rules)];
-
-        foreach (string directoryName in directories)
+        foreach (string directoryName in (string[])([.. FixDirectories([.. VFS.GetDirectories(source)], rules)]))
         {
             string pathEntry = VFS.Combine(source, directoryName);
             (string search, NtPcPath? path) = SearchHelper.Search(pathEntry, game.Engine!.Paths!);
@@ -116,33 +114,29 @@ public static class NtPcProvider
             if (path!.Unsupported == true)
                 continue;
 
-            FileInfo[] additionalDirectories = VFS.GetFileInfos(pathEntry, "*", SearchOption.TopDirectoryOnly);
-            foreach (FileInfo file in additionalDirectories)
+            foreach (FileInfo file in VFS.GetFileInfos(pathEntry, "*", SearchOption.TopDirectoryOnly))
             {
-                if (VFS.IsDirFile(file.FullName) == false && game.Engine.Hooks!.Formats!.Contains(file.Extension))
-                {
-                    if (
-                        CopyHelper.CopyHooks(
-                            new()
-                            {
-                                Source = source,
-                                FileName = file.FullName,
-                                Destination = destination,
-                                NtPcGame = game,
-                                NtPcRules = rules,
-                                Exclusions = exclusions,
-                                HookNames = [],
-                                LogLevel = game.LogLevel,
-                                CreateCRC32s = game.CreateCRC32s,
-                            }
-                        ) is
-                        { } hookMap
+                if (
+                    VFS.IsDirFile(file.FullName) == false
+                    && game.Engine.Hooks!.Formats!.Contains(file.Extension)
+                    && CopyHelper.CopyHooks(
+                        new()
+                        {
+                            Source = source,
+                            FileName = file.FullName,
+                            Destination = destination,
+                            NtPcGame = game,
+                            NtPcRules = rules,
+                            Exclusions = exclusions,
+                            HookNames = [],
+                            LogLevel = game.LogLevel,
+                            CreateCRC32s = game.CreateCRC32s,
+                        }
                     )
-                    {
-                        ntPcFileMaps.Add(hookMap);
-                    }
-
-                    continue;
+                        is { } hookMap
+                )
+                {
+                    ntPcFileMaps.Add(hookMap);
                 }
             }
 
@@ -209,7 +203,7 @@ public static class NtPcProvider
             ntPcFileMaps.Add(postAddonMap);
         }
 
-        if (ntPcFileMaps is not null && ntPcFileMaps.Count > 0)
+        if (ntPcFileMaps?.Count > 0)
         {
             Json.Save(
                 DataLogFilePath,
@@ -260,7 +254,7 @@ public static class NtPcProvider
             if (index == -1)
                 index = directories.Count;
 
-            sorted = sorted!.MoveEntry(order.Name, index) ?? [];
+            sorted = sorted!.MoveEntry(string.Format(order.Name!, rules.Variables), index) ?? [];
         }
 
         return sorted!;

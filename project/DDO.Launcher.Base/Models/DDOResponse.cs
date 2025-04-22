@@ -31,8 +31,6 @@ public class DDOResponse
 
     [JsonPropertyName("Token")]
     public string? Token { get; set; }
-
-    public DDOResponse() { }
 }
 
 [JsonSourceGenerationOptions(

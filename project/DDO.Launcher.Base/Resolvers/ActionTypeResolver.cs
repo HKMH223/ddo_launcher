@@ -18,8 +18,6 @@
 
 using System;
 using DDO.Launcher.Base.Enums;
-using MiniCommon.Validation;
-using MiniCommon.Validation.Operators;
 
 namespace DDO.Launcher.Base.Resolvers;
 
@@ -31,8 +29,8 @@ public static class ActionTypeResolver
     public static string ToString(ActionType? type) =>
         type switch
         {
-            ActionType.CREATE => "create" ?? Validate.For.EmptyString(),
-            ActionType.LOGIN => "login" ?? Validate.For.EmptyString(),
+            ActionType.CREATE => "create",
+            ActionType.LOGIN => "login",
             _ => throw new ArgumentOutOfRangeException(nameof(type)),
         };
 }

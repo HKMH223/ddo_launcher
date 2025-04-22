@@ -44,32 +44,32 @@ public class Localization
         _entries.Add("log.initialized", "Intialized Logger");
         _entries.Add("log.unhandled.exception", "Unhandled exception: {0}");
         _entries.Add("log.unhandled.object", "Unhandled non-exception object: {0}");
-        #endregion // Base Logging Functionality
+        #endregion Base Logging Functionality
 
         #region Benchmarking and Stopwatch
         _entries.Add("timing.output", "Method: {0}() took {1} to complete.");
-        #endregion // Benchmarking and Stopwatch
+        #endregion Benchmarking and Stopwatch
 
         #region File Patching
         _entries.Add("patch.success", "({0}/{1}) Patch applied: {2} -> {3} at 0x{4}");
-        #endregion // File Patching
+        #endregion File Patching
 
         #region Tcp Requests
         _entries.Add("tcp.connect", "TCP Connection: {0}");
         _entries.Add("tcp.request", "TCP Request: {0}");
         _entries.Add("tcp.error.response", "TCP Response Error: {0}");
-        #endregion // Tcp Requests
+        #endregion Tcp Requests
 
         #region Http Requests
         _entries.Add("request.get.start", "Sending GET request to: {0}");
         _entries.Add("request.get.exists", "File already exists: {0}");
         _entries.Add("request.get.success", "Successfully received response from: {0} in {1}.");
-        #endregion // Http Requests
+        #endregion Http Requests
 
         #region Hash Verifier
         _entries.Add("hash.success", "File: {0} ({1}) matches target hash: {2}");
         _entries.Add("hash.writing", "Adding file: {0} ({1})");
-        #endregion // Hash Verifier
+        #endregion Hash Verifier
 
         #region Error Handling
         _entries.Add("error.hash.nohash", "No hash file exists in '{0}'");
@@ -102,12 +102,12 @@ public class Localization
             "Path '{0}' contains problematic or reserved location '{1}'."
         );
         _entries.Add("stack.trace.null", "No stack trace provided.");
-        #endregion // Error Handling
+        #endregion Error Handling
 
         #region Command Line
         _entries.Add("commandline.error", "Invalid command. Expects: {0}");
         _entries.Add("commandline.exit", "Press '{0}' to safely exit.");
-        #endregion // Command Line
+        #endregion Command Line
 
         #region Launcher
         _entries.Add("launcher.settings.save", "Saving launcher config: '{0}'.");
@@ -118,7 +118,7 @@ public class Localization
             "launcher.settings.missing",
             "'{0}' could not be read, make sure it is located in '{1}' and try again."
         );
-        #endregion // Launcher
+        #endregion Launcher
 
         #region Avalonia
         _entries.Add("avalonia.open.dialog", "Opening dialog box: {0}.");
@@ -128,7 +128,7 @@ public class Localization
         _entries.Add("avalonia.title.modding", "Modding");
         _entries.Add("avalonia.title.settings", "Settings");
         _entries.Add("avalonia.irreversable.message", "This action is irreversible, are you sure?");
-        #endregion // Avalonia
+        #endregion Avalonia
 
         #region Code Analyzers
         _entries.Add(
@@ -142,7 +142,7 @@ public class Localization
         );
         _entries.Add("analyzer.output", "[{0}] Done: '{1}', Fail: '{2}', Total: '{3}'");
         _entries.Add("analyzer.line.output", "[{0}] Total: '{1}', Average (Per File): '{2}'.");
-        #endregion // Code Analyzers
+        #endregion Code Analyzers
 
         return _entries;
     }

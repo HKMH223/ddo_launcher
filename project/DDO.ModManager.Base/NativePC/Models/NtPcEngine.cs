@@ -29,8 +29,6 @@ public class NtPcEngine
 
     [JsonPropertyName("Hooks")]
     public NtPcHook? Hooks { get; set; }
-
-    public NtPcEngine() { }
 }
 
 [JsonSourceGenerationOptions(

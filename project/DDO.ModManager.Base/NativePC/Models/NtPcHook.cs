@@ -29,8 +29,6 @@ public class NtPcHook
 
     [JsonPropertyName("Data")]
     public List<NtPcHookData>? Data { get; set; }
-
-    public NtPcHook() { }
 }
 
 [JsonSourceGenerationOptions(

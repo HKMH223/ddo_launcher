@@ -40,7 +40,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 {
     private string _username = string.Empty;
     private string _password = string.Empty;
-    private bool _remember = false;
+    private bool _remember;
 
     private readonly DDOAccountService _accountService;
     private readonly Settings _runtimeSettings;

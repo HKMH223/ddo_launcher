@@ -29,8 +29,6 @@ public class ServerInfo
     public string? DownloadPort { get; set; }
     public string? LobbyIP { get; set; }
     public string? LobbyPort { get; set; }
-
-    public ServerInfo() { }
 }
 
 [JsonSourceGenerationOptions(

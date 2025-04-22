@@ -31,7 +31,7 @@ Files placed in `{root}/project/DDO.Resources` or `{root}/project/DDO.Resources.
 ## Development
 1. Install Roslynator Analyzers: `./scripts/setup.ps1` (from `/DDO.Launcher/` root).
     - Alternatively, download and extract the assemblies to `{root}/.nupkg/roslynator/analyzers/dotnet/roslyn4.7/cs/*.dll`
-2. [SonarLint](https://www.sonarsource.com/products/sonarlint/) is used for development, it is optional, but recommended.
+2. (Optional) Install [SonarLint](https://www.sonarsource.com/products/sonarlint/).
 3. Use or reference `.vscode/tasks.json` for formatting, code analysis, and building.
 4. Follow [build steps](#build) for building.
 
@@ -54,8 +54,8 @@ Contribution Guidelines are not required for translation contributions.
 If you would like to contribute to `DDO.Launcher` please take the time to carefully read the guidelines below.
 
 ### Commit Workflow
-- Run `Roslynator` and ensure ALL diagnostics are fixed.
-- Run `CSharpier` to ensure consistent formatting.
+- Run [Roslynator](https://github.com/dotnet/roslynator) and ensure ALL diagnostics are fixed.
+- Run [CSharpier](https://csharpier.com/) to ensure consistent formatting.
 - Use `git cz` with the [Commitizen CLI](https://github.com/commitizen/cz-cli#conventional-commit-messages-as-a-global-utility) to prepare commit messages.
 - Provide *at least* one short sentence or paragraph in your commit message body to describe your thought process for the changes being committed.
 

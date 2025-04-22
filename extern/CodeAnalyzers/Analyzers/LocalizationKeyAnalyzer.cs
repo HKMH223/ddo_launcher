@@ -46,9 +46,7 @@ public static partial class LocalizationKeyAnalyzer
                 continue;
 
             Regex matchLogMessage = LogMessageRegex();
-            MatchCollection logMessageMatches = matchLogMessage.Matches(VFS.ReadAllText(file));
-
-            foreach (Match match in logMessageMatches)
+            foreach (Match match in matchLogMessage.Matches(VFS.ReadAllText(file)))
             {
                 Regex matchQuotes = QuoteRegex();
                 Match quoteMatch = matchQuotes.Match(match.Value);

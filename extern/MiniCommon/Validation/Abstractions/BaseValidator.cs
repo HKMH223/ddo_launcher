@@ -74,11 +74,9 @@ public class BaseValidator<T>
         {
             throw new ObjectValidationException(string.Join(", ", _errors));
         }
-        else
-        {
-            foreach (string error in _errors)
-                LogProvider.PrintLog(level, error);
-        }
+
+        foreach (string error in _errors)
+            LogProvider.PrintLog(level, error);
         return _errors.Count == 0;
     }
 }

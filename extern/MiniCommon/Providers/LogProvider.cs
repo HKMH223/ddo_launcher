@@ -27,7 +27,7 @@ public static class LogProvider
 {
     private static readonly List<LogMessage> _messages = [];
     public static int MaxSize { get; set; } = 256;
-    public static bool CacheMessages { get; set; } = false;
+    public static bool CacheMessages { get; set; }
 
     public static void Add(LogMessage item) => _messages.Add(item);
 

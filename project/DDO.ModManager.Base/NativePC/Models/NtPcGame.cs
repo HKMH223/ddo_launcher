@@ -51,8 +51,6 @@ public class NtPcGame
     [JsonPropertyName("CreateCRC32s")]
     public bool CreateCRC32s { get; set; }
 
-    public NtPcGame() { }
-
     /// <summary>
     /// Read and deserialize a file as an NtPcGame object.
     /// </summary>
