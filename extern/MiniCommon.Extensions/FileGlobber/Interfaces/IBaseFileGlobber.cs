@@ -36,22 +36,22 @@ public interface IBaseFileGlobber
     /// <summary>
     /// Add include patterns to the file matcher.
     /// </summary>
-    public abstract List<string> IncludePatterns { init; }
+    public abstract List<string> IncludePatterns { get; init; }
 
     /// <summary>
     /// Add exclude patterns to the file matcher.
     /// </summary>
-    public abstract List<string> ExcludePatterns { init; }
+    public abstract List<string> ExcludePatterns { get; init; }
 
     /// <summary>
     /// Add regex include patterns to the file matcher.
     /// </summary>
-    public abstract List<string> RegexIncludePatterns { init; }
+    public abstract List<string> RegexIncludePatterns { get; init; }
 
     /// <summary>
     /// Add regex exclude patterns to the file matcher.
     /// </summary>
-    public abstract List<string> RegexExcludePatterns { init; }
+    public abstract List<string> RegexExcludePatterns { get; init; }
 
     /// <summary>
     /// Add include patterns to the file matcher.

@@ -90,7 +90,9 @@ public class NtPcRules
     /// <summary>
     /// Create a list of file paths to exclude based on a list of NtPcExclusion objects.
     /// </summary>
+#pragma warning disable S3776
     public static List<string> Exclude(NtPcRules rules, string fileEntry, string basePath)
+#pragma warning restore S3776
     {
         List<string> filesToExclude = [];
 

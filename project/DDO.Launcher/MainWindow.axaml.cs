@@ -100,7 +100,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         DataContext = this;
     }
 
-    private void Version_Initialized(object sender, EventArgs e)
+    private static void Version_Initialized(object sender, EventArgs e)
     {
         if (sender is TextBlock { Text: not null } block)
             block.Text = $"v{ApplicationConstants.CurrentVersion}";

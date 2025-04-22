@@ -30,7 +30,7 @@ namespace MiniCommon.Web.Abstractions;
 
 public class BaseTcp : IBaseTcp
 {
-    private static TcpClient _tcpClient = new();
+    private TcpClient _tcpClient = new();
 
     public virtual TcpClient GetTcpClient() => _tcpClient;
 

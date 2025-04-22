@@ -31,8 +31,6 @@ namespace MiniCommon.Extensions.FileGlobber.Abstractions;
 public class BaseFileGlobber(StringComparison comparisonType = StringComparison.OrdinalIgnoreCase)
     : IBaseFileGlobber
 {
-    private Matcher _matcher = new(comparisonType);
-
     private readonly List<string> _includePatterns = [];
     private readonly List<string> _excludePatterns = [];
 
@@ -45,24 +43,16 @@ public class BaseFileGlobber(StringComparison comparisonType = StringComparison.
     private int _lastRegexIncludeHash;
     private int _lastRegexExcludeHash;
 
-    public Matcher Matcher
-    {
-        get => _matcher;
-        private set
-        {
-            if (_matcher != value)
-                _matcher = value;
-        }
-    }
+    public Matcher Matcher { get; } = new(comparisonType);
 
     /// <inheritdoc/>
     public virtual PatternMatchingResult? MatchWithResult(string filepath) =>
-        _matcher.Execute(new DirectoryInfoWrapper(new DirectoryInfo(filepath)));
+        Matcher.Execute(new DirectoryInfoWrapper(new DirectoryInfo(filepath)));
 
     /// <inheritdoc/>
     public virtual List<string> Match(string filepath)
     {
-        List<string> matches = [.. _matcher.GetResultsInFullPath(filepath)];
+        List<string> matches = [.. Matcher.GetResultsInFullPath(filepath)];
         CompileRegexPatterns();
         return matches
             .Where(file =>
@@ -81,14 +71,18 @@ public class BaseFileGlobber(StringComparison comparisonType = StringComparison.
     public virtual List<string> IncludePatterns
     {
         get => _includePatterns;
+#pragma warning disable S4275
         init => AddIncludePatterns(value.Distinct().ToList());
+#pragma warning restore S4276
     }
 
     /// <inheritdoc/>
     public virtual List<string> ExcludePatterns
     {
         get => _excludePatterns;
+#pragma warning disable S4275
         init => AddExcludePatterns(value.Distinct().ToList());
+#pragma warning restore S4276
     }
 
     /// <inheritdoc/>
@@ -127,7 +121,7 @@ public class BaseFileGlobber(StringComparison comparisonType = StringComparison.
 
         List<string> newPatterns = patterns.Except(_includePatterns).ToList();
         _includePatterns.AddRange(newPatterns);
-        _matcher.AddIncludePatterns(newPatterns);
+        Matcher.AddIncludePatterns(newPatterns);
     }
 
     /// <inheritdoc/>
@@ -138,7 +132,7 @@ public class BaseFileGlobber(StringComparison comparisonType = StringComparison.
 
         List<string> newPatterns = patterns.Except(_excludePatterns).ToList();
         _excludePatterns.AddRange(newPatterns);
-        _matcher.AddExcludePatterns(newPatterns);
+        Matcher.AddExcludePatterns(newPatterns);
     }
 
     /// <inheritdoc/>

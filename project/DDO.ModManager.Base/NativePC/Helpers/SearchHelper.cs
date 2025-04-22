@@ -41,8 +41,9 @@ public static class SearchHelper
 
         if (Validate.For.IsNullOrEmpty(paths))
             return (string.Empty, default);
-
+#pragma warning disable S3267
         foreach (DirectoryInfo directory in VFS.GetDirectoryInfos(basePath, "*", SearchOption.AllDirectories))
+#pragma warning restore S3267
         {
             string normalizedDir = directory.FullName.NormalizePath();
             string[] parts = normalizedDir.Split("/");
@@ -68,12 +69,14 @@ public static class SearchHelper
     /// <summary>
     /// Search for valid files based on a list of NtPcPath objects.
     /// </summary>
+#pragma warning disable S3776
     public static (string, NtPcPath?) SearchFilesOnly(
         string basePath,
         List<NtPcPath> paths,
         string searchPattern,
         SearchOption searchOptions
     )
+#pragma warning restore S3776
     {
         foreach (string file in VFS.GetFiles(basePath, searchPattern, searchOptions))
         {

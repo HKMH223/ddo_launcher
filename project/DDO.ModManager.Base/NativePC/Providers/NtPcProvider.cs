@@ -95,7 +95,9 @@ public static class NtPcProvider
     /// <summary>
     /// Process a directory of files according to an NtPcGame and NtPcRules object.
     /// </summary>
+#pragma warning disable S3776
     private static void ProcessDirectory(string source, string destination, NtPcGame game, NtPcRules rules)
+#pragma warning restore S3776
     {
         List<NtPcFileMap> ntPcFileMaps = [];
         VFS.CreateDirectory(destination);

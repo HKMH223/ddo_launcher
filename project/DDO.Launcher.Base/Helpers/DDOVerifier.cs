@@ -28,7 +28,9 @@ using MiniCommon.Validation.Validators;
 
 namespace DDO.Launcher.Base.Helpers;
 
+#pragma warning disable S101
 public static class DDOVerifier
+#pragma warning restore S101
 {
     /// <summary>
     /// Write file hashes from a directory.

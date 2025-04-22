@@ -62,13 +62,13 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         DataContext = this;
     }
 
-    private void Title_Initialized(object sender, EventArgs e)
+    private static void Title_Initialized(object sender, EventArgs e)
     {
         if (sender is TextBlock { Text: not null } block)
             block.Text = AssemblyConstants.AssemblyName;
     }
 
-    private void Version_Initialized(object sender, EventArgs e)
+    private static void Version_Initialized(object sender, EventArgs e)
     {
         if (sender is TextBlock { Text: not null } block)
             block.Text = $"v{ApplicationConstants.CurrentVersion}";

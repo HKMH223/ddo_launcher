@@ -29,9 +29,11 @@ using MiniCommon.Web.Models;
 
 namespace DDO.Launcher.Base.Services;
 
+#pragma warning disable S101
 public class DDOAccountService
+#pragma warning restore S101
 {
-    public string? Token;
+    public string? Token { get; set; }
     private readonly Settings? _runtimeSettings;
 
     private DDOAccountService() { }

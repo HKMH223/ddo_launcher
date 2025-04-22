@@ -435,11 +435,13 @@ public abstract partial class BaseFileSystem : IBaseFileSystem
     }
 
     /// <inheritdoc />
+#pragma warning disable S3776
     public virtual void DeleteDirectory(
         string filepath,
         bool recursive = false,
         bool includeReadOnly = false
     )
+#pragma warning restore S3776
     {
         lock (_mutex)
         {

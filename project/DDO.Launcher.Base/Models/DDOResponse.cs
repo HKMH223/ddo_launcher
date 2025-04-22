@@ -21,7 +21,9 @@ using System.Text.Json.Serialization;
 
 namespace DDO.Launcher.Base.Models;
 
+#pragma warning disable S101
 public class DDOResponse
+#pragma warning restore S101
 {
     [JsonPropertyName("Error")]
     public string? Error { get; set; }

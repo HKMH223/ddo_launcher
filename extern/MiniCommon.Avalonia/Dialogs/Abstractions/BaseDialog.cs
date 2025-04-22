@@ -22,6 +22,7 @@ using Avalonia.Controls;
 using MiniCommon.Avalonia.Dialogs.Interfaces;
 using MiniCommon.Providers;
 using MiniCommon.Validation;
+using MiniCommon.Validation.Exceptions;
 using MiniCommon.Validation.Operators;
 using Window = Avalonia.Controls.Window;
 
@@ -29,63 +30,45 @@ namespace MiniCommon.Avalonia.Dialogs.Abstractions;
 
 public class BaseDialog : IBaseDialog
 {
-    private Window _dialog;
-    private Window _window;
-    public TaskCompletionSource<bool> Confirmed = new();
+    public TaskCompletionSource<bool> Confirmed { get; } = new();
 
-    public Window Dialog
-    {
-        get => _dialog;
-        private set
-        {
-            if (_dialog != value)
-                _dialog = value;
-        }
-    }
+    public Window Dialog { get; }
 
-    public Window Window
-    {
-        get => _window;
-        private set
-        {
-            if (_window != value)
-                _window = value;
-        }
-    }
+    public Window Window { get; }
 
     public BaseDialog(Window dialog, Window window)
     {
-        _dialog = dialog;
-        _window = window;
-        _dialog.Closed += Close;
+        Dialog = dialog;
+        Window = window;
+        Dialog.Closed += Close;
     }
 
     /// <inheritdoc/>
     public virtual T FindControl<T>(string name)
         where T : Control
     {
-        return _dialog.FindControl<T>(name) ?? throw new NullReferenceException();
+        return Dialog.FindControl<T>(name) ?? throw new ObjectValidationException(nameof(name));
     }
 
     /// <inheritdoc/>
     public virtual void Show()
     {
-        LogProvider.Info("avalonia.open.dialog", _dialog.Title ?? Validate.For.EmptyString());
-        _window.IsHitTestVisible = false;
-        _dialog.Show();
+        LogProvider.Info("avalonia.open.dialog", Dialog.Title ?? Validate.For.EmptyString());
+        Window.IsHitTestVisible = false;
+        Dialog.Show();
     }
 
     /// <inheritdoc/>
     public virtual void Close(object? sender, EventArgs e)
     {
-        _window.IsHitTestVisible = true;
-        _dialog.Close();
+        Window.IsHitTestVisible = true;
+        Dialog.Close();
     }
 
     /// <inheritdoc/>
     public virtual void OnClick(object? sender, EventArgs e)
     {
-        TextBlock? confirmButton = _dialog.FindControl<TextBlock>("Content");
+        TextBlock? confirmButton = Dialog.FindControl<TextBlock>("Content");
 
         if (sender == confirmButton)
         {
@@ -96,26 +79,26 @@ public class BaseDialog : IBaseDialog
             Confirmed.SetResult(false);
         }
 
-        LogProvider.Info("avalonia.close.dialog", _dialog.Title ?? Validate.For.EmptyString());
-        _window.IsHitTestVisible = true;
-        _dialog.Close();
+        LogProvider.Info("avalonia.close.dialog", Dialog.Title ?? Validate.For.EmptyString());
+        Window.IsHitTestVisible = true;
+        Dialog.Close();
     }
 
     /// <inheritdoc/>
     public virtual void IsEnabled(bool value)
     {
-        _dialog.IsEnabled = value;
+        Dialog.IsEnabled = value;
     }
 
     /// <inheritdoc/>
     public virtual void IsHitTestVisible(bool value)
     {
-        _dialog.IsHitTestVisible = value;
+        Dialog.IsHitTestVisible = value;
     }
 
     /// <inheritdoc/>
     public virtual void Topmost(bool value)
     {
-        _dialog.Topmost = value;
+        Dialog.Topmost = value;
     }
 }

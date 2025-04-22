@@ -31,6 +31,7 @@ public static class ProcessHelper
     /// <summary>
     /// Create and run a new process.
     /// </summary>
+#pragma warning disable S3776
     public static void RunProcess(
         string fileName,
         string arguments,
@@ -40,6 +41,7 @@ public static class ProcessHelper
         string verb = "",
         Dictionary<string, string>? environmentalVariables = null
     )
+#pragma warning restore S3776
     {
         ProcessStartInfo startInfo = new()
         {

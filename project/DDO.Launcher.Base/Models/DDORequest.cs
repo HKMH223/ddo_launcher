@@ -21,7 +21,9 @@ using System.Text.Json.Serialization;
 
 namespace DDO.Launcher.Base.Models;
 
+#pragma warning disable S101
 public class DDORequest
+#pragma warning restore S101
 {
     [JsonPropertyName("Action")]
     public string? Action { get; set; }

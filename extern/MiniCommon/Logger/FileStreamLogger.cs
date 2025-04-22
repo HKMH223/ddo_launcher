@@ -113,7 +113,7 @@ public class FileStreamLogger : ILogger, IDisposable
     /// <summary>
     /// Handle incoming exception objects.
     /// </summary>
-    private void UnhandledException(object sender, UnhandledExceptionEventArgs e)
+    private static void UnhandledException(object sender, UnhandledExceptionEventArgs e)
     {
         if (e.ExceptionObject is Exception ex)
         {

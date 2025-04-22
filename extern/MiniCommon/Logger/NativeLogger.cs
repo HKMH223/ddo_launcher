@@ -131,7 +131,7 @@ public partial class NativeLogger : ILogger
     /// <summary>
     /// Handle incoming exception objects.
     /// </summary>
-    private void UnhandledException(object sender, UnhandledExceptionEventArgs e)
+    private static void UnhandledException(object sender, UnhandledExceptionEventArgs e)
     {
         if (e.ExceptionObject is Exception ex)
         {

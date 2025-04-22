@@ -48,7 +48,9 @@ public class FileGlobber(StringComparison comparisonType = StringComparison.Ordi
     /// <inheritdoc/>
     public override List<string> IncludePatterns
     {
+#pragma warning disable S4275
         init
+#pragma warning restore S4276
         {
             if (Validate.For.IsNullOrEmpty(value, NativeLogLevel.Fatal))
                 return;
@@ -59,7 +61,9 @@ public class FileGlobber(StringComparison comparisonType = StringComparison.Ordi
     /// <inheritdoc/>
     public override List<string> ExcludePatterns
     {
+#pragma warning disable S4275
         init
+#pragma warning restore S4276
         {
             if (Validate.For.IsNullOrEmpty(value, NativeLogLevel.Fatal))
                 return;
@@ -71,7 +75,9 @@ public class FileGlobber(StringComparison comparisonType = StringComparison.Ordi
     public override List<string> RegexIncludePatterns
     {
         get => base.RegexIncludePatterns;
+#pragma warning disable S4275
         init
+#pragma warning restore S4276
         {
             if (Validate.For.IsNullOrEmpty(value, NativeLogLevel.Fatal))
                 return;
@@ -83,7 +89,9 @@ public class FileGlobber(StringComparison comparisonType = StringComparison.Ordi
     public override List<string> RegexExcludePatterns
     {
         get => base.RegexExcludePatterns;
+#pragma warning disable S4275
         init
+#pragma warning restore S4276
         {
             if (Validate.For.IsNullOrEmpty(value, NativeLogLevel.Fatal))
                 return;

@@ -38,7 +38,6 @@ public abstract class BaseCommandManager : IBaseCommandManager
         catch (Exception ex)
         {
             Log.Fatal(ex.ToString());
-            return;
         }
     }
 }
