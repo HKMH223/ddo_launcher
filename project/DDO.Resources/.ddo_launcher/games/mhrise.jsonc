@@ -65,7 +65,7 @@
         "IgnoreCase": false,
         "IsDir": false,
         "Requires": [],
-        "Unsupported": true
+        "Unsupported": false
       }
     ],
     "Hooks": {
