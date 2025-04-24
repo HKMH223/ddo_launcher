@@ -199,15 +199,15 @@ public static class CopyHelper
         int indexOfSource = options.FileName!.IndexOf(options.Source!);
         string searchDirectory =
             indexOfSource >= 0 ? options.FileName![..indexOfSource] + options.Source : options.FileName;
-
-        if (options.NtPcPath!.IsDir == false)
+        string fixedDestination = FixDestination(options.Destination!, options.NtPcPath!);
+        if (string.IsNullOrWhiteSpace(fixedDestination))
             return null;
 
         List<NtPcFile> ntPcFiles = Copy(
             new()
             {
                 Source = VFS.GetFullPath(VFS.FromCwd(options.FileName!)),
-                Destination = VFS.GetFullPath(VFS.FromCwd(FixDestination(options.Destination!, options.NtPcPath!))),
+                Destination = VFS.GetFullPath(VFS.FromCwd(fixedDestination)),
                 SearchDirectory = VFS.GetFullPath(VFS.FromCwd(searchDirectory)),
                 Skip = (src) => SkipCopyFiles(src, options.Exclusions!),
                 Rename = (dest) => RenameDestination(options.Source!, dest, options.NtPcRules!),
@@ -460,7 +460,8 @@ public static class CopyHelper
     {
         if (Validate.For.IsNull(path))
             return string.Empty;
-
+        if (path.IsDir == false && path.Requires?.Count == 0)
+            return basePath;
         if (path.Requires?.Count == 0)
             return VFS.Combine(basePath, path.Path!);
         return VFS.Combine(basePath, VFS.Combine([.. path?.Requires ?? Validate.For.EmptyList<string>()]));
