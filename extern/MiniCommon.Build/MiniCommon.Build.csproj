@@ -1,23 +1,29 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
-    <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
-        <RuntimeIdentifier>win-x64</RuntimeIdentifier>
-    </PropertyGroup>
-    <PropertyGroup>
-        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-        <Nullable>enable</Nullable>
-    </PropertyGroup>
-    <ItemGroup>
-        <ProjectReference Include="../MiniCommon/MiniCommon.csproj" />
-        <ProjectReference Include="../MiniCommon.Avalonia/MiniCommon.Avalonia.csproj" />
-        <ProjectReference Include="../MiniCommon.Extensions/MiniCommon.Extensions.csproj" />
-    </ItemGroup>
-    <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(BuildingInsideVisualStudio)' == 'true'">
-		<Exec Command="dotnet cake &quot;../build.cake&quot; --config=&quot;$(ConfigurationName)&quot; --vsbuilt=true" />
-	</Target>
-    <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(BuildingByReSharper)' == 'true'">
-        <Exec Command="dotnet cake &quot;../build.cake&quot; --config=&quot;$(ConfigurationName)&quot; --vsbuilt=true" />
-    </Target>
-
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../MiniCommon/MiniCommon.csproj" />
+    <ProjectReference Include="../MiniCommon.Avalonia/MiniCommon.Avalonia.csproj" />
+    <ProjectReference Include="../MiniCommon.Extensions/MiniCommon.Extensions.csproj" />
+  </ItemGroup>
+  <Target
+    Name="PostBuild"
+    AfterTargets="PostBuildEvent"
+    Condition="'$(BuildingInsideVisualStudio)' == 'true'"
+  >
+    <Exec Command="dotnet cake &quot;../build.cake&quot; --config=&quot;$(ConfigurationName)&quot; --vsbuilt=true" />
+  </Target>
+  <Target
+    Name="PostBuild"
+    AfterTargets="PostBuildEvent"
+    Condition="'$(BuildingByReSharper)' == 'true'"
+  >
+    <Exec Command="dotnet cake &quot;../build.cake&quot; --config=&quot;$(ConfigurationName)&quot; --vsbuilt=true" />
+  </Target>
 </Project>

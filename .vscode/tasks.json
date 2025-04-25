@@ -25,6 +25,7 @@
             "command": "dotnet",
             "args": [
                 "csharpier",
+                "format",
                 "${workspaceFolder}/project",
                 "${workspaceFolder}/extern"
             ],

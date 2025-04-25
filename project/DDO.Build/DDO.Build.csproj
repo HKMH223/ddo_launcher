@@ -1,27 +1,24 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
-    <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
-        <RuntimeIdentifier>win-x64</RuntimeIdentifier>
-    </PropertyGroup>
-    <PropertyGroup>
-        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-        <Nullable>enable</Nullable>
-    </PropertyGroup>
-    <ItemGroup>
-        <ProjectReference Include="../DDO.Launcher/DDO.Launcher.csproj" />
-        <ProjectReference Include="../DDO.Launcher.Base/DDO.Launcher.Base.csproj" />
-        <ProjectReference Include="../DDO.Launcher.Cli/DDO.Launcher.Cli.csproj" />
-        
-        <ProjectReference Include="../DDO.ModManager/DDO.ModManager.csproj" />
-        <ProjectReference Include="../DDO.ModManager.Base/DDO.ModManager.Base.csproj" />
-        <ProjectReference Include="../DDO.ModManager.Cli/DDO.ModManager.Cli.csproj" />
-    </ItemGroup>
-    <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(BuildingInsideVisualStudio)' == 'true'">
-		<Exec Command="dotnet cake &quot;../build.cake&quot; --config=&quot;$(ConfigurationName)&quot; --vsbuilt=true" />
-	</Target>
-    <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(BuildingByReSharper)' == 'true'">
-        <Exec Command="dotnet cake &quot;../build.cake&quot; --config=&quot;$(ConfigurationName)&quot; --vsbuilt=true" />
-    </Target>
-
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../DDO.Launcher/DDO.Launcher.csproj" />
+    <ProjectReference Include="../DDO.Launcher.Base/DDO.Launcher.Base.csproj" />
+    <ProjectReference Include="../DDO.Launcher.Cli/DDO.Launcher.Cli.csproj" />
+    <ProjectReference Include="../DDO.ModManager/DDO.ModManager.csproj" />
+    <ProjectReference Include="../DDO.ModManager.Base/DDO.ModManager.Base.csproj" />
+    <ProjectReference Include="../DDO.ModManager.Cli/DDO.ModManager.Cli.csproj" />
+  </ItemGroup>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(BuildingInsideVisualStudio)' == 'true'">
+    <Exec Command="dotnet cake &quot;../build.cake&quot; --config=&quot;$(ConfigurationName)&quot; --vsbuilt=true" />
+  </Target>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(BuildingByReSharper)' == 'true'">
+    <Exec Command="dotnet cake &quot;../build.cake&quot; --config=&quot;$(ConfigurationName)&quot; --vsbuilt=true" />
+  </Target>
 </Project>
