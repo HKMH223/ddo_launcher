@@ -20,6 +20,7 @@ using Avalonia.Controls;
 
 namespace DDO.Launcher.Dialogs;
 
+#pragma warning disable RCS1043
 public partial class MessageDialogWindow : Window
 {
     public MessageDialogWindow()

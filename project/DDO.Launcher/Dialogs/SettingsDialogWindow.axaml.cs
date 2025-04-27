@@ -18,12 +18,12 @@
 
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Threading;
 using DDO.Launcher.Base;
 using DDO.Launcher.Base.Helpers;
 using DDO.Launcher.Base.Models;
+using MiniCommon.IO;
 using MiniCommon.Providers;
 using MiniCommon.Validation;
 using MiniCommon.Validation.Operators;
@@ -32,6 +32,7 @@ using RoutedEventArgs = Avalonia.Interactivity.RoutedEventArgs;
 
 namespace DDO.Launcher.Dialogs;
 
+#pragma warning disable RCS1043
 public partial class SettingsDialogWindow : Window, INotifyPropertyChanged
 {
     private string _executable = string.Empty;
@@ -245,7 +246,8 @@ public partial class SettingsDialogWindow : Window, INotifyPropertyChanged
     {
         IsHitTestVisible = false;
         Topmost = false;
-        Task.Run(DDOVerifier.Write)
+        TaskManager
+            .Run(DDOVerifier.Write)
             .ContinueWith(_ =>
             {
                 Dispatcher.UIThread.Invoke(() =>
@@ -260,7 +262,8 @@ public partial class SettingsDialogWindow : Window, INotifyPropertyChanged
     {
         IsHitTestVisible = false;
         Topmost = false;
-        Task.Run(DDOVerifier.Verify)
+        TaskManager
+            .Run(DDOVerifier.Verify)
             .ContinueWith(_ =>
             {
                 Dispatcher.UIThread.Invoke(() =>
@@ -275,7 +278,8 @@ public partial class SettingsDialogWindow : Window, INotifyPropertyChanged
     {
         IsHitTestVisible = false;
         Topmost = false;
-        Task.Run(SaveTask)
+        TaskManager
+            .Run(SaveTask)
             .ContinueWith(_ =>
             {
                 Dispatcher.UIThread.Invoke(() =>
@@ -292,7 +296,8 @@ public partial class SettingsDialogWindow : Window, INotifyPropertyChanged
     {
         IsHitTestVisible = false;
         Topmost = false;
-        Task.Run(AddToServerListTask)
+        TaskManager
+            .Run(AddToServerListTask)
             .ContinueWith(_ =>
             {
                 Dispatcher.UIThread.Invoke(() =>
@@ -334,7 +339,8 @@ public partial class SettingsDialogWindow : Window, INotifyPropertyChanged
     {
         IsHitTestVisible = false;
         Topmost = false;
-        Task.Run(RemoveFromServerListTask)
+        TaskManager
+            .Run(RemoveFromServerListTask)
             .ContinueWith(_ =>
             {
                 Dispatcher.UIThread.Invoke(() =>

@@ -37,6 +37,7 @@ using RoutedEventArgs = Avalonia.Interactivity.RoutedEventArgs;
 
 namespace DDO.ModManager;
 
+#pragma warning disable RCS1043
 public partial class MainWindow : Window, INotifyPropertyChanged
 {
     private string _game = string.Empty;
@@ -78,7 +79,8 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     {
         IsHitTestVisible = false;
         Topmost = false;
-        Task.Run(DeployTask)
+        TaskManager
+            .Run(DeployTask)
             .ContinueWith(_ =>
             {
                 Dispatcher.UIThread.Invoke(() =>

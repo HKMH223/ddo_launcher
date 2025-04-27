@@ -37,6 +37,7 @@ using RoutedEventArgs = Avalonia.Interactivity.RoutedEventArgs;
 
 namespace DDO.Launcher.Dialogs;
 
+#pragma warning disable RCS1043
 public partial class ModdingDialogWindow : Window, INotifyPropertyChanged
 {
     private string _game = string.Empty;
@@ -69,7 +70,8 @@ public partial class ModdingDialogWindow : Window, INotifyPropertyChanged
     {
         IsHitTestVisible = false;
         Topmost = false;
-        Task.Run(DeployTask)
+        TaskManager
+            .Run(DeployTask)
             .ContinueWith(_ =>
             {
                 Dispatcher.UIThread.Invoke(() =>

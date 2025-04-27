@@ -36,6 +36,7 @@ using RoutedEventArgs = Avalonia.Interactivity.RoutedEventArgs;
 
 namespace DDO.Launcher;
 
+#pragma warning disable RCS1043
 public partial class MainWindow : Window, INotifyPropertyChanged
 {
     private string _username = string.Empty;
@@ -162,7 +163,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     /// </summary>
     private async Task RegisterTask()
     {
-        bool registrationSuccess = await Task.Run(_accountService.Register);
+        bool registrationSuccess = await TaskManager.Run(_accountService.Register);
 
         await Dispatcher.UIThread.InvokeAsync(() =>
         {
@@ -190,7 +191,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     /// </summary>
     private async Task LoginTask()
     {
-        bool loginSuccess = await Task.Run(_accountService.Login);
+        bool loginSuccess = await TaskManager.Run(_accountService.Login);
 
         await Dispatcher.UIThread.InvokeAsync(() =>
         {

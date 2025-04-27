@@ -32,7 +32,7 @@ public class ValidatedJson : BaseJson
     {
         if (Validate.For.IsNull(data, NativeLogLevel.Fatal))
             return string.Empty;
-        return base.Serialize<T>(data, options);
+        return base.Serialize(data, options);
     }
 
     /// <inheritdoc />
@@ -40,7 +40,7 @@ public class ValidatedJson : BaseJson
     {
         if (Validate.For.IsNull(data, NativeLogLevel.Fatal))
             return string.Empty;
-        return base.Serialize<T>(data, ctx);
+        return base.Serialize(data, ctx);
     }
 
     /// <inheritdoc />
