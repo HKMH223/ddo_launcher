@@ -30,6 +30,11 @@ public interface IBaseFileSystem
     public abstract string Cwd { get; set; }
 
     /// <summary>
+    /// Determine whether a filepath has the specified attribute.
+    /// </summary>
+    public abstract bool? HasAttribute(string filepath, FileAttributes attribute);
+
+    /// <summary>
     /// Redact the hostname from a given filepath.
     /// </summary>
     public abstract string GetRedactedPath(string filepath);

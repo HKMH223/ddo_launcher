@@ -42,6 +42,12 @@ public abstract partial class BaseFileSystem : IBaseFileSystem
     private static partial Regex HostNameRegex();
 
     /// <inheritdoc />
+    public virtual bool? HasAttribute(string filepath, FileAttributes attribute)
+    {
+        return File.GetAttributes(filepath).HasFlag(attribute);
+    }
+
+    /// <inheritdoc />
     public virtual string GetRedactedPath(string filepath)
     {
         Match hostname = HostNameRegex().Match(filepath);

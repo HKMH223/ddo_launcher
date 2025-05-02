@@ -32,6 +32,12 @@ public class VFS : IFileSystem
     public static ValidatedFileSystem FileSystem { get; } = new();
 
     /// <inheritdoc />
+    public static bool? HasAttribute(string filepath, FileAttributes attribute)
+    {
+        return FileSystem.HasAttribute(filepath, attribute);
+    }
+
+    /// <inheritdoc />
     public static string GetRedactedPath(string filepath)
     {
         return FileSystem.GetRedactedPath(filepath);

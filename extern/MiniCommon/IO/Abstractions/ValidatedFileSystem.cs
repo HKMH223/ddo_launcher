@@ -30,6 +30,14 @@ namespace MiniCommon.IO.Abstractions;
 public class ValidatedFileSystem : BaseFileSystem
 {
     /// <inheritdoc />
+    public override bool? HasAttribute(string filepath, FileAttributes attribute)
+    {
+        if (Validate.For.IsNullOrWhiteSpace([filepath], NativeLogLevel.Fatal))
+            return null;
+        return base.HasAttribute(filepath, attribute);
+    }
+
+    /// <inheritdoc />
     public override string GetRedactedPath(string filepath)
     {
         if (Validate.For.IsNullOrWhiteSpace([filepath], NativeLogLevel.Fatal))

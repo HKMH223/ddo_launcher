@@ -18,11 +18,29 @@
 
 using System.IO;
 using System.Text;
+using MiniCommon.IO.Models;
 
 namespace MiniCommon.IO.Interfaces;
 
 public interface IFileSystem
 {
+    /// <summary>
+    /// Determine whether a filepath has the specified attribute.
+    /// </summary>
+    public static abstract bool? HasAttribute(string filepath, FileAttributes attribute);
+
+    /// <summary>
+    /// Redact the hostname from a given filepath.
+    /// </summary>
+    public static abstract string GetRedactedPath(string filepath);
+
+    /// <summary>
+    /// Check if a path is problematic.
+    /// </summary>
+    public static abstract (bool IsProblem, PathCheck? Check) CheckPathForProblemLocations(
+        string filepath
+    );
+
     /// <summary>
     /// Get the absolute path of the specified string.
     /// </summary>

@@ -395,6 +395,8 @@ public static class CopyHelper
             {
                 if (options.HookNames!.Contains(VFS.GetFileName(normalizedFilePath)))
                     continue;
+                if (VFS.HasAttribute(normalizedFilePath, FileAttributes.Hidden) == true)
+                    continue;
                 LogProvider.Log(
                     LogLevelResolver.FromString(options.LogLevel),
                     "ntpc.copy",
@@ -432,6 +434,8 @@ public static class CopyHelper
         if (normalizedSource != newDestination)
         {
             if (options.HookNames!.Contains(VFS.GetFileName(normalizedSource)))
+                return [];
+            if (VFS.HasAttribute(normalizedSource, FileAttributes.Hidden) == true)
                 return [];
             LogProvider.Log(
                 LogLevelResolver.FromString(options.LogLevel),
