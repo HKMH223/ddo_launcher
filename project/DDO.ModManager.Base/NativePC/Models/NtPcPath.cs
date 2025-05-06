@@ -38,6 +38,9 @@ public class NtPcPath
 
     [JsonPropertyName("Unsupported")]
     public bool? Unsupported { get; set; }
+
+    [JsonPropertyName("FromDirIndex")]
+    public int FromDirIndex { get; set; }
 }
 
 [JsonSourceGenerationOptions(

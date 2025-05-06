@@ -464,6 +464,16 @@ public static class CopyHelper
     {
         if (Validate.For.IsNull(path))
             return string.Empty;
+        if (path.FromDirIndex != 0)
+        {
+            string[] parts = basePath.Split("/");
+            if (parts.Length < path!.FromDirIndex)
+                return string.Empty;
+            string destination = string.Join("/", parts.Take(parts.Length - path!.FromDirIndex));
+            if (path.Requires?.Count != 0)
+                destination = VFS.Combine(destination, VFS.Combine([.. path?.Requires ?? Validate.For.EmptyList<string>()]));
+            return destination;
+        }
         if (path.IsDir == false && path.Requires?.Count == 0)
             return basePath;
         if (path.Requires?.Count == 0)

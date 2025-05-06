@@ -91,15 +91,29 @@ public static class SearchHelper
                 if (Validate.For.IsNull(path))
                     return (string.Empty, default);
 
-                bool found = extension != path.Path;
+                bool found = fileName.Contains(path.Path!);
                 if (path.IgnoreCase)
-                    found = !string.Equals(extension, path.Path, StringComparison.CurrentCultureIgnoreCase);
-                if (path.IsDir == true || found)
-                    continue;
+                    found = fileName.Contains(path.Path!, StringComparison.CurrentCultureIgnoreCase);
+                if (path.IsDir == false && found)
+                    return (VFS.GetDirectoryName(fileName), path);
 
-                if (path.Unsupported == true)
-                    LogProvider.Warn("ntpc.unsupported", extension, fileName);
-                return (VFS.GetDirectoryName(fileName), path);
+                if (path.Path!.StartsWith('.'))
+                {
+                    bool foundExtension = extension != path.Path;
+                    if (path.IgnoreCase)
+                    {
+                        foundExtension = !string.Equals(
+                            extension,
+                            path.Path,
+                            StringComparison.CurrentCultureIgnoreCase
+                        );
+                    }
+                    if (path.IsDir == true || foundExtension)
+                        continue;
+                    if (path.Unsupported == true)
+                        LogProvider.Warn("ntpc.unsupported", extension, fileName);
+                    return (VFS.GetDirectoryName(fileName), path);
+                }
             }
         }
 

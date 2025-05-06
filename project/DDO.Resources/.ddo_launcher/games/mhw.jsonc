@@ -1,97 +1,106 @@
 {
-  "Name": "mhw",
-  "Arch": "x64",
-  "Deploy": {
-    "Mods": "cwd:mods/mhw",
-    "Temp": "cwd:temp/mhw",
-    "Output": "cwd:output/mhw"
-  },
-  "Formats": [
-    ".zip",
-    ".rar",
-    ".7z"
-  ],
-  "IgnorePrefixes": [
-    "DISABLED"
-  ],
-  "Engine": {
-    "Paths": [
-      {
-        "Path": "nativePC",
-        "IgnoreCase": false,
-        "IsDir": true,
-        "Requires": [],
-        "Unsupported": false
-      },
-      {
-        "Path": "NativePC",
-        "IgnoreCase": false,
-        "IsDir": true,
-        "Requires": [],
-        "Unsupported": false
-      },
-      {
-        "Path": "Nativepc",
-        "IgnoreCase": false,
-        "IsDir": true,
-        "Requires": [],
-        "Unsupported": false
-      },
-      {
-        "Path": "NativePc",
-        "IgnoreCase": false,
-        "IsDir": true,
-        "Requires": [],
-        "Unsupported": false
-      },
-      {
-        "Path": "nativepc",
-        "IgnoreCase": false,
-        "IsDir": true,
-        "Requires": [],
-        "Unsupported": false
-      },
-      {
-        "Path": "vfx",
-        "IgnoreCase": false,
-        "IsDir": true,
-        "Requires": [
-          "nativePC",
-          "vfx"
-        ],
-        "Unsupported": false
-      },
-      {
-        "Path": "pl",
-        "IgnoreCase": false,
-        "IsDir": true,
-        "Requires": [
-          "nativePC",
-          "pl"
-        ],
-        "Unsupported": false
-      }
+    "Name": "mhw",
+    "Arch": "x64",
+    "Deploy": {
+        "Mods": "cwd:mods/mhw",
+        "Temp": "cwd:temp/mhw",
+        "Output": "cwd:output/mhw"
+    },
+    "Formats": [
+        ".zip",
+        ".rar",
+        ".7z"
     ],
-    "Hooks": {
-      "Formats": [".dll"],
-      "Data": [
-        {
-          "Name": "dinput8.dll",
-          "Dll": "dinput8.dll",
-          "Arch": "x64",
-          "Requires": [],
-          "Include": []
-        },
-        {
-          "Name": "loader.dll",
-          "Dll": "loader.dll",
-          "Arch": "x64",
-          "Requires": [],
-          "Include": []
+    "IgnorePrefixes": [
+        "DISABLED"
+    ],
+    "Engine": {
+        "Paths": [
+            {
+                "Path": "nativePC",
+                "IgnoreCase": false,
+                "IsDir": true,
+                "Requires": [],
+                "Unsupported": false,
+                "FromDirIndex": 0
+            },
+            {
+                "Path": "NativePC",
+                "IgnoreCase": false,
+                "IsDir": true,
+                "Requires": [],
+                "Unsupported": false,
+                "FromDirIndex": 0
+            },
+            {
+                "Path": "Nativepc",
+                "IgnoreCase": false,
+                "IsDir": true,
+                "Requires": [],
+                "Unsupported": false,
+                "FromDirIndex": 0
+            },
+            {
+                "Path": "NativePc",
+                "IgnoreCase": false,
+                "IsDir": true,
+                "Requires": [],
+                "Unsupported": false,
+                "FromDirIndex": 0
+            },
+            {
+                "Path": "nativepc",
+                "IgnoreCase": false,
+                "IsDir": true,
+                "Requires": [],
+                "Unsupported": false,
+                "FromDirIndex": 0
+            },
+            {
+                "Path": "vfx",
+                "IgnoreCase": false,
+                "IsDir": true,
+                "Requires": [
+                    "nativePC",
+                    "vfx"
+                ],
+                "Unsupported": false,
+                "FromDirIndex": 0
+            },
+            {
+                "Path": "pl",
+                "IgnoreCase": false,
+                "IsDir": true,
+                "Requires": [
+                    "nativePC",
+                    "pl"
+                ],
+                "Unsupported": false,
+                "FromDirIndex": 0
+            }
+        ],
+        "Hooks": {
+            "Formats": [
+                ".dll"
+            ],
+            "Data": [
+                {
+                    "Name": "dinput8.dll",
+                    "Dll": "dinput8.dll",
+                    "Arch": "x64",
+                    "Requires": [],
+                    "Include": []
+                },
+                {
+                    "Name": "loader.dll",
+                    "Dll": "loader.dll",
+                    "Arch": "x64",
+                    "Requires": [],
+                    "Include": []
+                }
+            ]
         }
-      ]
-    }
-  },
-  "LogLevel": "DEBUG",
-  "CreateCRC32s": true
+    },
+    "LogLevel": "DEBUG",
+    "CreateCRC32s": true
 }

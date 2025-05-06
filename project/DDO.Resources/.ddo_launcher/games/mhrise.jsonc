@@ -1,100 +1,108 @@
 {
-  "Name": "mhrise",
-  "Arch": "x64",
-  "Deploy": {
-    "Mods": "cwd:mods/mhrise",
-    "Temp": "cwd:temp/mhrise",
-    "Output": "cwd:output/mhrise"
-  },
-  "Formats": [
-    ".zip",
-    ".rar",
-    ".7z"
-  ],
-  "IgnorePrefixes": [
-    "DISABLED"
-  ],
-  "Engine": {
-    "Paths": [
-      {
-        "Path": "natives",
-        "IgnoreCase": false,
-        "IsDir": true,
-        "Requires": [],
-        "Unsupported": false
-      },
-      {
-        "Path": "reframework",
-        "IgnoreCase": false,
-        "IsDir": true,
-        "Requires": [],
-        "Unsupported": false
-      },
-      {
-        "Path": "autorun",
-        "IgnoreCase": false,
-        "IsDir": true,
-        "Requires": [
-          "reframework",
-          "autorun"
-        ],
-        "Unsupported": false
-      },
-      {
-        "Path": ".lua",
-        "IgnoreCase": false,
-        "IsDir": false,
-        "Requires": [
-          "reframework",
-          "autorun"
-        ],
-        "Unsupported": false
-      },
-      {
-        "Path": ".dll",
-        "IgnoreCase": false,
-        "IsDir": false,
-        "Requires": [
-          "reframework",
-          "plugins"
-        ],
-        "Unsupported": false
-      },
-      {
-        "Path": ".pak",
-        "IgnoreCase": false,
-        "IsDir": false,
-        "Requires": [],
-        "Unsupported": false
-      }
+    "Name": "mhrise",
+    "Arch": "x64",
+    "Deploy": {
+        "Mods": "cwd:mods/mhrise",
+        "Temp": "cwd:temp/mhrise",
+        "Output": "cwd:output/mhrise"
+    },
+    "Formats": [
+        ".zip",
+        ".rar",
+        ".7z"
     ],
-    "Hooks": {
-      "Formats": [".dll"],
-      "Data": [
-        {
-          "Name": "dinput8.dll",
-          "Dll": "dinput8.dll",
-          "Arch": "x64",
-          "Requires": [],
-          "Include": []
-        },
-        {
-          "Name": "SpecialK64.dll",
-          "Dll": "dxgi.dll",
-          "Arch": "x64",
-          "Requires": [],
-          "Include": []
-        },
-        {
-          "Name": "SpecialK32.dll",
-          "Dll": "dxgi.dll",
-          "Arch": "x86",
-          "Requires": [],
-          "Include": []
+    "IgnorePrefixes": [
+        "DISABLED"
+    ],
+    "Engine": {
+        "Paths": [
+            {
+                "Path": "natives",
+                "IgnoreCase": false,
+                "IsDir": true,
+                "Requires": [],
+                "Unsupported": false,
+                "FromDirIndex": 0
+            },
+            {
+                "Path": "reframework",
+                "IgnoreCase": false,
+                "IsDir": true,
+                "Requires": [],
+                "Unsupported": false,
+                "FromDirIndex": 0
+            },
+            {
+                "Path": "autorun",
+                "IgnoreCase": false,
+                "IsDir": true,
+                "Requires": [
+                    "reframework",
+                    "autorun"
+                ],
+                "Unsupported": false,
+                "FromDirIndex": 0
+            },
+            {
+                "Path": ".lua",
+                "IgnoreCase": false,
+                "IsDir": false,
+                "Requires": [
+                    "reframework",
+                    "autorun"
+                ],
+                "Unsupported": false,
+                "FromDirIndex": 0
+            },
+            {
+                "Path": ".dll",
+                "IgnoreCase": false,
+                "IsDir": false,
+                "Requires": [
+                    "reframework",
+                    "plugins"
+                ],
+                "Unsupported": false,
+                "FromDirIndex": 0
+            },
+            {
+                "Path": ".pak",
+                "IgnoreCase": false,
+                "IsDir": false,
+                "Requires": [],
+                "Unsupported": false,
+                "FromDirIndex": 0
+            }
+        ],
+        "Hooks": {
+            "Formats": [
+                ".dll"
+            ],
+            "Data": [
+                {
+                    "Name": "dinput8.dll",
+                    "Dll": "dinput8.dll",
+                    "Arch": "x64",
+                    "Requires": [],
+                    "Include": []
+                },
+                {
+                    "Name": "SpecialK64.dll",
+                    "Dll": "dxgi.dll",
+                    "Arch": "x64",
+                    "Requires": [],
+                    "Include": []
+                },
+                {
+                    "Name": "SpecialK32.dll",
+                    "Dll": "dxgi.dll",
+                    "Arch": "x86",
+                    "Requires": [],
+                    "Include": []
+                }
+            ]
         }
-      ]
-    }
-  },
-  "LogLevel": "DEBUG",
-  "CreateCRC32s": true
+    },
+    "LogLevel": "DEBUG",
+    "CreateCRC32s": true
 }
