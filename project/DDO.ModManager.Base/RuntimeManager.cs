@@ -16,8 +16,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using DDO.ModManager.Base.Models;
+using DDO.ModManager.Base.Services;
 using MiniCommon.Interfaces;
 using MiniCommon.Managers;
 using MiniCommon.Managers.Interfaces;
@@ -25,15 +28,27 @@ using MiniCommon.Managers.Services;
 
 namespace DDO.ModManager.Base;
 
-public class RuntimeManager : IRuntimeManager
+public class RuntimeManager : IRuntimeManager<Settings>
 {
-    public static async Task<bool> Initialize(string[] args, List<IBaseCommand> commands)
+    public static Settings? RuntimeSettings { get; private set; }
+    public static SettingsManager<Settings>? SettingsManager { get; private set; }
+
+    public static async Task<bool> Initialize(string[] args, List<Func<Settings, IBaseCommand>> commandFactories)
     {
+        SettingsService service = new();
         bool result = await ServiceManager.Initialize(
-            [new LocalizationService(), new LogService(), new WatermarkService()]
+            [new LocalizationService(), new LogService(), service, new WatermarkService()]
         );
-        if (args.Length != 0)
+
+        RuntimeSettings = SettingsService.RuntimeSettings;
+        SettingsManager = SettingsService.SettingsManager;
+
+        if (args.Length != 0 && RuntimeSettings is not null)
+        {
+            List<IBaseCommand> commands = commandFactories.ConvertAll(f => f(RuntimeSettings));
             await CommandManager.Initialize(args, commands);
+        }
+
         return result;
     }
 }

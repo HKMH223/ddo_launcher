@@ -18,6 +18,7 @@
 
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using Avalonia.Controls;
 using Avalonia.Threading;
 using DDO.Launcher.Base;
@@ -61,7 +62,7 @@ public partial class SettingsDialogWindow : Window, INotifyPropertyChanged
             {
                 _executable = value;
                 _runtimeSettings.Executable = _executable;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Executable)));
+                OnPropertyChanged();
             }
         }
     }
@@ -75,7 +76,7 @@ public partial class SettingsDialogWindow : Window, INotifyPropertyChanged
             {
                 _serverName = value;
                 _runtimeSettings.ServerInfo!.ServerName = _serverName;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ServerName)));
+                OnPropertyChanged();
             }
         }
     }
@@ -89,7 +90,7 @@ public partial class SettingsDialogWindow : Window, INotifyPropertyChanged
             {
                 _accountAPI = value;
                 _runtimeSettings.ServerInfo!.AccountAPI = _accountAPI;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AccountAPI)));
+                OnPropertyChanged();
             }
         }
     }
@@ -103,7 +104,7 @@ public partial class SettingsDialogWindow : Window, INotifyPropertyChanged
             {
                 _downloadIP = value;
                 _runtimeSettings.ServerInfo!.DownloadIP = _downloadIP;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DownloadIP)));
+                OnPropertyChanged();
             }
         }
     }
@@ -117,7 +118,7 @@ public partial class SettingsDialogWindow : Window, INotifyPropertyChanged
             {
                 _downloadPort = value;
                 _runtimeSettings.ServerInfo!.DownloadPort = _downloadPort;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DownloadPort)));
+                OnPropertyChanged();
             }
         }
     }
@@ -131,7 +132,7 @@ public partial class SettingsDialogWindow : Window, INotifyPropertyChanged
             {
                 _lobbyIP = value;
                 _runtimeSettings.ServerInfo!.LobbyIP = _lobbyIP;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(LobbyIP)));
+                OnPropertyChanged();
             }
         }
     }
@@ -145,7 +146,7 @@ public partial class SettingsDialogWindow : Window, INotifyPropertyChanged
             {
                 _lobbyPort = value;
                 _runtimeSettings.ServerInfo!.LobbyPort = _lobbyPort;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(LobbyPort)));
+                OnPropertyChanged();
             }
         }
     }
@@ -159,7 +160,7 @@ public partial class SettingsDialogWindow : Window, INotifyPropertyChanged
             {
                 _requireAdmin = value;
                 _runtimeSettings.RequireAdmin = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(RequireAdmin)));
+                OnPropertyChanged();
             }
         }
     }
@@ -173,7 +174,7 @@ public partial class SettingsDialogWindow : Window, INotifyPropertyChanged
             {
                 _localMode = value;
                 _runtimeSettings.LocalMode = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(LocalMode)));
+                OnPropertyChanged();
             }
         }
     }
@@ -186,7 +187,7 @@ public partial class SettingsDialogWindow : Window, INotifyPropertyChanged
             if (_serverInfoList != value)
             {
                 _serverInfoList = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ServerInfoList)));
+                OnPropertyChanged();
             }
         }
     }
@@ -199,7 +200,7 @@ public partial class SettingsDialogWindow : Window, INotifyPropertyChanged
             if (_selectedServerInfo != value)
             {
                 _selectedServerInfo = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedServerInfo)));
+                OnPropertyChanged();
             }
 
             if (value != null)
@@ -209,6 +210,9 @@ public partial class SettingsDialogWindow : Window, INotifyPropertyChanged
             }
         }
     }
+
+    private void OnPropertyChanged([CallerMemberName] string? propertyName = null) =>
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
     public SettingsDialogWindow()
     {

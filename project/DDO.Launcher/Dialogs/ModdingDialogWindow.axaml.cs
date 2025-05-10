@@ -17,6 +17,7 @@
  */
 
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Threading;
@@ -52,10 +53,13 @@ public partial class ModdingDialogWindow : Window, INotifyPropertyChanged
             if (_game != value)
             {
                 _game = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Game)));
+                OnPropertyChanged();
             }
         }
     }
+
+    private void OnPropertyChanged([CallerMemberName] string? propertyName = null) =>
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
     public ModdingDialogWindow()
     {

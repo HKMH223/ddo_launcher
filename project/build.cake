@@ -5,7 +5,7 @@ bool VSBuilt = Argument<bool>("vsbuilt", false);
 // Cake API Reference: https://cakebuild.net/dsl/
 // setup variables
 var buildDir = "./Build";
-var csprojPaths = GetFiles("./**/DDO.*(Launcher|Launcher.Cli|ModManager|ModManager.Cli|FileViewer).csproj");
+var csprojPaths = GetFiles("./**/DDO.*(Launcher|Launcher.Cli|ModManager|ModManager.Cli).csproj");
 var externCsprojPaths = GetFiles("../extern/**/*(CodeAnalyzers).csproj");
 var toolsCsprojPaths = GetFiles("../tools/**/*(Diff).csproj");
 var delPaths = GetDirectories("./**/*(obj|bin)");
@@ -42,7 +42,7 @@ Task("Publish")
             Configuration = config,
             Runtime = publishRuntime,
             // PublishSingleFile = true,
-            SelfContained = false,
+            // SelfContained = false,
             OutputDirectory = buildDir
         });
     })
@@ -54,7 +54,7 @@ Task("Publish")
             Configuration = config,
             Runtime = publishRuntime,
             // PublishSingleFile = true,
-            SelfContained = false,
+            SelfContained = true,
             OutputDirectory = buildDir
         });
     })
@@ -66,7 +66,7 @@ Task("Publish")
             Configuration = config,
             Runtime = publishRuntime,
             // PublishSingleFile = true,
-            SelfContained = false,
+            // SelfContained = false,
             OutputDirectory = buildDir
         });
     });

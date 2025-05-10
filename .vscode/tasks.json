@@ -49,11 +49,18 @@
             "args": [
                 "roslynator",
                 "analyze",
-                "../extern/CodeAnalyzers/CodeAnalyzers.csproj",
                 "../extern/MiniCommon/MiniCommon.csproj",
+                "../extern/MiniCommon.Avalonia/MiniCommon.Avalonia.csproj",
+                "../extern/MiniCommon.Extensions/MiniCommon.Extensions.csproj",
+                "../extern/CodeAnalyzers/CodeAnalyzers.csproj",
+
+                "DDO.ModManager.Base/DDO.ModManager.Base.csproj",
                 "DDO.Launcher.Base/DDO.Launcher.Base.csproj",
-                "DDO.Launcher/DDO.Launcher.csproj",
+
                 "DDO.ModManager/DDO.ModManager.csproj",
+                "DDO.Launcher/DDO.Launcher.csproj",
+
+                "DDO.ModManager.Cli/DDO.ModManager.Cli.csproj",
                 "DDO.Launcher.Cli/DDO.Launcher.Cli.csproj",
                 "-a",
                 "../.nupkg/roslynator/analyzers/dotnet/roslyn4.7/cs/"
@@ -71,6 +78,50 @@
             },
             "problemMatcher": [],
             "dependsOn": "Run CSharpier"
+        },
+        {
+            "label": "Run Cake Clean",
+            "type": "shell",
+            "command": "dotnet-cake",
+            "args": [
+                "build.cake",
+                "--target",
+                "Clean"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/project/"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "problemMatcher": [],
+        },
+        {
+            "label": "Run Cake ExecuteBuild",
+            "type": "shell",
+            "command": "dotnet-cake",
+            "args": [
+                "build.cake",
+                "--target",
+                "ExecuteBuild"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/project/"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "problemMatcher": [],
         },
         {
             "label": "Run Cake Build",

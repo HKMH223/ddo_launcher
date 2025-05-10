@@ -30,16 +30,8 @@ public static class JsonExtensionHelper
     /// </summary>
     public static (string? Result, string Expected) MaybeJsonWithComments(string path)
     {
-        if (
-            !string.Equals(
-                VFS.GetFileExtension(path),
-                JsonExtension,
-                StringComparison.CurrentCultureIgnoreCase
-            )
-        )
-        {
+        if (!VFS.GetFileExtension(path).Contains(JsonExtension))
             return (default, path);
-        }
 
         string jsoncPath = path + "c";
         if (VFS.Exists(jsoncPath)) // ".jsonc"

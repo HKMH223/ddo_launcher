@@ -36,7 +36,7 @@ public static class CryptographyHelperExt
         byte[] hash = Crc32.Hash(VFS.ReadFile(fileName));
 
         if (formatting)
-            return BitConverter.ToString(hash).ToLower().Replace("-", string.Empty);
+            return Convert.ToHexStringLower(hash).Replace("-", string.Empty);
         return BitConverter.ToString(hash);
     }
 

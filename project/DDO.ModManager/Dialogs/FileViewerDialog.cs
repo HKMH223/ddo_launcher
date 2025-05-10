@@ -16,17 +16,20 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using MiniCommon.Interfaces;
+using Avalonia.Controls;
+using MiniCommon.Avalonia.Dialogs.Abstractions;
+using Window = Avalonia.Controls.Window;
 
-namespace MiniCommon.Managers.Interfaces;
+namespace DDO.ModManager.Dialogs;
 
-public interface IRuntimeManager<T>
+public class FileViewerDialog : BaseDialog
 {
-    public static abstract Task<bool> Initialize(
-        string[] args,
-        List<Func<T, IBaseCommand>> commandFactories
-    );
+    public FileViewerDialog(string title, Window window)
+        : base(new FileViewerDialogWindow() { Title = title }, window)
+    {
+        Dialog.Title = title;
+        FindControl<TextBlock>("TitleTextBlock").Text = title;
+        FindControl<Button>("ConfirmButton").Click += OnClick;
+        FindControl<Button>("CancelButton").Click += OnClick;
+    }
 }

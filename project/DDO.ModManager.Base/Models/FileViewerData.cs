@@ -16,26 +16,23 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-using Avalonia;
-using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Markup.Xaml;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
-namespace DDO.FileViewer;
+namespace DDO.ModManager.Base.Models;
 
-public class App : Application
+public class FileViewerData
 {
-    public override void Initialize()
-    {
-        AvaloniaXamlLoader.Load(this);
-    }
-
-    public override void OnFrameworkInitializationCompleted()
-    {
-        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-        {
-            desktop.MainWindow = new MainWindow();
-        }
-
-        base.OnFrameworkInitializationCompleted();
-    }
+    public string? Regex { get; set; }
+    public int? Take { get; set; }
+    public int? Index { get; set; }
+    public bool? IsEnabled { get; set; }
 }
+
+[JsonSourceGenerationOptions(
+    WriteIndented = true,
+    ReadCommentHandling = JsonCommentHandling.Skip,
+    AllowTrailingCommas = true
+)]
+[JsonSerializable(typeof(FileViewerData))]
+internal partial class FileViewerDataContext : JsonSerializerContext;

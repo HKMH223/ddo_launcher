@@ -39,13 +39,17 @@ static class Program
     {
         // Call necessary functions before starting the Avalonia application.
         AssemblyConstants.AssemblyName = "DDO.ModManager";
+        AssemblyConstants.SettingsFileName = "modding.settings.json";
         AssemblyConstants.DataDirectory = ".ddo_launcher";
 
         VFS.FileSystem.Cwd = AppDomain.CurrentDomain.BaseDirectory;
 
         Log.Add(new NativeLogger(NativeLogLevel.Info, CensorLevel.REDACT));
         Log.Add(new FileStreamLogger(AssemblyConstants.LogFilePath(), NativeLogLevel.Info, CensorLevel.REDACT));
-        await RuntimeManager.Initialize(args, [new Deploy(), new Help()]);
+        await RuntimeManager.Initialize(
+            args,
+            [_ => new Deploy(), settings => new RunFileViewer(settings), _ => new Help()]
+        );
 
         if (args.Length != 0)
             return;

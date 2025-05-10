@@ -18,12 +18,14 @@
 
 using System;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Threading;
 using DDO.ModManager.Base.NativePC.Helpers;
 using DDO.ModManager.Base.NativePC.Models;
 using DDO.ModManager.Base.NativePC.Providers;
+using DDO.ModManager.Dialogs;
 using MiniCommon.BuildInfo;
 using MiniCommon.Extensions;
 using MiniCommon.IO;
@@ -52,10 +54,13 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             if (_game != value)
             {
                 _game = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Game)));
+                OnPropertyChanged();
             }
         }
     }
+
+    private void OnPropertyChanged([CallerMemberName] string? propertyName = null) =>
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
     public MainWindow()
     {
@@ -90,6 +95,11 @@ public partial class MainWindow : Window, INotifyPropertyChanged
                     Topmost = false;
                 });
             });
+    }
+
+    private void FileViewerButton_Click(object sender, RoutedEventArgs e)
+    {
+        new FileViewerDialog(LocalizationProvider.Translate("avalonia.title.modding"), this).Show();
     }
 
     private Task DeployTask()

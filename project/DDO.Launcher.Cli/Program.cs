@@ -37,6 +37,7 @@ static class Program
     public static async Task Main(string[] args)
     {
         AssemblyConstants.AssemblyName = "DDO.Launcher.Cli";
+        AssemblyConstants.SettingsFileName = "launcher.settings.json";
         AssemblyConstants.DataDirectory = ".ddo_launcher";
 
         VFS.FileSystem.Cwd = AppDomain.CurrentDomain.BaseDirectory;
@@ -46,12 +47,12 @@ static class Program
         await RuntimeManager.Initialize(
             args,
             [
-                new Verifier(RuntimeManager.RuntimeSettings!),
-                new Patcher(RuntimeManager.RuntimeSettings!),
-                new Deploy(),
-                new Register(RuntimeManager.RuntimeSettings!),
-                new Login(RuntimeManager.RuntimeSettings!),
-                new Help(),
+                settings => new Verifier(settings),
+                settings => new Patcher(settings),
+                _ => new Deploy(),
+                settings => new Register(settings),
+                settings => new Login(settings),
+                _ => new Help(),
             ]
         );
 

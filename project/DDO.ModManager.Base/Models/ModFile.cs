@@ -16,17 +16,21 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using MiniCommon.Interfaces;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
-namespace MiniCommon.Managers.Interfaces;
+namespace DDO.ModManager.Base.Models;
 
-public interface IRuntimeManager<T>
+public class ModFile
 {
-    public static abstract Task<bool> Initialize(
-        string[] args,
-        List<Func<T, IBaseCommand>> commandFactories
-    );
+    public string? FileName { get; set; }
+    public bool? IsEnabled { get; set; }
 }
+
+[JsonSourceGenerationOptions(
+    WriteIndented = true,
+    ReadCommentHandling = JsonCommentHandling.Skip,
+    AllowTrailingCommas = true
+)]
+[JsonSerializable(typeof(ModFile))]
+internal partial class ModFileContext : JsonSerializerContext;

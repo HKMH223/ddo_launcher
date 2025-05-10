@@ -42,7 +42,7 @@ internal static class Program
         Console.Title = "CodeAnalyzers";
         Log.Add(new NativeLogger(NativeLogLevel.Info));
         Log.Add(new FileStreamLogger(AssemblyConstants.LogFilePath(), NativeLogLevel.Info));
-        await RuntimeManager.Initialize(args, [new AnalyzeCode(), new Help()]);
+        await RuntimeManager.Initialize(args, [_ => new AnalyzeCode(), _ => new Help()]);
 
         if (args.Length == 0)
         {

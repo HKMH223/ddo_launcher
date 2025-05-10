@@ -16,6 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using MiniCommon.Interfaces;
@@ -25,15 +26,26 @@ using MiniCommon.Managers.Services;
 
 namespace CodeAnalyzers;
 
-public class RuntimeManager : IRuntimeManager
+public class RuntimeManager : IRuntimeManager<object>
 {
-    public static async Task<bool> Initialize(string[] args, List<IBaseCommand> commands)
+    public static object? RuntimeSettings { get; }
+    public static SettingsManager<object>? SettingsManager { get; }
+
+    public static async Task<bool> Initialize(
+        string[] args,
+        List<Func<object, IBaseCommand>> commandFactories
+    )
     {
         bool result = await ServiceManager.Initialize(
             [new LocalizationService(), new LogService(), new WatermarkService()]
         );
-        if (args.Length != 0)
+
+        if (args.Length != 0 && RuntimeSettings is not null)
+        {
+            List<IBaseCommand> commands = commandFactories.ConvertAll(f => f(RuntimeSettings));
             await CommandManager.Initialize(args, commands);
+        }
+
         return result;
     }
 }

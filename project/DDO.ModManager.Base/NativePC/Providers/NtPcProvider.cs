@@ -143,7 +143,7 @@ public static class NtPcProvider
             }
 
             List<string> hookNames = (game.Engine.Hooks!.Data ?? Validate.For.EmptyList<NtPcHookData>()).ConvertAll(
-                hook => hook.Name ?? string.Empty
+                hook => hook.Name ?? Validate.For.EmptyString()
             );
 
             if (
@@ -256,7 +256,9 @@ public static class NtPcProvider
             if (index == -1)
                 index = directories.Count;
 
-            sorted = sorted!.MoveEntry(string.Format(order.Name!, rules.Variables), index) ?? [];
+            sorted =
+                sorted!.MoveEntry(string.Format(order.Name!, rules.Variables), index)
+                ?? Validate.For.EmptyList<string?>();
         }
 
         return sorted!;

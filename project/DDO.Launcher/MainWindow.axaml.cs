@@ -18,6 +18,7 @@
 
 using System;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Threading;
@@ -57,7 +58,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             {
                 _username = value;
                 _runtimeSettings.Account = _username;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Username)));
+                OnPropertyChanged();
             }
         }
     }
@@ -71,7 +72,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             {
                 _password = value;
                 _runtimeSettings.Password = _password;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Password)));
+                OnPropertyChanged();
             }
         }
     }
@@ -84,10 +85,13 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             if (_remember != value)
             {
                 _remember = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Remember)));
+                OnPropertyChanged();
             }
         }
     }
+
+    private void OnPropertyChanged([CallerMemberName] string? propertyName = null) =>
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
     public MainWindow()
     {

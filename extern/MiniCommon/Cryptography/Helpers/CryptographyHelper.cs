@@ -75,7 +75,7 @@ public static class CryptographyHelper
         byte[] hash = algorithm.ComputeHash(stream);
 
         if (formatting)
-            return BitConverter.ToString(hash).ToLower().Replace("-", string.Empty);
+            return Convert.ToHexStringLower(hash).Replace("-", string.Empty);
         return BitConverter.ToString(hash);
     }
 
@@ -101,7 +101,7 @@ public static class CryptographyHelper
         byte[] digestedHash = MD5.HashData(Encoding.UTF8.GetBytes(value));
         digestedHash[6] = (byte)((digestedHash[6] & 0x0f) | 0x30);
         digestedHash[8] = (byte)((digestedHash[8] & 0x3f) | 0x80);
-        return BitConverter.ToString(digestedHash).Replace("-", string.Empty).ToLower();
+        return Convert.ToHexStringLower(digestedHash).Replace("-", string.Empty);
     }
 
     /// <summary>
