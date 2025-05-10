@@ -215,11 +215,11 @@ public abstract partial class BaseFileSystem : IBaseFileSystem
     }
 
     /// <inheritdoc />
-    public virtual void MoveFile(string a, string b)
+    public virtual void MoveFile(string a, string b, bool overwrite = true)
     {
         lock (_mutex)
         {
-            new FileInfo(a).MoveTo(b);
+            new FileInfo(a).MoveTo(b, overwrite);
         }
     }
 

@@ -25,6 +25,8 @@ using Microsoft.Extensions.FileSystemGlobbing;
 using Microsoft.Extensions.FileSystemGlobbing.Abstractions;
 using MiniCommon.Cryptography.Helpers;
 using MiniCommon.Extensions.FileGlobber.Interfaces;
+using MiniCommon.IO;
+using MiniCommon.Validation.Exceptions;
 
 namespace MiniCommon.Extensions.FileGlobber.Abstractions;
 
@@ -52,9 +54,13 @@ public class BaseFileGlobber(StringComparison comparisonType = StringComparison.
     /// <inheritdoc/>
     public virtual List<string> Match(string filepath)
     {
-        List<string> matches = [.. Matcher.GetResultsInFullPath(filepath)];
+        DirectoryInfo di = new(filepath);
+        if (!di.Exists)
+            throw new ObjectValidationException(nameof(di));
+
+        List<string> files = [.. Directory.GetFiles(filepath, "*", SearchOption.AllDirectories)];
         CompileRegexPatterns();
-        return matches
+        return files
             .Where(file =>
             {
                 string fileName = Path.GetFileName(file);

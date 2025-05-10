@@ -182,11 +182,11 @@ public class ValidatedFileSystem : BaseFileSystem
     }
 
     /// <inheritdoc />
-    public override void MoveFile(string a, string b)
+    public override void MoveFile(string a, string b, bool overwrite = true)
     {
         if (Validate.For.IsNullOrWhiteSpace([a, b], NativeLogLevel.Fatal))
             return;
-        base.MoveFile(a, b);
+        base.MoveFile(a, b, overwrite);
     }
 
     /// <inheritdoc />

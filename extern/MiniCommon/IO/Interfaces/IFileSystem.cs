@@ -125,7 +125,7 @@ public interface IFileSystem
     /// <summary>
     /// Moves a file from one place to another.
     /// </summary>
-    public static abstract void MoveFile(string a, string b);
+    public static abstract void MoveFile(string a, string b, bool overwrite = true);
 
     /// <summary>
     /// Copies a file from one place to another.

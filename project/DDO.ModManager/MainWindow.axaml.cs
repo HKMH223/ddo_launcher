@@ -87,6 +87,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
                 {
                     IsHitTestVisible = true;
                     Topmost = true;
+                    Topmost = false;
                 });
             });
     }

@@ -78,6 +78,7 @@ public partial class ModdingDialogWindow : Window, INotifyPropertyChanged
                 {
                     IsHitTestVisible = true;
                     Topmost = true;
+                    Topmost = false;
                 });
             });
     }

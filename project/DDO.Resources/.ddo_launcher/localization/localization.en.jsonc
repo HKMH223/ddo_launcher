@@ -92,6 +92,7 @@
         "ntpc.working": "... WORKING",
         "ntpc.done": "... DONE",
         "ntpc.copy": "Copying: {0} to {1}",
+        "ntpc.move": "Moving: {0} to {1}",
         "ntpc.missing": "File: {0} is invalid or does not exist.",
         "ntpc.unsupported": "Unsupported file type: {0}, {1}."
         // endregion // DDO.ModManager

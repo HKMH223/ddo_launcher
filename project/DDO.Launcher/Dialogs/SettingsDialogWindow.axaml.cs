@@ -254,6 +254,7 @@ public partial class SettingsDialogWindow : Window, INotifyPropertyChanged
                 {
                     IsHitTestVisible = true;
                     Topmost = true;
+                    Topmost = false;
                 });
             });
     }
@@ -270,6 +271,7 @@ public partial class SettingsDialogWindow : Window, INotifyPropertyChanged
                 {
                     IsHitTestVisible = true;
                     Topmost = true;
+                    Topmost = false;
                 });
             });
     }
@@ -286,6 +288,7 @@ public partial class SettingsDialogWindow : Window, INotifyPropertyChanged
                 {
                     IsHitTestVisible = true;
                     Topmost = true;
+                    Topmost = false;
                 });
             });
     }
@@ -304,6 +307,7 @@ public partial class SettingsDialogWindow : Window, INotifyPropertyChanged
                 {
                     IsHitTestVisible = true;
                     Topmost = true;
+                    Topmost = false;
                 });
             });
     }
@@ -347,6 +351,7 @@ public partial class SettingsDialogWindow : Window, INotifyPropertyChanged
                 {
                     IsHitTestVisible = true;
                     Topmost = true;
+                    Topmost = false;
                 });
             });
     }

@@ -8,6 +8,7 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="../DDO.FileViewer/DDO.FileViewer.csproj" />
     <ProjectReference Include="../DDO.Launcher/DDO.Launcher.csproj" />
     <ProjectReference Include="../DDO.Launcher.Base/DDO.Launcher.Base.csproj" />
     <ProjectReference Include="../DDO.Launcher.Cli/DDO.Launcher.Cli.csproj" />

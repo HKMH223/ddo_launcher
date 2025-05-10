@@ -148,9 +148,9 @@ public class VFS : IFileSystem
     }
 
     /// <inheritdoc />
-    public static void MoveFile(string a, string b)
+    public static void MoveFile(string a, string b, bool overwrite = true)
     {
-        FileSystem.MoveFile(a, b);
+        FileSystem.MoveFile(a, b, overwrite);
     }
 
     /// <inheritdoc />
