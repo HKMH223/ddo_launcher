@@ -30,7 +30,7 @@ static class Program
         using FileStream stream = File.OpenRead(filePath);
         using MD5 md5 = MD5.Create();
         byte[] hash = md5.ComputeHash(stream);
-        return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
+        return Convert.ToHexStringLower(hash).Replace("-", "");
     }
 
     static void CompareFolders(string folder1, string folder2)

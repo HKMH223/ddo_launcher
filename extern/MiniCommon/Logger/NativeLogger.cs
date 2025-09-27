@@ -20,6 +20,7 @@ using System;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using MiniCommon.IO;
+using MiniCommon.IO.Helpers;
 using MiniCommon.Logger.Enums;
 using MiniCommon.Providers;
 using MiniCommon.Validation;
@@ -33,21 +34,6 @@ public partial class NativeLogger : ILogger
     [return: MarshalAs(UnmanagedType.Bool)]
     private static partial bool AllocConsole();
 
-    [LibraryImport("kernel32", SetLastError = true)]
-    private static partial IntPtr GetStdHandle(int nStdHandle);
-
-    [LibraryImport("kernel32", SetLastError = true)]
-    [return: MarshalAs(UnmanagedType.Bool)]
-    private static partial bool GetConsoleMode(IntPtr hConsoleHandle, out uint lpMode);
-
-    [LibraryImport("kernel32", SetLastError = true)]
-    [return: MarshalAs(UnmanagedType.Bool)]
-    private static partial bool SetConsoleMode(IntPtr hConsoleHandle, uint dwMode);
-
-    private const int STD_INPUT_HANDLE = -10;
-    private const uint ENABLE_QUICK_EDIT_MODE = 0x0040;
-    private const uint ENABLE_EXTENDED_FLAGS = 0x0080;
-
     private readonly NativeLogLevel _minLevel = NativeLogLevel.Debug;
     private readonly CensorLevel _censorLevel = CensorLevel.NONE;
 
@@ -57,7 +43,7 @@ public partial class NativeLogger : ILogger
     public NativeLogger()
     {
         _ = AllocConsole();
-        DisableQuickEditMode();
+        QuickEditHelper.Disable();
         AppDomain.CurrentDomain.UnhandledException += UnhandledException;
     }
 
@@ -69,23 +55,8 @@ public partial class NativeLogger : ILogger
         _ = AllocConsole();
         _minLevel = minLevel;
         _censorLevel = censorLevel;
-        DisableQuickEditMode();
+        QuickEditHelper.Disable();
         AppDomain.CurrentDomain.UnhandledException += UnhandledException;
-    }
-
-    /// <summary>
-    /// Quick edit disables console i/o when text is highlighted.
-    /// This causes a disruption in the application. We want it disabled.
-    /// </summary>
-    private static void DisableQuickEditMode()
-    {
-        IntPtr handle = GetStdHandle(STD_INPUT_HANDLE);
-        if (GetConsoleMode(handle, out uint mode))
-        {
-            mode &= ~ENABLE_QUICK_EDIT_MODE;
-            mode |= ENABLE_EXTENDED_FLAGS;
-            SetConsoleMode(handle, mode);
-        }
     }
 
     public Task Base(NativeLogLevel level, string message) => WriteToStdout(level, message);
